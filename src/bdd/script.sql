@@ -80,8 +80,8 @@ CREATE TABLE IF NOT EXISTS `offre` (
                                        `etat` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-DROP TABLE IF EXISTS `offre_fiche_entrepise`;
-CREATE TABLE IF NOT EXISTS `offre_fiche_entrepise` (
+DROP TABLE IF EXISTS `offre_fiche_entreprise`;
+CREATE TABLE IF NOT EXISTS `offre_fiche_entreprise` (
                                                        `ref_offre` int DEFAULT NULL,
                                                        `ref_fiche_entreprise` int DEFAULT NULL,
                                                        KEY `ref_offre` (`ref_offre`),
