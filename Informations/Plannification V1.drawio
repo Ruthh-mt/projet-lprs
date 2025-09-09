@@ -1,0 +1,93 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" version="28.2.0">
+  <diagram name="Page-1" id="bThwqqnUAIM9A6ram7QK">
+    <mxGraphModel dx="2253" dy="823" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="PIgeUEhfH9ylVVjagpob-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-1" target="PIgeUEhfH9ylVVjagpob-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-1" target="PIgeUEhfH9ylVVjagpob-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-1" target="PIgeUEhfH9ylVVjagpob-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-1" target="PIgeUEhfH9ylVVjagpob-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1000" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-1" target="PIgeUEhfH9ylVVjagpob-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-1" value="&lt;font style=&quot;font-size: 20px;&quot; data-font-src=&quot;https://fonts.googleapis.com/css?family=JetBrains+Mono&quot; face=&quot;JetBrains Mono&quot;&gt;Home&lt;/font&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot; data-font-src=&quot;https://fonts.googleapis.com/css?family=JetBrains+Mono&quot;&gt;- presentation&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot; data-font-src=&quot;https://fonts.googleapis.com/css?family=JetBrains+Mono&quot;&gt;- Offres récentes&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot; data-font-src=&quot;https://fonts.googleapis.com/css?family=JetBrains+Mono&quot;&gt;- Dernier post&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot; data-font-src=&quot;https://fonts.googleapis.com/css?family=JetBrains+Mono&quot;&gt;- Connexion/Inscri&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="320" y="40" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-2" target="PIgeUEhfH9ylVVjagpob-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-2" value="&lt;font style=&quot;font-size: 20px;&quot; face=&quot;JetBrains Mono&quot;&gt;Connexion Inscription&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 20px;&quot; face=&quot;JetBrains Mono&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="520" y="280" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-4" value="&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;PROFILS&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Infos génériques&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Infos personnalisées&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="320" y="760" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-5" target="PIgeUEhfH9ylVVjagpob-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-5" value="&lt;div&gt;&lt;font style=&quot;font-size: 20px;&quot; face=&quot;JetBrains Mono&quot;&gt;FORUM&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Listes post&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Barre de recherche&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="120" y="280" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-6" target="PIgeUEhfH9ylVVjagpob-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-6" value="&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;POST&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Réponse&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="120" y="520" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-7" target="PIgeUEhfH9ylVVjagpob-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-7" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-family: &amp;quot;JetBrains Mono&amp;quot;;&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;ANNONCES&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-family: &amp;quot;JetBrains Mono&amp;quot;;&quot;&gt;Listes offres&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Barre de recherche&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Trie par type&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="-80" y="280" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-8" target="PIgeUEhfH9ylVVjagpob-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-8" value="&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;OFFRE&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Détails de l&#39;offre&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Fiche entreprise&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Profil du recruteur&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="-80" y="520" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-9" target="PIgeUEhfH9ylVVjagpob-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-9" value="&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;ÉVÈNEMENT&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Listes évènements&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Barre de recherche&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="720" y="280" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-10" value="&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;ÉVÈNEMENT SPE&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Détails de l&#39;évent&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Participation&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="720" y="520" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-11" value="&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;ENTREPRISE&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Fiche entreprise&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Membres de l&#39;entreprises&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Offres posté&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="-80" y="760" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-12" target="PIgeUEhfH9ylVVjagpob-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-12" value="&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;ANNUAIRE&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Liste des anciens étudiants&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Infos sur les nciens étudiants&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="920" y="280" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PIgeUEhfH9ylVVjagpob-13" target="PIgeUEhfH9ylVVjagpob-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-13" value="&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;FORMATION&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Détails de la formations&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;JetBrains Mono&quot;&gt;Professeur assigné&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="920" y="520" width="160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="PIgeUEhfH9ylVVjagpob-14" value="&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;span style=&quot;font-size: 20px;&quot;&gt;PROFESSEUR&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Détails sur le professeur&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Liste des événements dans lesquels il a participé&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="920" y="760" width="160" height="200" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
