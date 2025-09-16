@@ -8,9 +8,6 @@ class UserModel
           $this->db = $db;
      }
 
-     /**
-      * Récupérer un utilisateur par son ID
-      */
      public function getUserById(int $id_user): ?array
      {
           $sql = "SELECT * FROM utilisateur WHERE id_user = :id_user";
@@ -20,10 +17,6 @@ class UserModel
 
           return $result ?: null;
      }
-
-     /**
-      * Récupérer un utilisateur par email (utile pour login)
-      */
      public function getUserByEmail(string $email): ?array
      {
           $sql = "SELECT * FROM utilisateur WHERE email = :email";
@@ -33,10 +26,6 @@ class UserModel
 
           return $result ?: null;
      }
-
-     /**
-      * Ajouter un utilisateur
-      */
      public function createUser(array $data): bool
      {
           $sql = "INSERT INTO utilisateur (id_user, nom, prenom, email, mdp, est_valide) 
@@ -54,9 +43,6 @@ class UserModel
           ]);
      }
 
-     /**
-      * Mettre à jour un utilisateur
-      */
      public function updateUser(int $id_user, array $data): bool
      {
           $sql = "UPDATE utilisateur 
@@ -74,9 +60,6 @@ class UserModel
           ]);
      }
 
-     /**
-      * Supprimer un utilisateur
-      */
      public function deleteUser(int $id_user): bool
      {
           $sql = "DELETE FROM utilisateur WHERE id_user = :id_user";
@@ -84,9 +67,6 @@ class UserModel
           return $stmt->execute(['id_user' => $id_user]);
      }
 
-     /**
-      * Récupérer tous les utilisateurs
-      */
      public function getAllUsers(): array
      {
           $sql = "SELECT * FROM utilisateur";
