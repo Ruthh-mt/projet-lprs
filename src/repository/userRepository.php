@@ -62,6 +62,7 @@ class UserRepository
                'mdp'       => $user->getMdp(),
                'est_valide'=> $user->getEstValide(),
           ]);
+     }
      public function delete(int $id_user): bool
      {
           $sql = "DELETE FROM utilisateur WHERE id_user = :id_user";
