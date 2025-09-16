@@ -54,7 +54,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                </div>
           <?php endif; ?>
-          <form action="../source/treatment/inscription.php" method="post" class="align-self-center">
+          <form action="../src/treatment/inscription.php" method="post" class="align-self-center">
                <div class="form-floating my-2">
                     <input type="text" name="prenom" class="form-control" id="floatingPrenom" placeholder="Prénom" required>
                     <label for="floatingPrenom">Prénom</label>
@@ -75,6 +75,15 @@
                     <input type="password" name="confirmation_mot_de_passe" class="form-control" id="floatingMdpConfirm" placeholder="Confirmation du mot de passe" required>
                     <label for="floatingMdpConfirm">Confirmation du mot de passe</label>
                </div>
+               <select class="form-select" aria-label="Default select example" id="choix">
+                    <option value="Étudiant">Étudiant</option>
+                    <option value="Professeur">Professeur</option>
+                    <option value="Alumi">Alumni / Ancien élève</option>
+                    <option value="PArtenaire">Partenaire / Entreprise</option>
+               </select>
+
+               <div id="extraFields"></div>
+
                <div class="d-grid gap-2">
                     <button class="btn btn-outline-success" type="submit">S'INSCRIRE</button>
                     <a class="btn btn-outline-primary" href="connexion.php" type="button">SE CONNECTER</a>
@@ -83,4 +92,64 @@
      </div>
      <div class="col">
      </div>
+     <script>
+         document.addEventListener("DOMContentLoaded", () => {
+             const extraFields = document.getElementById("extraFields");
+
+             document.querySelectorAll("input[name='role']").forEach(radio => {
+                 radio.addEventListener("change", () => {
+                     extraFields.innerHTML = "";
+
+                     if (radio.value === "Étudiant") {
+                         extraFields.innerHTML = `
+                    <div class="form-floating my-2">
+                        <input type="text" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion">
+                        <label for="floatingAnnee">Année de promotion</label>
+                    </div>
+                    <div class="form-floating my-2">
+                        <select class="form-select" name="classe" id="floatingClasse">
+                            <option value="">-- Sélectionnez une classe --</option>
+                            <option value="L1">Licence 1</option>
+                            <option value="L2">Licence 2</option>
+                            <option value="L3">Licence 3</option>
+                            <option value="M1">Master 1</option>
+                            <option value="M2">Master 2</option>
+                        </select>
+                        <label for="floatingClasse">Classe</label>
+                    </div>
+                    <div class=" mb-3">
+                         <label for="formFile" class="form-label">Curriculum Vitae</label>
+                         <input class="form-control" type="file" id="formFile">
+                    </div>
+                `;
+                     } else if (radio.value === "Alumni") {
+                         extraFields.innerHTML = `
+                    <div class="form-floating my-2">
+                        <input type="text" name="annee_sortie" class="form-control" id="floatingAnnee" placeholder="Année de sortie">
+                        <label for="floatingAnnee">Année de sortie</label>
+                    </div>
+                `;
+                     } else if (radio.value === "Professeur") {
+                         extraFields.innerHTML = `
+                    <div class="form-floating my-2">
+                        <input type="text" name="specialite" class="form-control" id="floatingSpe" placeholder="Matière enseignée">
+                        <label for="floatingSpe">Matière enseignée</label>
+                    </div>
+                `;
+                     } else if (radio.value === "Partenaire") {
+                         extraFields.innerHTML = `
+                    <div class="form-floating my-2">
+                        <input type="text" name="poste" class="form-control" id="floatingPoste" placeholder="Poste occupé">
+                        <label for="floatingPoste">Poste occupé</label>
+                    </div>
+<div class="form-floating my-2">
+                        <input type="text" name="Raison" class="form-control" id="floatingRaison" placeholder="Raison de l'inscription">
+                        <label for="floatingRaison">Raison de l'inscription</label>
+                    </div>
+                `;
+                     }
+                 });
+             });
+         });
+     </script>
 </div>
