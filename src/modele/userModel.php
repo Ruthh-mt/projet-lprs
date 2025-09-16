@@ -69,6 +69,7 @@ class UserModel
 
      public function getAllUsers(): array
      {
+
           $sql = "SELECT * FROM utilisateur";
           $stmt = $this->db->query($sql);
           return $stmt->fetchAll(PDO::FETCH_ASSOC);

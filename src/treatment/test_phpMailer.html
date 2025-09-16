@@ -1,25 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Formulaire test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plus 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin-top: 50px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-<table>
-    <form action = "gestionMdpOublie.php" method="post">
-    <tr>
-        <td><label for name = "email">Email </label></td>
-        <td> <input type ="text" name ="email"></td>
-    </tr>
-    <tr>
-        <td><label for name ="mdp">Mot de passe</label></td>
-        <td> <input type ="text" name ="mdp"></td>
-    </tr>
-    <tr>
-        <td> <input type = "submit" value = "Valider"></td>
-        <td> <a href="verification_email.php">Mot de passe oublié</a></td>
-    </tr>
+<div class="container">
+    <h2 class="text-center">Connexion</h2>
+    <form method="POST" action="../src/traitement/TraitementConnexion.php">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="...@..." required>
+        </div>
+        <div class="mb-3">
+            <label for="mdp" class="form-label">Mot de passe</label>
+            <input type="password" class="form-control" id="mdp" name="mdp" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Se connecter</button><br><br>
     </form>
-</table>
+    <a href=""><button type="submit" class="btn btn-primary w-100">Inscription</button></a><br><br>
+    <a href=""><button type="submit" class="btn btn-primary w-100">Acceuil</button></a><br><br>
+    <a href="traitementVerificationEmail.php"><button type="submit" class="btn btn-primary w-100">Mot de passe oublié</button></a><br><br>
+
+
+</div>
 </body>
 </html>
