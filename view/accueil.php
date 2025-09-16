@@ -48,6 +48,16 @@
         <section class="banner">
             <h1>Bienvenue</h1>
         </section>
+        <h2>Presentation</h2>
+        <p>L'école souhaite développer un site web dédié à la gestion des anciens élèves (alumni) et aux relations avec les entreprises.
+            Ce site servira de plateforme centrale pour renforcer les liens entre l'école, ses anciens élèves, et les partenaires.
+            L'objectif est de faciliter la communication, le réseautage, et la collaboration, tout en offrant des services supplémentaires
+            aux anciens élèves et aux entreprises.
+        </p>
+        <h2>Dernieres Ofrres postés</h2>
+        <p>Listes des 5 derniere offre a ajouter </p>
+        <h2>Dernier evnement</h2>
+        <p>Listes des 5 dernier eve a ajouter </p>
 
     </body>
 </html>
