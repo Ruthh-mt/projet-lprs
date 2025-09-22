@@ -15,7 +15,6 @@
                <div class="fs-4 text-light">LPRS</div>
           </a>
      </div>
-
      <ul class="nav col mb-2 justify-content-center mb-md-0">
           <li class="nav-item"><a href="#" class="btn btn-outline-light me-2">Bouton 1</a></li>
           <li class="nav-item"><a href="#" class="btn btn-outline-light me-2">Bouton 2</a></li>
