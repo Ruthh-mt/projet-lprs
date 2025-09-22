@@ -77,7 +77,8 @@ CREATE TABLE IF NOT EXISTS `offre` (
                                        `mission` varchar(50) DEFAULT NULL,
                                        `salaire` decimal(15,2) DEFAULT NULL,
                                        `type` varchar(50) DEFAULT NULL,
-                                       `etat` varchar(50) DEFAULT NULL
+                                       `etat` varchar(50) DEFAULT NULL,
+                                       PRIMARY KEY (`id_offre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `offre_fiche_entreprise`;
