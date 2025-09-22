@@ -19,5 +19,39 @@ class EtudientModel extends userModel
         }
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRefUser()
+    {
+        return $this->ref_user;
+    }
+
+    /**
+     * @param mixed $ref_user
+     */
+    public function setRefUser($ref_user): void
+    {
+        $this->ref_user = $ref_user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnneePromo()
+    {
+        return $this->annee_promo;
+    }
+
+    /**
+     * @param mixed $annee_promo
+     */
+    public function setAnneePromo($annee_promo): void
+    {
+        $this->annee_promo = $annee_promo;
+    }
+
+
+
 
 }
