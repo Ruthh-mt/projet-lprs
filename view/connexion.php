@@ -68,7 +68,7 @@
                     <div class="d-grid gap-2">
                          <button type="submit" class="btn btn-outline-success">SE CONNECTER</button>
                          <a href="inscription.php" class="btn btn-outline-primary">S'INSCRIRE</a>
-                        <a href="inscription.php" class="btn btn-outline-primary">Mot de passe oublié</a>
+                        <a href="../src/treatment/traitementVerificationEmail.php" class="btn btn-outline-primary">Mot de passe oublié </a>
                     </div>
                </form>
           </div>
