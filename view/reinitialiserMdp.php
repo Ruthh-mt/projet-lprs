@@ -34,8 +34,8 @@ $token = $_GET["token"];
     <form method="POST" action="../src/treatment/traitementReinitialisation.php">
         <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
         <div class="mb-3">
-            <label for="mdpnew" class="form-label">Saisir le nouveau mot de passe</label>
-            <input type="password" class="form-control" id="mdpnew" name="mdp" required>
+            <label for="mdp" class="form-label">Saisir le nouveau mot de passe</label>
+            <input type="password" class="form-control" id="mdp" name="mdp" required>
         </div>
         <div class="mb-3">
             <label for="confirmation" class="form-label">Confirmer le nouveau mot de passe</label>
