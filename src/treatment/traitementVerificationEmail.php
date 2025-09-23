@@ -28,7 +28,7 @@ if(isset($_POST['email'])){
     $email = $_POST['email'];
 }
 
-//1 -  Si cet email existe dans la base, un token sécurisé est généré et stocké temporairement dans la base
+//1 -  Si cet email existe dans la base, un code est généré et stocké temporairement dans la base
 $sqlEmail = $pdo -> prepare("SELECT * from utilisateur where email = ?");
 $sqlEmail -> execute([$email]) ;
 $ligne = $sqlEmail -> fetch();
@@ -44,7 +44,7 @@ if($ligne){
     $compte="";
     //Un email contenant un lien unique est envoyé à l’utilisateur.
     if($sqlToken){
-        $lien="http://localhost/SLAM/PHP/Projets%20PHP/LesTetard93/vue/reinitialiserMdp.php?token=".$token;
+        $lien="http://localhost/projet-lprs/view/reinitialiserMdp.php?token=".$token;
         $compte = $ligne['email'];
         try {
             $mail = new PHPMailer();
@@ -68,7 +68,7 @@ if($ligne){
                 Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.";
             if($mail->send()){
                 echo 'to:'.$mail->getToAddresses()[0][0];
-                header("location: ../view/messageConfirmation.php");
+                header("location: ../../view/messageConfirmation.php");
             }else{
                 echo"le message n'a pas pu etre envoyer(".$mail->ErrorInfo.")";
 
