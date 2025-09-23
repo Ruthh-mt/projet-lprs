@@ -1,5 +1,5 @@
 <?php
-require_once "../modele/UserModel.php";
+require_once "../modele/userModel.php";
 
 class UserRepository
 {
@@ -9,6 +9,22 @@ class UserRepository
     {
         $this->db = $db;
     }
+
+    public function inscription(userModel $user)
+    {
+        $sql = 'INSERT INTO utilisateur(nom,prenom,email,mdp,role) 
+                Values (:nom,:prenom,:email,:mdp,:role)';
+        $req = $this->db->prepare($sql);
+        $req->execute(array(
+            'nom' => $user->getNom(),
+            'prenom' => $user->getPrenom(),
+            'email' => $user->getEmail(),
+            'mdp' => $user->getMdp(),
+            'role'=>$user->getRole()
+        ));
+    }
+
+
 
     public function findById(int $id_user): ?User
     {

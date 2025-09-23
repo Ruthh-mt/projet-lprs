@@ -54,7 +54,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                </div>
           <?php endif; ?>
-          <form action="../src/treatment/inscription.php" method="post" class="align-self-center">
+          <form action="../src/treatment/traitementInscription.php" method="post" class="align-self-center">
                <div class="form-floating my-2">
                     <input type="text" name="prenom" class="form-control" id="floatingPrenom" placeholder="Prénom" required>
                     <label for="floatingPrenom">Prénom</label>
@@ -68,14 +68,14 @@
                     <label for="floatingEmail">Adresse email</label>
                </div>
                <div class="form-floating my-2">
-                    <input type="password" name="mot_de_passe" class="form-control" id="floatingMdp" placeholder="Mot de passe" required>
+                    <input type="password" name="mdp" class="form-control" id="floatingMdp" placeholder="Mot de passe" required>
                     <label for="floatingMdp">Mot de passe</label>
                </div>
                <div class="form-floating my-2">
                     <input type="password" name="confirmation_mot_de_passe" class="form-control" id="floatingMdpConfirm" placeholder="Confirmation du mot de passe" required>
                     <label for="floatingMdpConfirm">Confirmation du mot de passe</label>
                </div>
-               <select class="form-select my-2" aria-label="Default select example" id="choix">
+               <select class="form-select my-2" aria-label="Default select example" id="choix" name="role">
                     <option value="">Rôles</option>
                     <option value="Étudiant">Étudiant</option>
                     <option value="Professeur">Professeur</option>
