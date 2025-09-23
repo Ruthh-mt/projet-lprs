@@ -35,24 +35,108 @@
           <?php endif; ?>
      </div>
 </header>
-
-
 <section class="banner">
      <h1>Bienvenue</h1>
 </section>
-<h2>Presentation</h2>
-<p>L'école souhaite développer un site web dédié à la gestion des anciens élèves (alumni) et aux relations avec les
-     entreprises.
-     Ce site servira de plateforme centrale pour renforcer les liens entre l'école, ses anciens élèves, et les
-     partenaires.
-     L'objectif est de faciliter la communication, le réseautage, et la collaboration, tout en offrant des services
-     supplémentaires
-     aux anciens élèves et aux entreprises.
-</p>
-<h2>Dernieres Ofrres postés</h2>
-<p>Listes des 5 derniere offre a ajouter </p>
-<h2>Dernier evnement</h2>
-<p>Listes des 5 dernier eve a ajouter </p>
-
+<section class="container border rounded border-dark my-3">
+     <h2 style="text-align: center" class="text-uppercase">Présentation</h2>
+     <article class="article" style="text-align: justify;">
+          <p>
+               L'école souhaite développer un site web dédié à la gestion des anciens élèves (alumni) et aux relations avec les entreprises.
+               Ce site servira de plateforme centrale pour renforcer les liens entre l'école, ses anciens élèves et les partenaires.
+               L'objectif est de faciliter la communication, le réseautage et la collaboration, tout en offrant des services supplémentaires aux anciens élèves et aux entreprises.
+          </p>
+     </article>
+</section>
+<section class="container border rounded border-dark my-3">
+     <h2 style="text-align: center" class="text-uppercase">Dernières offres postées</h2>
+     <article class="article row" style="text-align: justify;">
+          <div class="col card m-3" style="width: 18rem;">
+               <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
+               <div class="card-body">
+                    <h5 class="card-title">Titre de l'offre</h5>
+                    <p class="card-text">Description de l'offre</p>
+                    <a href="#" class="btn btn-primary">Voir l'offre</a>
+               </div>
+          </div>
+          <div class="col card m-3" style="width: 18rem;">
+               <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
+               <div class="card-body">
+                    <h5 class="card-title">Titre de l'offre</h5>
+                    <p class="card-text">Description de l'offre</p>
+                    <a href="#" class="btn btn-primary">Voir l'offre</a>
+               </div>
+          </div>
+          <div class="col card m-3" style="width: 18rem;">
+               <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
+               <div class="card-body">
+                    <h5 class="card-title">Titre de l'offre</h5>
+                    <p class="card-text">Description de l'offre</p>
+                    <a href="#" class="btn btn-primary">Voir l'offre</a>
+               </div>
+          </div>
+          <div class="col card m-3" style="width: 18rem;">
+               <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
+               <div class="card-body">
+                    <h5 class="card-title">Titre de l'offre</h5>
+                    <p class="card-text">Description de l'offre</p>
+                    <a href="#" class="btn btn-primary">Voir l'offre</a>
+               </div>
+          </div>
+          <div class="col card m-3" style="width: 18rem;">
+               <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
+               <div class="card-body">
+                    <h5 class="card-title">Titre de l'offre</h5>
+                    <p class="card-text">Description de l'offre</p>
+                    <a href="#" class="btn btn-primary">Voir l'offre</a>
+               </div>
+          </div>
+     </article>
+</section>
+<section class="container border rounded border-dark my-3">
+     <h2 style="text-align: center" class="text-uppercase">Derniers évènements créés</h2>
+     <article class="article row" style="text-align: justify;">
+          <div class="col card m-3" style="width: 18rem;">
+               <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+               <div class="card-body">
+                    <h5 class="card-title">Titre de l'évènement</h5>
+                    <p class="card-text">Description de l'évènement</p>
+                    <a href="#" class="btn btn-primary">Voir l'évènement</a>
+               </div>
+          </div>
+          <div class="col card m-3" style="width: 18rem;">
+               <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+               <div class="card-body">
+                    <h5 class="card-title">Titre de l'évènement</h5>
+                    <p class="card-text">Description de l'évènement</p>
+                    <a href="#" class="btn btn-primary">Voir l'évènement</a>
+               </div>
+          </div>
+          <div class="col card m-3" style="width: 18rem;">
+               <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+               <div class="card-body">
+                    <h5 class="card-title">Titre de l'évènement</h5>
+                    <p class="card-text">Description de l'évènement</p>
+                    <a href="#" class="btn btn-primary">Voir l'évènement</a>
+               </div>
+          </div>
+          <div class="col card m-3" style="width: 18rem;">
+               <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+               <div class="card-body">
+                    <h5 class="card-title">Titre de l'évènement</h5>
+                    <p class="card-text">Description de l'évènement</p>
+                    <a href="#" class="btn btn-primary">Voir l'évènement</a>
+               </div>
+          </div>
+          <div class="col card m-3" style="width: 18rem;">
+               <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+               <div class="card-body">
+                    <h5 class="card-title">Titre de l'évènement</h5>
+                    <p class="card-text">Description de l'évènement</p>
+                    <a href="#" class="btn btn-primary">Voir l'évènement</a>
+               </div>
+          </div>
+     </article>
+</section>
 </body>
 </html>
