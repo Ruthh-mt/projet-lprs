@@ -34,3 +34,131 @@
           <?php endif; ?>
      </div>
 </header>
+<section class="container">
+     <div class="d-grid gap-2">
+          <button class="btn btn-outline-success text-uppercase my-3" type="button">Ajouter un évènement</button>
+     </div>
+     <article class="row my-3">
+          <div class="card-group">
+               <div class="card">
+                    <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                    <div class="card-footer">
+                         <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://wallpapers.com/images/hd/4k-vector-japan-landscape-91fou43c3r7lglnr.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                    <div class="card-footer">
+                         <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://i.redd.it/4syggbto2km01.png" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                    </div>
+                    <div class="card-footer">
+                         <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    </div>
+               </div>
+          </div>
+     </article>
+</section>
+<section class="container">
+     <article class="row my-3">
+          <div class="card-group">
+               <div class="card">
+                    <img src="https://i.redd.it/4syggbto2km01.png" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                    <div class="card-footer">
+                         <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                    <div class="card-footer">
+                         <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://wallpapers.com/images/hd/4k-vector-japan-landscape-91fou43c3r7lglnr.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                    </div>
+                    <div class="card-footer">
+                         <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    </div>
+               </div>
+          </div>
+     </article>
+</section>
+<section class="container">
+     <article class="row my-3">
+          <div class="card-group">
+               <div class="card">
+                    <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                    <div class="card-footer">
+                         <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://i.redd.it/4syggbto2km01.png" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                    <div class="card-footer">
+                         <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://wallpapers.com/images/hd/4k-vector-japan-landscape-91fou43c3r7lglnr.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                    </div>
+                    <div class="card-footer">
+                         <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    </div>
+               </div>
+          </div>
+     </article>
+     <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+               <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                         <span aria-hidden="true">&laquo;</span>
+                    </a>
+               </li>
+               <li class="page-item"><a class="page-link" href="#">1</a></li>
+               <li class="page-item"><a class="page-link" href="#">2</a></li>
+               <li class="page-item"><a class="page-link" href="#">3</a></li>
+               <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                         <span aria-hidden="true">&raquo;</span>
+                    </a>
+               </li>
+          </ul>
+     </nav>
+</section>
