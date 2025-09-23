@@ -5,6 +5,7 @@
      <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <title>ANNUAIRE • LPRS</title>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
@@ -34,3 +35,181 @@
           <?php endif; ?>
      </div>
 </header>
+<section class="container">
+     <form class="container-fluid">
+          <div class="input-group">
+               <span class="input-group-text" id="basic-addon1">Recherche</span>
+               <input type="text" class="form-control" placeholder="Utilisateur" aria-label="Username"
+                      aria-describedby="basic-addon1"/>
+               <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+          </div>
+     </form>
+     <article class="row my-3">
+          <div class="card-group">
+               <div class="card">
+                    <img src="https://wallpaperbat.com/img/804383-flat-2d-4k-wallpaper-top-free-flat-2d-4k-background.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">
+                         <div class="card">
+                              <ul class="list-group list-group-flush">
+                                   <li class="list-group-item">An item</li>
+                                   <li class="list-group-item">A second item</li>
+                                   <li class="list-group-item">A third item</li>
+                              </ul>
+                         </div>
+                         </p>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://wallpapercave.com/wp/wp12959808.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">
+                         <div class="card">
+                              <ul class="list-group list-group-flush">
+                                   <li class="list-group-item">An item</li>
+                                   <li class="list-group-item">A second item</li>
+                                   <li class="list-group-item">A third item</li>
+                              </ul>
+                         </div>
+                         </p>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://images.hdqwalls.com/wallpapers/minimal-morning-mountains-4k-ja.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">
+                         <div class="card">
+                              <ul class="list-group list-group-flush">
+                                   <li class="list-group-item">An item</li>
+                                   <li class="list-group-item">A second item</li>
+                                   <li class="list-group-item">A third item</li>
+                              </ul>
+                         </div>
+                         </p>
+                    </div>
+               </div>
+          </div>
+     </article>
+</section>
+<section class="container">
+     <article class="row my-3">
+          <div class="card-group">
+               <div class="card">
+                    <img src="https://images.hdqwalls.com/wallpapers/minimal-morning-mountains-4k-ja.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">
+                         <div class="card">
+                              <ul class="list-group list-group-flush">
+                                   <li class="list-group-item">An item</li>
+                                   <li class="list-group-item">A second item</li>
+                                   <li class="list-group-item">A third item</li>
+                              </ul>
+                         </div>
+                         </p>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://wallpapercave.com/wp/wp12959808.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">
+                         <div class="card">
+                              <ul class="list-group list-group-flush">
+                                   <li class="list-group-item">An item</li>
+                                   <li class="list-group-item">A second item</li>
+                                   <li class="list-group-item">A third item</li>
+                              </ul>
+                         </div>
+                         </p>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://wallpaperbat.com/img/804383-flat-2d-4k-wallpaper-top-free-flat-2d-4k-background.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">
+                         <div class="card">
+                              <ul class="list-group list-group-flush">
+                                   <li class="list-group-item">An item</li>
+                                   <li class="list-group-item">A second item</li>
+                                   <li class="list-group-item">A third item</li>
+                              </ul>
+                         </div>
+                         </p>
+                    </div>
+               </div>
+          </div>
+     </article>
+</section>
+<section class="container">
+     <article class="row my-3">
+          <div class="card-group">
+               <div class="card">
+                    <img src="https://images.hdqwalls.com/wallpapers/minimal-morning-mountains-4k-ja.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">
+                         <div class="card">
+                              <ul class="list-group list-group-flush">
+                                   <li class="list-group-item">An item</li>
+                                   <li class="list-group-item">A second item</li>
+                                   <li class="list-group-item">A third item</li>
+                              </ul>
+                         </div>
+                         </p>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://wallpaperbat.com/img/804383-flat-2d-4k-wallpaper-top-free-flat-2d-4k-background.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">
+                         <div class="card">
+                              <ul class="list-group list-group-flush">
+                                   <li class="list-group-item">An item</li>
+                                   <li class="list-group-item">A second item</li>
+                                   <li class="list-group-item">A third item</li>
+                              </ul>
+                         </div>
+                         </p>
+                    </div>
+               </div>
+               <div class="card">
+                    <img src="https://wallpapercave.com/wp/wp12959808.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                         <h5 class="card-title">Card title</h5>
+                         <p class="card-text">
+                         <div class="card">
+                              <ul class="list-group list-group-flush">
+                                   <li class="list-group-item">An item</li>
+                                   <li class="list-group-item">A second item</li>
+                                   <li class="list-group-item">A third item</li>
+                              </ul>
+                         </div>
+                         </p>
+                    </div>
+               </div>
+          </div>
+     </article>
+     <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+               <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                         <span aria-hidden="true">&laquo;</span>
+                    </a>
+               </li>
+               <li class="page-item"><a class="page-link" href="#">1</a></li>
+               <li class="page-item"><a class="page-link" href="#">2</a></li>
+               <li class="page-item"><a class="page-link" href="#">3</a></li>
+               <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                         <span aria-hidden="true">&raquo;</span>
+                    </a>
+               </li>
+          </ul>
+     </nav>
+</section>
