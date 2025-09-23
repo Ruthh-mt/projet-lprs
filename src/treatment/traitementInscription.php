@@ -44,26 +44,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
      if (empty($nom) || empty($prenom) || empty($email) || empty($mdp) || empty($mdp_confirm) || empty($role)) {
           $_SESSION['error'] = "Tous les champs obligatoires doivent être remplis.";
-          header("Location: ../../views/inscription.php");
+          header("Location: ../../view/inscription.php");
           exit();
      }
 
      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
           $_SESSION['error'] = "Adresse email invalide.";
-          header("Location: ../../views/inscription.php");
+          header("Location: ../../view/inscription.php");
           exit();
      }
 
      $pwdValidation = validatePassword($mdp);
      if ($pwdValidation !== true) {
           $_SESSION['error'] = $pwdValidation;
-          header("Location: ../../views/inscription.php");
+          header("Location: ../../view/inscription.php");
           exit();
      }
 
      if ($mdp !== $mdp_confirm) {
           $_SESSION['error'] = "Les mots de passe ne correspondent pas.";
-          header("Location: ../../views/inscription.php");
+          header("Location: ../../view/inscription.php");
           exit();
      }
 
@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
      if ($repo->getUserByEmail($email)) {
           $_SESSION['error'] = "Un utilisateur avec cet email existe déjà.";
-          header("Location: ../../views/inscription.php");
+          header("Location: ../../view/inscription.php");
           exit();
      }
 
@@ -87,7 +87,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           'role' => $role
      ];
 
-     // Champs supplémentaires selon rôle
      if ($role === "Étudiant" || $role === "Alumni") {
           $userData['classe'] = $classe;
           $userData['annee_promo'] = $annee_promo;
@@ -106,11 +105,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
      try {
           $repo->ajouterUtilisateur(new UserRepository($userData));
           $_SESSION['success'] = "Inscription réussie !";
-          header("Location: ../../views/connexion.php");
+          header("Location: ../../view/inscription.php");
           exit();
      } catch (PDOException $e) {
           $_SESSION['error'] = "Erreur lors de l'inscription : " . $e->getMessage();
-          header("Location: ../../views/inscription.php");
+          header("Location: ../../view/inscription.php");
           exit();
      }
 }
