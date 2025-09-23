@@ -15,19 +15,19 @@
           <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
                <img src="https://media.tenor.com/1DV7nkfj5OkAAAAM/blobgodeto-blobdance.gif" class="rounded-circle mx-3"
                     style="max-width: 15%; height: auto;">
-               <div class="fs-4 text-light">LPRS</div>
+               <div class="fs-4 text-light text-uppercase">LPRS • Inscription</div>
           </a>
      </div>
      <ul class="nav col mb-2 justify-content-center mb-md-0">
           <li class="nav-item"><a href="accueil.php" class="btn btn-outline-primary dropdown me-2">Accueil</a></li>
-          <li class="nav-item"><a href="#" class="btn btn-outline-light me-2">Évènements</a></li>
-          <li class="nav-item"><a href="#" class="btn btn-outline-light me-2">Annuaire</a></li>
-          <li class="nav-item"><a href="#" class="btn btn-outline-light me-2">Liste des élèves</a></li>
+          <li class="nav-item"><a href="Evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
+          <li class="nav-item"><a href="Annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
+          <li class="nav-item"><a href="ListeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
      </ul>
 
      <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
           <?php if (isset($_SESSION['utilisateur'])): ?>
-               <a href="#" class="btn btn-outline-primary">MON COMPTE</a>
+               <a href="accueil.php" class="btn btn-outline-primary">MON COMPTE</a>
                <a href="../src/treatment/deconnexion.php" class="btn btn-outline-danger">DÉCONNEXION</a>
           <?php else: ?>
                <a href="connexion.php" class="btn btn-outline-success">CONNEXION</a>

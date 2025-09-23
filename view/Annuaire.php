@@ -49,13 +49,13 @@
                <div class="card">
                     <img src="https://wallpaperbat.com/img/804383-flat-2d-4k-wallpaper-top-free-flat-2d-4k-background.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                         <h5 class="card-title">Card title</h5>
+                         <h5 class="card-title">Prénom NOM</h5>
                          <p class="card-text">
                          <div class="card">
                               <ul class="list-group list-group-flush">
-                                   <li class="list-group-item">An item</li>
-                                   <li class="list-group-item">A second item</li>
-                                   <li class="list-group-item">A third item</li>
+                                   <li class="list-group-item"><i class="bi bi-cake"></i> 01/01/2000</li>
+                                   <li class="list-group-item"><i class="bi bi-envelope-at"></i> 01.23.45.67.89</li>
+                                   <li class="list-group-item"><i class="bi bi-telephone"></i> adresse@email.fr</li>
                               </ul>
                          </div>
                          </p>
@@ -64,13 +64,13 @@
                <div class="card">
                     <img src="https://wallpapercave.com/wp/wp12959808.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                         <h5 class="card-title">Card title</h5>
+                         <h5 class="card-title">Prénom NOM</h5>
                          <p class="card-text">
                          <div class="card">
                               <ul class="list-group list-group-flush">
-                                   <li class="list-group-item">An item</li>
-                                   <li class="list-group-item">A second item</li>
-                                   <li class="list-group-item">A third item</li>
+                                   <li class="list-group-item"><i class="bi bi-cake"></i> 01/01/2000</li>
+                                   <li class="list-group-item"><i class="bi bi-envelope-at"></i> 01.23.45.67.89</li>
+                                   <li class="list-group-item"><i class="bi bi-telephone"></i> adresse@email.fr</li>
                               </ul>
                          </div>
                          </p>
@@ -79,13 +79,13 @@
                <div class="card">
                     <img src="https://images.hdqwalls.com/wallpapers/minimal-morning-mountains-4k-ja.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                         <h5 class="card-title">Card title</h5>
+                         <h5 class="card-title">Prénom NOM</h5>
                          <p class="card-text">
                          <div class="card">
                               <ul class="list-group list-group-flush">
-                                   <li class="list-group-item">An item</li>
-                                   <li class="list-group-item">A second item</li>
-                                   <li class="list-group-item">A third item</li>
+                                   <li class="list-group-item"><i class="bi bi-cake"></i> 01/01/2000</li>
+                                   <li class="list-group-item"><i class="bi bi-envelope-at"></i> 01.23.45.67.89</li>
+                                   <li class="list-group-item"><i class="bi bi-telephone"></i> adresse@email.fr</li>
                               </ul>
                          </div>
                          </p>
@@ -100,13 +100,13 @@
                <div class="card">
                     <img src="https://images.hdqwalls.com/wallpapers/minimal-morning-mountains-4k-ja.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                         <h5 class="card-title">Card title</h5>
+                         <h5 class="card-title">Prénom NOM</h5>
                          <p class="card-text">
                          <div class="card">
                               <ul class="list-group list-group-flush">
-                                   <li class="list-group-item">An item</li>
-                                   <li class="list-group-item">A second item</li>
-                                   <li class="list-group-item">A third item</li>
+                                   <li class="list-group-item"><i class="bi bi-cake"></i> 01/01/2000</li>
+                                   <li class="list-group-item"><i class="bi bi-envelope-at"></i> 01.23.45.67.89</li>
+                                   <li class="list-group-item"><i class="bi bi-telephone"></i> adresse@email.fr</li>
                               </ul>
                          </div>
                          </p>
@@ -115,13 +115,13 @@
                <div class="card">
                     <img src="https://wallpapercave.com/wp/wp12959808.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                         <h5 class="card-title">Card title</h5>
+                         <h5 class="card-title">Prénom NOM</h5>
                          <p class="card-text">
                          <div class="card">
                               <ul class="list-group list-group-flush">
-                                   <li class="list-group-item">An item</li>
-                                   <li class="list-group-item">A second item</li>
-                                   <li class="list-group-item">A third item</li>
+                                   <li class="list-group-item"><i class="bi bi-cake"></i> 01/01/2000</li>
+                                   <li class="list-group-item"><i class="bi bi-envelope-at"></i> 01.23.45.67.89</li>
+                                   <li class="list-group-item"><i class="bi bi-telephone"></i> adresse@email.fr</li>
                               </ul>
                          </div>
                          </p>
@@ -130,13 +130,13 @@
                <div class="card">
                     <img src="https://wallpaperbat.com/img/804383-flat-2d-4k-wallpaper-top-free-flat-2d-4k-background.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                         <h5 class="card-title">Card title</h5>
+                         <h5 class="card-title">Prénom NOM</h5>
                          <p class="card-text">
                          <div class="card">
                               <ul class="list-group list-group-flush">
-                                   <li class="list-group-item">An item</li>
-                                   <li class="list-group-item">A second item</li>
-                                   <li class="list-group-item">A third item</li>
+                                   <li class="list-group-item"><i class="bi bi-cake"></i> 01/01/2000</li>
+                                   <li class="list-group-item"><i class="bi bi-envelope-at"></i> 01.23.45.67.89</li>
+                                   <li class="list-group-item"><i class="bi bi-telephone"></i> adresse@email.fr</li>
                               </ul>
                          </div>
                          </p>
@@ -151,13 +151,13 @@
                <div class="card">
                     <img src="https://images.hdqwalls.com/wallpapers/minimal-morning-mountains-4k-ja.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                         <h5 class="card-title">Card title</h5>
+                         <h5 class="card-title">Prénom NOM</h5>
                          <p class="card-text">
                          <div class="card">
                               <ul class="list-group list-group-flush">
-                                   <li class="list-group-item">An item</li>
-                                   <li class="list-group-item">A second item</li>
-                                   <li class="list-group-item">A third item</li>
+                                   <li class="list-group-item"><i class="bi bi-cake"></i> 01/01/2000</li>
+                                   <li class="list-group-item"><i class="bi bi-envelope-at"></i> 01.23.45.67.89</li>
+                                   <li class="list-group-item"><i class="bi bi-telephone"></i> adresse@email.fr</li>
                               </ul>
                          </div>
                          </p>
@@ -166,13 +166,13 @@
                <div class="card">
                     <img src="https://wallpaperbat.com/img/804383-flat-2d-4k-wallpaper-top-free-flat-2d-4k-background.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                         <h5 class="card-title">Card title</h5>
+                         <h5 class="card-title">Prénom NOM</h5>
                          <p class="card-text">
                          <div class="card">
                               <ul class="list-group list-group-flush">
-                                   <li class="list-group-item">An item</li>
-                                   <li class="list-group-item">A second item</li>
-                                   <li class="list-group-item">A third item</li>
+                                   <li class="list-group-item"><i class="bi bi-cake"></i> 01/01/2000</li>
+                                   <li class="list-group-item"><i class="bi bi-envelope-at"></i> 01.23.45.67.89</li>
+                                   <li class="list-group-item"><i class="bi bi-telephone"></i> adresse@email.fr</li>
                               </ul>
                          </div>
                          </p>
@@ -181,13 +181,13 @@
                <div class="card">
                     <img src="https://wallpapercave.com/wp/wp12959808.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                         <h5 class="card-title">Card title</h5>
+                         <h5 class="card-title">Prénom NOM</h5>
                          <p class="card-text">
                          <div class="card">
                               <ul class="list-group list-group-flush">
-                                   <li class="list-group-item">An item</li>
-                                   <li class="list-group-item">A second item</li>
-                                   <li class="list-group-item">A third item</li>
+                                   <li class="list-group-item"><i class="bi bi-cake"></i> 01/01/2000</li>
+                                   <li class="list-group-item"><i class="bi bi-envelope-at"></i> 01.23.45.67.89</li>
+                                   <li class="list-group-item"><i class="bi bi-telephone"></i> adresse@email.fr</li>
                               </ul>
                          </div>
                          </p>
