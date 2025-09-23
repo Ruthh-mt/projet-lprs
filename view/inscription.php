@@ -75,16 +75,17 @@
                     <input type="password" name="confirmation_mot_de_passe" class="form-control" id="floatingMdpConfirm" placeholder="Confirmation du mot de passe" required>
                     <label for="floatingMdpConfirm">Confirmation du mot de passe</label>
                </div>
-               <select class="form-select" aria-label="Default select example" id="choix">
+               <select class="form-select my-2" aria-label="Default select example" id="choix">
+                    <option value="">Rôles</option>
                     <option value="Étudiant">Étudiant</option>
                     <option value="Professeur">Professeur</option>
-                    <option value="Alumi">Alumni / Ancien élève</option>
-                    <option value="PArtenaire">Partenaire / Entreprise</option>
+                    <option value="Alumni">Alumni / Ancien élève</option>
+                    <option value="Partenaire">Partenaire / Entreprise</option>
                </select>
 
                <div id="extraFields"></div>
 
-               <div class="d-grid gap-2">
+               <div class="d-grid gap-2 my-2 ">
                     <button class="btn btn-outline-success" type="submit">S'INSCRIRE</button>
                     <a class="btn btn-outline-primary" href="connexion.php" type="button">SE CONNECTER</a>
                </div>
@@ -95,60 +96,61 @@
      <script>
          document.addEventListener("DOMContentLoaded", () => {
              const extraFields = document.getElementById("extraFields");
+             const selectRole = document.getElementById("choix");
 
-             document.querySelectorAll("input[name='role']").forEach(radio => {
-                 radio.addEventListener("change", () => {
-                     extraFields.innerHTML = "";
+             selectRole.addEventListener("change", () => {
+                 extraFields.innerHTML = "";
 
-                     if (radio.value === "Étudiant") {
-                         extraFields.innerHTML = `
-                    <div class="form-floating my-2">
-                        <input type="text" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion">
-                        <label for="floatingAnnee">Année de promotion</label>
-                    </div>
-                    <div class="form-floating my-2">
-                        <select class="form-select" name="classe" id="floatingClasse">
-                            <option value="">-- Sélectionnez une classe --</option>
-                            <option value="L1">Licence 1</option>
-                            <option value="L2">Licence 2</option>
-                            <option value="L3">Licence 3</option>
-                            <option value="M1">Master 1</option>
-                            <option value="M2">Master 2</option>
-                        </select>
-                        <label for="floatingClasse">Classe</label>
-                    </div>
-                    <div class=" mb-3">
-                         <label for="formFile" class="form-label">Curriculum Vitae</label>
-                         <input class="form-control" type="file" id="formFile">
-                    </div>
-                `;
-                     } else if (radio.value === "Alumni") {
-                         extraFields.innerHTML = `
-                    <div class="form-floating my-2">
-                        <input type="text" name="annee_sortie" class="form-control" id="floatingAnnee" placeholder="Année de sortie">
-                        <label for="floatingAnnee">Année de sortie</label>
-                    </div>
-                `;
-                     } else if (radio.value === "Professeur") {
-                         extraFields.innerHTML = `
-                    <div class="form-floating my-2">
-                        <input type="text" name="specialite" class="form-control" id="floatingSpe" placeholder="Matière enseignée">
-                        <label for="floatingSpe">Matière enseignée</label>
-                    </div>
-                `;
-                     } else if (radio.value === "Partenaire") {
-                         extraFields.innerHTML = `
-                    <div class="form-floating my-2">
-                        <input type="text" name="poste" class="form-control" id="floatingPoste" placeholder="Poste occupé">
-                        <label for="floatingPoste">Poste occupé</label>
-                    </div>
-<div class="form-floating my-2">
-                        <input type="text" name="Raison" class="form-control" id="floatingRaison" placeholder="Raison de l'inscription">
-                        <label for="floatingRaison">Raison de l'inscription</label>
-                    </div>
-                `;
-                     }
-                 });
+                 if (selectRole.value === "Étudiant") {
+                     extraFields.innerHTML = `
+                 <div class="form-selectfloating my-2">
+                    <select class="form-select" name="classe" id="floatingClasse">
+                        <option value="L1">Licence 1</option>
+                        <option value="L2">Licence 2</option>
+                        <option value="L3">Licence 3</option>
+                        <option value="M1">Master 1</option>
+                        <option value="M2">Master 2</option>
+                    </select>
+                </div>
+                <div class="form-floating my-2">
+                    <input type="number" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion" min="1900" max="2100" step="1">
+                    <label for="floatingAnnee">Année de promotion</label>
+               </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Curriculum Vitae</label>
+                    <input class="form-control" type="file" id="formFile" name="cv" accept="application/pdf">
+               </div>
+            `;
+                 } else if (selectRole.value === "Alumni") {
+                     extraFields.innerHTML = `
+                <div class="form-floating my-2">
+                    <input type="number" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion" min="1900" max="2100" step="1">
+                    <label for="floatingAnnee">Année de promotion</label>
+               </div>
+               <div class="mb-3">
+                    <label for="formFile" class="form-label">Curriculum Vitae</label>
+                    <input class="form-control" type="file" id="formFile" name="cv" accept="application/pdf">
+               </div>
+            `;
+                 } else if (selectRole.value === "Professeur") {
+                     extraFields.innerHTML = `
+                <div class="form-floating my-2">
+                    <input type="text" name="specialite" class="form-control" id="floatingSpe" placeholder="Matière enseignée">
+                    <label for="floatingSpe">Matière enseignée</label>
+                </div>
+            `;
+                 } else if (selectRole.value === "Partenaire") {
+                     extraFields.innerHTML = `
+                <div class="form-floating my-2">
+                    <input type="text" name="poste" class="form-control" id="floatingPoste" placeholder="Poste occupé">
+                    <label for="floatingPoste">Poste occupé</label>
+                </div>
+                <div class="form-floating my-2">
+                    <input type="text" name="Raison" class="form-control" id="floatingRaison" placeholder="Raison de l'inscription">
+                    <label for="floatingRaison">Raison de l'inscription</label>
+                </div>
+            `;
+                 }
              });
          });
      </script>
