@@ -21,9 +21,9 @@
      </div>
      <ul class="nav col mb-2 justify-content-center mb-md-0">
           <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
-          <li class="nav-item"><a href="Evenements.php" class="btn btn-light me-2">Évènements</a></li>
-          <li class="nav-item"><a href="Annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
-          <li class="nav-item"><a href="ListeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
+          <li class="nav-item"><a href="evenements.php" class="btn btn-light me-2">Évènements</a></li>
+          <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
+          <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
      </ul>
      <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
           <?php if (isset($_SESSION['utilisateur'])): ?>

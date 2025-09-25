@@ -1,132 +1,112 @@
 <?php
-require_once "../modele/userModel.php";
-
+require_once __DIR__ . '/../modele/userModel.php';
 class UserRepository
 {
     private $db;
-
     public function __construct()
     {
-        $this->db = New Config();
+        $this->db = new Config();
     }
-
-    public function inscription(userModel $user)
-    {
-        $sql = 'INSERT INTO utilisateur(nom,prenom,email,mdp,role) 
-                Values (:nom,:prenom,:email,:mdp,:role)';
-        $req = $this->db->connexion()->prepare($sql);
-        $req->execute(array(
-            'nom' => $user->getNom(),
-            'prenom' => $user->getPrenom(),
-            'email' => $user->getEmail(),
-            'mdp' => $user->getMdp(),
-            'role'=>$user->getRole()
-        ));
-    }
-
-
-
-    public function findById(UserModel $user)
-    {
-        $sql = "SELECT * FROM utilisateur WHERE id_user = :id_user";
-        $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute(['id_user' => $user->getIdUser()]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $row ? $this->mapToUser($row) : null;
-    }
-
-    public function findByEmail(UserModel $user)
+    public function getUserByEmail(string $email): ?UserModel
     {
         $sql = "SELECT * FROM utilisateur WHERE email = :email";
         $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute(['email' => $user->getEmail()]);
+        $stmt->execute(['email' => $email]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
         return $row ? $this->mapToUser($row) : null;
     }
+    public function inscription(UserModel $user): int
+    {
+        $sql = 'INSERT INTO utilisateur(nom, prenom, email, mdp, role)
+                VALUES (:nom, :prenom, :email, :mdp, :role)';
+        $pdo = $this->db->connexion();
+        $req = $pdo->prepare($sql);
+        $req->execute([
+            'nom'    => $user->getNom(),
+            'prenom' => $user->getPrenom(),
+            'email'  => $user->getEmail(),
+            'mdp'    => $user->getMdp(),
+            'role'   => $user->getRole()
+        ]);
+        return (int)$pdo->lastInsertId();
+    }
+    public function insertEtudiant(int $refUser, ?string $cv, string $anneePromo, int $refFormation): void
+    {
+        $sql = "INSERT INTO etudiant (ref_user, cv, annee_promo, ref_formation)
+                VALUES (:ref_user, :cv, :annee_promo, :ref_formation)";
+        $this->db->connexion()->prepare($sql)->execute([
+            'ref_user'      => $refUser,
+            'cv'            => $cv,
+            'annee_promo'   => $anneePromo,
+            'ref_formation' => $refFormation,
+        ]);
+    }
+    public function insertAlumni(int $refUser, ?string $cv, string $anneePromo, ?string $poste = null, ?int $refFiche = null): void
+    {
+        $sql = "INSERT INTO alumni (ref_user, cv, annee_promo, poste, ref_fiche_entreprise)
+                VALUES (:ref_user, :cv, :annee_promo, :poste, :ref_fiche)";
+        $this->db->connexion()->prepare($sql)->execute([
+            'ref_user'    => $refUser,
+            'cv'          => $cv,
+            'annee_promo' => $anneePromo,
+            'poste'       => $poste,
+            'ref_fiche'   => $refFiche,
+        ]);
+    }
+    public function insertProfesseur(int $refUser, string $specialite): void
+    {
+        $sql = "INSERT INTO professeur (ref_user, specialite)
+                VALUES (:ref_user, :specialite)";
+        $this->db->connexion()->prepare($sql)->execute([
+            'ref_user'   => $refUser,
+            'specialite' => $specialite,
+        ]);
+    }
+    public function insertPartenaire(int $refUser, ?string $cv, string $poste, ?int $refFiche = null): void
+    {
+        $sql = "INSERT INTO partenaire (ref_user, cv, poste, ref_fiche_entreprise)
+                VALUES (:ref_user, :cv, :poste, :ref_fiche)";
+        $this->db->connexion()->prepare($sql)->execute([
+            'ref_user'  => $refUser,
+            'cv'        => $cv,
+            'poste'     => $poste,
+            'ref_fiche' => $refFiche,
+        ]);
+    }
 
+    public function getOrCreateFormationIdByName(string $nom): int
+    {
+        $pdo = $this->db->connexion();
+        $sel = $pdo->prepare("SELECT id_formation FROM formation WHERE nom = :nom");
+        $sel->execute(['nom' => $nom]);
+        $id = $sel->fetchColumn();
+        if ($id) return (int)$id;
+
+        $ins = $pdo->prepare("INSERT INTO formation (nom) VALUES (:nom)");
+        $ins->execute(['nom' => $nom]);
+        return (int)$pdo->lastInsertId();
+    }
     public function findAll(): array
     {
         $sql = "SELECT * FROM utilisateur";
         $stmt = $this->db->connexion()->prepare($sql);
-
+        $stmt->execute();
         $users = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch()) {
             $users[] = $this->mapToUser($row);
         }
         return $users;
     }
-
-    public function save(UserModel $user): bool
+    private function mapToUser(array $row): UserModel
     {
-        if ($this->exists($user->getIdUser())) {
-            $sql = "UPDATE utilisateur 
-                    SET nom = :nom, prenom = :prenom, email = :email, mdp = :mdp
-                    WHERE id_user = :id_user";
-        } else {
-            $sql = "INSERT INTO utilisateur (id_user, nom, prenom, email, mdp) 
-                    VALUES (:id_user, :nom, :prenom, :email, :mdp)";
-        }
-
-        $stmt = $this->db->connexion()->prepare($sql);
-
-        return $stmt->execute([
-            'id_user' => $user->getIdUser(),
-            'nom' => $user->getNom(),
-            'prenom' => $user->getPrenom(),
-            'email' => $user->getEmail(),
-            'mdp' => $user->getMdp(),
+        return new UserModel([
+            'idUser'        => $row['id_user'] ?? null,
+            'nom'           => $row['nom'] ?? null,
+            'prenom'        => $row['prenom'] ?? null,
+            'email'         => $row['email'] ?? null,
+            'mdp'           => $row['mdp'] ?? null,
+            'role'          => $row['role'] ?? null,
+            'refValidateur' => $row['ref_validateur'] ?? null,
         ]);
-    }
-
-    public function delete(int $id_user): bool
-    {
-        $sql = "DELETE FROM utilisateur WHERE id_user = :id_user";
-        $stmt = $this->db->connexion()->prepare($sql);
-        return $stmt->execute(['id_user' => $id_user]);
-    }
-
-    private function exists(int $id_user): bool
-    {
-        $sql = "SELECT COUNT(*) FROM utilisateur WHERE id_user = :id_user";
-        $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute(['id_user' => $id_user]);
-        return $stmt->fetchColumn() > 0;
-    }
-
-    private function mapToUser(array $row)
-    {
-        return new UserModel(
-            $row['id_user'],
-            $row['nom'],
-            $row['prenom'],
-            $row['email'],
-            $row['mdp'],
-            $row['role']
-        );
-    }
-
-    public function changerMdp($mdp, $email)
-    {
-        $pdo = $this->db->connexion();
-        $update = "UPDATE utilisateur SET mdp=:mdp WHERE email=:email";
-        $req = $pdo->prepare($update);
-        $req->execute(array(
-            'mdp' => $mdp,
-            'email' => $email
-        ));
-    }
-
-    public function verifierToken($token)
-    {
-        $config = new Config();
-        $pdo = $config->connexion();
-        $verif = "SELECT email,mdp FROM utilisateur u inner join mdp_reset m on u.id_user = m.ref_user  WHERE token=:token";
-        $req = $pdo->prepare($verif);
-        $req->execute(array(
-            'token' => $token
-        ));
-        return $req->fetch();
     }
 }
