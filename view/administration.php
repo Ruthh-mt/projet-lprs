@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ÉLÈVES • LPRS</title>
+    <title>ACCUEIL • LPRS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
@@ -28,10 +28,10 @@ if (session_status() === PHP_SESSION_NONE) {
         <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
         <li class="nav-item"><a href="evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
         <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
-        <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light active me-2">Liste des élèves</a></li>
+        <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
-                <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>
+                <a href="administration.php" class="btn btn-outline-warning active me-2">Administration</a>
             </li>
         <?php endif; ?>
     </ul>
