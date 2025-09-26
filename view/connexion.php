@@ -21,7 +21,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <img src="https://media.tenor.com/1DV7nkfj5OkAAAAM/blobgodeto-blobdance.gif"
                  class="rounded-circle mx-3"
                  style="max-width: 15%; height: auto;">
-            <div class="fs-4 text-light text-uppercase">LPRS • Accueil</div>
+            <div class="fs-4 text-light text-uppercase">LPRS</div>
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
@@ -37,11 +37,11 @@ if (session_status() === PHP_SESSION_NONE) {
     </ul>
     <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
         <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="#" class="btn btn-outline-primary">MON COMPTE</a>
-            <a href="../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">DÉCONNEXION</a>
+            <a href="account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
+            <a href="../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
         <?php else: ?>
-            <a href="connexion.php" class="btn btn-outline-success active">CONNEXION</a>
-            <a href="inscription.php" class="btn btn-outline-primary">INSCRIPTION</a>
+            <a href="connexion.php" class="btn btn-outline-success active">Connexion</a>
+            <a href="inscription.php" class="btn btn-outline-primary">Inscription</a>
         <?php endif; ?>
     </div>
 </header>
