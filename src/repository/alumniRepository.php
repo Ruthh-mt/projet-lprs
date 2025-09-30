@@ -1,13 +1,11 @@
 <?php
 class alumniRepository
 {
-     private PDO $pdo;
-
-     public function __construct(PDO $pdo)
+     private $db;
+     public function __construct()
      {
-          $this->pdo = $pdo;
+          $this->db=NEW Config();
      }
-
      public function findByUserId(int $ref_user): ?array
      {
           $sql = "SELECT * FROM alumni WHERE ref_user = :ref_user";

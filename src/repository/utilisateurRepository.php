@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 class utilisateurRepository
 {
-     private PDO $pdo;
+     private $db;
 
-     public function __construct(PDO $pdo)
+     public function __construct()
      {
-          $this->pdo = $pdo;
+          $this->db=NEW Config();
      }
      public function findById(int $id_user): ?array
      {
