@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 
 require_once('../bdd/config.php');
 require_once('../repository/utilisateurRepository.php');
+require_once('../modele/UserModel.php');
 
 session_start();
 
@@ -111,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $repo = new utilisateurRepository();
     $pdo  = (new Config())->connexion();
 
-    if ($repo->getUserByEmail($email)) {
+         if ($repo->getUserByEmail($email)) {
         $_SESSION['error'] = "Un utilisateur avec cet email existe déjà.";
         header("Location: ../../view/inscription.php");
         exit();
@@ -123,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $cvPath = handlePdfUpload($cvFile);
     }
     try {
-        $user = new UserModel([
+        $user = New UserModel([
             'nom'   => $nom,
             'prenom'=> $prenom,
             'email' => $email,
