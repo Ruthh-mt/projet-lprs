@@ -47,7 +47,8 @@ if (session_status() === PHP_SESSION_NONE) {
 </header>
 <section class="container">
      <div class="d-grid gap-2">
-          <button class="btn btn-outline-success text-uppercase my-3" type="button">Ajouter un évènement</button>
+        <a  class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php" role="button">Ajouter un évènement</a>
+         <!---<button class="btn btn-outline-success text-uppercase my-3" type="button">Ajouter un évènement</button>--->
      </div>
      <article class="row my-3">
           <div class="card-group">
