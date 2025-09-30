@@ -6,6 +6,11 @@ error_reporting(E_ALL);
 session_start();
 
 require_once('../bdd/config.php');
+require_once __DIR__ . '/../repository/etudiantRepository.php';
+require_once __DIR__ . '/../repository/alumniRepository.php';
+require_once __DIR__ . '/../repository/professeurRepository.php';
+require_once __DIR__ . '/../repository/partenaireRepository.php';
+
 function redirectWith(string $type, string $message, string $target): void {
     $_SESSION[$type] = $message;
     session_write_close();
@@ -56,7 +61,48 @@ try {
         'email'   => $user['email'],
         'role'    => $user['role'],
     ];
-    $_SESSION['success'] = "Bienvenue, {$user['prenom']} !";
+     switch ($user['role']) {
+          case 'Étudiant':
+               $etudiantRepo = new etudiantRepository($pdo);
+               $etudiant = $etudiantRepo->findByUserId($user['id_user']);
+               $_SESSION['utilisateur'] = array_merge($_SESSION['utilisateur'], [
+                    'annee_promo'   => $etudiant['annee_promo'] ?? null,
+                    'ref_formation' => $etudiant['ref_formation'] ?? null,
+                    'cv'            => $etudiant['cv'] ?? null,
+               ]);
+               break;
+
+          case 'Alumni':
+               $alumniRepo = new alumniRepository($pdo);
+               $alumni = $alumniRepo->findByUserId($user['id_user']);
+               $_SESSION['utilisateur'] = array_merge($_SESSION['utilisateur'], [
+                    'annee_promo'         => $alumni['annee_promo'] ?? null,
+                    'cv'                  => $alumni['cv'] ?? null,
+                    'poste'               => $alumni['poste'] ?? null,
+                    'ref_fiche_entreprise'=> $alumni['ref_fiche_entreprise'] ?? null,
+               ]);
+               break;
+
+          case 'Professeur':
+               $professeurRepo = new professeurRepository($pdo);
+               $professeur = $professeurRepo->findByUserId($user['id_user']);
+               $_SESSION['utilisateur'] = array_merge($_SESSION['utilisateur'], [
+                    'specialite' => $professeur['specialite'] ?? null,
+               ]);
+               break;
+
+          case 'Partenaire':
+               $partenaireRepo = new partenaireRepository($pdo);
+               $partenaire = $partenaireRepo->findByUserId($user['id_user']);
+               $_SESSION['utilisateur'] = array_merge($_SESSION['utilisateur'], [
+                    'poste'               => $partenaire['poste'] ?? null,
+                    'cv'                  => $partenaire['cv'] ?? null,
+                    'ref_fiche_entreprise'=> $partenaire['ref_fiche_entreprise'] ?? null,
+               ]);
+               break;
+     }
+
+     $_SESSION['success'] = "Bienvenue, {$user['prenom']} !";
     session_write_close();
     header("Location: ../../view/accueil.php");
     exit();
