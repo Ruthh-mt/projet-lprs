@@ -13,7 +13,7 @@ if(isset($_POST['token'])&&isset($mdpnew)&&isset($mdpConfirm)){
     if($mdpnew==$mdpConfirm) {
         $mdp = password_hash($mdpnew, PASSWORD_DEFAULT);
         $token = $_POST['token'];
-        $repo = new UserRepository($pdo);
+        $repo = new utilisateurRepository($pdo);
         $verif = $repo->verifierToken($token);
         if ($verif) {
             $email = $verif["email"];

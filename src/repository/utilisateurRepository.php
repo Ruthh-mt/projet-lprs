@@ -3,25 +3,25 @@ declare(strict_types=1);
 
 class utilisateurRepository
 {
-     private PDO $pdo;
+     private $db;
 
-     public function __construct(PDO $pdo)
+     public function __construct()
      {
-          $this->pdo = $pdo;
+          $this->db=NEW Config();
      }
      public function findById(int $id_user): ?array
      {
           $sql = "SELECT * FROM utilisateur WHERE id_user = :id_user";
-          $stmt = $this->pdo->prepare($sql);
+          $stmt = $this->db->prepare($sql);
           $stmt->execute(['id_user' => $id_user]);
           $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
           return $result ?: null;
      }
-     public function findByEmail(string $email): ?array
+     public function getUserByEmail(string $email): ?array
      {
           $sql = "SELECT * FROM utilisateur WHERE email = :email";
-          $stmt = $this->pdo->prepare($sql);
+          $stmt = $this->db->connexion()->prepare($sql);
           $stmt->execute(['email' => $email]);
           $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -30,23 +30,23 @@ class utilisateurRepository
      public function findAll(): array
      {
           $sql = "SELECT * FROM utilisateur";
-          $stmt = $this->pdo->query($sql);
+          $stmt = $this->db->query($sql);
 
           return $stmt->fetchAll(PDO::FETCH_ASSOC);
      }
-     public function insert(array $data): bool
+     public function inscription(UserModel $data)
      {
           $sql = "INSERT INTO utilisateur (nom, prenom, email, mdp, role, ref_validateur)
                 VALUES (:nom, :prenom, :email, :mdp, :role, :ref_validateur)";
-          $stmt = $this->pdo->prepare($sql);
+          $stmt = $this->db->connexion()->prepare($sql);
 
           return $stmt->execute([
-               'nom'           => $data['nom'],
-               'prenom'        => $data['prenom'],
-               'email'         => $data['email'],
-               'mdp'           => $data['mdp'],
-               'role'          => $data['role'],
-               'ref_validateur'=> $data['ref_validateur'] ?? null,
+               'nom'           => $data-> getNom(),
+               'prenom'        => $data-> getPrenom(),
+               'email'         => $data-> getEmail(),
+               'mdp'           => $data-> getMdp(),
+               'role'          => $data-> getRole(),
+               'ref_validateur'=> $data-> getRefValidateur() ?? null,
           ]);
      }
      public function update(int $id_user, array $data): bool
@@ -59,7 +59,7 @@ class utilisateurRepository
                     role = :role,
                     ref_validateur = :ref_validateur
                 WHERE id_user = :id_user";
-          $stmt = $this->pdo->prepare($sql);
+          $stmt = $this->db->connexion()->prepare($sql);
 
           return $stmt->execute([
                'id_user'       => $id_user,
@@ -74,7 +74,7 @@ class utilisateurRepository
      public function delete(int $id_user): bool
      {
           $sql = "DELETE FROM utilisateur WHERE id_user = :id_user";
-          $stmt = $this->pdo->prepare($sql);
+          $stmt = $this->db->connexion()->prepare($sql);
 
           return $stmt->execute(['id_user' => $id_user]);
      }

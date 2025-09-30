@@ -1,17 +1,16 @@
 <?php
 class etudiantRepository
 {
-     private PDO $pdo;
-
-     public function __construct(PDO $pdo)
+     private $db;
+     public function __construct()
      {
-          $this->pdo = $pdo;
+          $this->db=NEW Config();
      }
 
      public function findByUserId(int $ref_user): ?array
      {
           $sql = "SELECT * FROM etudiant WHERE ref_user = :ref_user";
-          $stmt = $this->pdo->prepare($sql);
+          $stmt = $this->db->prepare($sql);
           $stmt->execute(['ref_user' => $ref_user]);
           $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -22,7 +21,7 @@ class etudiantRepository
      {
           $sql = "INSERT INTO etudiant (ref_user, cv, annee_promo, ref_formation) 
                 VALUES (:ref_user, :cv, :annee_promo, :ref_formation)";
-          $stmt = $this->pdo->prepare($sql);
+          $stmt = $this->db->prepare($sql);
 
           return $stmt->execute([
                'ref_user'      => $data['ref_user'],
@@ -39,7 +38,7 @@ class etudiantRepository
                     annee_promo = :annee_promo,
                     ref_formation = :ref_formation
                 WHERE ref_user = :ref_user";
-          $stmt = $this->pdo->prepare($sql);
+          $stmt = $this->db->prepare($sql);
 
           return $stmt->execute([
                'ref_user'      => $ref_user,
@@ -52,7 +51,7 @@ class etudiantRepository
      public function delete(int $ref_user): bool
      {
           $sql = "DELETE FROM etudiant WHERE ref_user = :ref_user";
-          $stmt = $this->pdo->prepare($sql);
+          $stmt = $this->db->prepare($sql);
 
           return $stmt->execute(['ref_user' => $ref_user]);
      }
