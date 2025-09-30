@@ -19,7 +19,8 @@ $utilisateur = $_SESSION['utilisateur'];
            crossorigin="anonymous">
 </head>
 <body>
-<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
+<header
+     class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
      <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
           <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
                <img src="https://media.tenor.com/1DV7nkfj5OkAAAAM/blobgodeto-blobdance.gif"
@@ -49,36 +50,87 @@ $utilisateur = $_SESSION['utilisateur'];
           <?php endif; ?>
      </div>
 </header>
-<div class="container my-4">
-     <div class="row">
-          <h2 class="text-center text-uppercase mb-4">Mon compte</h2>
-     </div>
-
+<section class="container banner text-center bg-dark text-white text-center py-3 rounded">
+     <h1>Mon compte</h1>
+</section>
+<section class="container rounded my-3">
      <div class="row justify-content-center">
           <div class="col-md-6">
                <div class="card shadow-sm">
                     <div class="card-body">
                          <h5 class="card-title text-center mb-4">Informations personnelles</h5>
                          <ul class="list-group list-group-flush">
-                              <li class="list-group-item"><strong>Prénom :</strong> <?= htmlspecialchars($utilisateur['prenom']) ?></li>
-                              <li class="list-group-item"><strong>Nom :</strong> <?= htmlspecialchars($utilisateur['nom']) ?></li>
-                              <li class="list-group-item"><strong>Email :</strong> <?= htmlspecialchars($utilisateur['email']) ?></li>
-                              <li class="list-group-item"><strong>Rôle :</strong> <?= isset($utilisateur['role']) ? htmlspecialchars($utilisateur['role']) : 'Non renseigné' ?></li>
+                              <li class="list-group-item"><strong>Prénom
+                                        :</strong> <?= htmlspecialchars($utilisateur['prenom']) ?></li>
+                              <li class="list-group-item"><strong>Nom :</strong> <?= htmlspecialchars($utilisateur['nom']) ?>
+                              </li>
+                              <li class="list-group-item"><strong>Email
+                                        :</strong> <?= htmlspecialchars($utilisateur['email']) ?></li>
+                              <li class="list-group-item"><strong>Rôle
+                                        :</strong> <?= isset($utilisateur['role']) ? htmlspecialchars($utilisateur['role']) : 'Non renseigné' ?>
+                              </li>
                          </ul>
-
-                         <div class="d-grid gap-2 mt-4">
-                              <a href="AccountEdit.php" class="btn btn-outline-warning">Modifier</a>
-                              <a href="AccountDelete.php" class="btn btn-outline-danger">Supprimer</a>
-                         </div>
                     </div>
                </div>
           </div>
+          <div class="col-md-6">
+               <div class="card shadow-sm">
+                    <div class="card-body">
+                         <h5 class="card-title text-center mb-4">Informations additionnelles</h5>
+                         <ul class="list-group list-group-flush">
+                              <?php if ($utilisateur['role'] === 'Étudiant'): ?>
+                                   <li class="list-group-item"><strong>Promotion :</strong> <?= htmlspecialchars($utilisateur['annee_promo'] ?? 'Non renseigné') ?></li>
+                                   <li class="list-group-item"><strong>Classe / Formation :</strong> <?= htmlspecialchars($utilisateur['classe'] ?? 'Non renseigné') ?></li>
+                                   <li class="list-group-item"><strong>CV :</strong>
+                                        <?php if (!empty($utilisateur['cv'])): ?>
+                                             <a href="<?= htmlspecialchars($utilisateur['cv']) ?>" target="_blank">Voir le CV</a>
+                                        <?php else: ?>
+                                             Non renseigné
+                                        <?php endif; ?>
+                                   </li>
+
+                              <?php elseif ($utilisateur['role'] === 'Alumni'): ?>
+                                   <li class="list-group-item"><strong>Promotion :</strong> <?= htmlspecialchars($utilisateur['annee_promo'] ?? 'Non renseigné') ?></li>
+                                   <li class="list-group-item"><strong>Poste :</strong> <?= htmlspecialchars($utilisateur['poste'] ?? 'Non renseigné') ?></li>
+                                   <li class="list-group-item"><strong>CV :</strong>
+                                        <?php if (!empty($utilisateur['cv'])): ?>
+                                             <a href="<?= htmlspecialchars($utilisateur['cv']) ?>" target="_blank">Voir le CV</a>
+                                        <?php else: ?>
+                                             Non renseigné
+                                        <?php endif; ?>
+                                   </li>
+
+                              <?php elseif ($utilisateur['role'] === 'Professeur'): ?>
+                                   <li class="list-group-item"><strong>Spécialité :</strong> <?= htmlspecialchars($utilisateur['specialite'] ?? 'Non renseigné') ?></li>
+
+                              <?php elseif ($utilisateur['role'] === 'Partenaire'): ?>
+                                   <li class="list-group-item"><strong>Poste :</strong> <?= htmlspecialchars($utilisateur['poste'] ?? 'Non renseigné') ?></li>
+                                   <li class="list-group-item"><strong>CV :</strong>
+                                        <?php if (!empty($utilisateur['cv'])): ?>
+                                             <a href="<?= htmlspecialchars($utilisateur['cv']) ?>" target="_blank">Voir le CV</a>
+                                        <?php else: ?>
+                                             Non renseigné
+                                        <?php endif; ?>
+                                   </li>
+                              <?php else: ?>
+                                   <li class="list-group-item">Aucune information supplémentaire.</li>
+                              <?php endif; ?>
+                         </ul>
+                    </div>
+               </div>
+
+          </div>
+          <div class="d-grid gap-2 mt-4">
+               <a href="AccountUpdate.php" class="btn btn-outline-warning">Modifier</a>
+               <a href="AccountDelete.php" class="btn btn-outline-danger">Supprimer</a>
+          </div>
      </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoIIfJcLyjU29tka7Sk3YSA8l7IgGKmFckcImFV8Qbsw3" crossorigin="anonymous"></script>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoIIfJcLyjU29tka7Sk3YSA8l7IgGKmFckcImFV8Qbsw3"
+        crossorigin="anonymous"></script>
 </body>
 </html>
-
 
 
 </body>
