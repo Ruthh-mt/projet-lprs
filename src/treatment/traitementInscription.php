@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Location: ../../view/inscription.php");
         exit();
     }
-    $repo = new UserRepository();
+    $repo = new utilisateurRepository();
     $pdo  = (new Config())->connexion();
 
     if ($repo->getUserByEmail($email)) {
