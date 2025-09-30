@@ -1,5 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
+    // ajouter que seulement un user connecter et qui n'est pas gestionnaire peut se connecter
     session_start();
  }
 ?>
@@ -54,9 +55,9 @@ if (session_status() === PHP_SESSION_NONE) {
     <input class="form-control" type="text" id="titre_eve" name="titre_eve" placeholder="Entrez le titre de l'eve">
     <label for="type_eve">Type de l'evenement</label>
     <input class="form-control" type="text" id="type_eve" name="type_eve" placeholder="Entrez le type de l'eve">
-    <label for="desc_eve">Type de l'evenement</label>
-    <input class="form-control" type="text" id="desc_eve" name="desc_eve" placeholder="Entrez le type de l'eve">
-    <label for="lieu_eve">Type de l'evenement</label>
+    <label for="desc_eve">Description de l'evenement</label>
+    <textarea class="form-control" type="text" id="desc_eve" name="desc_eve" placeholder="Entrez la description de l'evenement"></textarea>
+    <label for="lieu_eve">Lieu de l'evenement</label>
     <input class="form-control" type="text" id="lieu_eve" name="lieu_eve" placeholder="Entrez le type de l'eve">
     <label for="element_eve">Element pour l'evenement</label>
     <textarea class="form-control" type="text" id="element_eve" name="element_eve" placeholder="Entrez les element requis pour l'eve"></textarea>

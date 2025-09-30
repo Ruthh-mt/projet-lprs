@@ -18,14 +18,5 @@ class EvenementRepository{
             'nbPlace'=>$evenement->getNbPlace()
         ]);
     }
-    public function createEvenementUser(EvenementUser $evenement){
-        $req="INSERT INTO user_evenement (ref_user,ref_evenement, est_sperviseur) 
-            VALUES (:user,:event,:estSuperviseur)";
-        $stm=$this->db->connexion()->prepare($req);
-        $stm->execute([
-
-        ]);
-
-    }
 
 }

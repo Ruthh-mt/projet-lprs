@@ -44,7 +44,7 @@ $token = $_GET["token"];
         <button type="submit" class="btn btn-primary w-100">Confirmer</button>
         <br><br>
     </form>
-    <a href="../view/">
+    <a href="../view/connexion.php">
         <button type="submit" class="btn btn-primary w-100">Acceuil</button>
     </a><br><br>
 

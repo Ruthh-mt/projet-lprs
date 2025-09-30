@@ -78,4 +78,8 @@ class utilisateurRepository
 
           return $stmt->execute(['id_user' => $id_user]);
      }
+     public function changerMdp($mdp, $email)
+     {
+
+     }
 }

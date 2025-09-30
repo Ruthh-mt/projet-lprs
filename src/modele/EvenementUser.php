@@ -21,22 +21,6 @@ class EvenementUser
     /**
      * @return mixed
      */
-    public function getRefUser()
-    {
-        return $this->refUser;
-    }
-
-    /**
-     * @param mixed $refUser
-     */
-    public function setRefUser($refUser): void
-    {
-        $this->refUser = $refUser;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getRefEvenement()
     {
         return $this->refEvenement;
@@ -48,6 +32,22 @@ class EvenementUser
     public function setRefEvenement($refEvenement): void
     {
         $this->refEvenement = $refEvenement;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRefUser()
+    {
+        return $this->refUser;
+    }
+
+    /**
+     * @param mixed $refUser
+     */
+    public function setRefUser($refUser): void
+    {
+        $this->refUser = $refUser;
     }
 
     /**
@@ -65,6 +65,6 @@ class EvenementUser
     {
         $this->estSuperviseur = $estSuperviseur;
     }
-
+    
 
 }
