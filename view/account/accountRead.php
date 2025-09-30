@@ -1,8 +1,12 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-     session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
+if (!isset($_SESSION['utilisateur'])) {
+     header('Location: ../Connexion.php');
+     exit();
 }
+$utilisateur = $_SESSION['utilisateur'];
 ?>
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -45,7 +49,35 @@ if (session_status() === PHP_SESSION_NONE) {
           <?php endif; ?>
      </div>
 </header>
+<div class="container my-4">
+     <div class="row">
+          <h2 class="text-center text-uppercase mb-4">Mon compte</h2>
+     </div>
 
+     <div class="row justify-content-center">
+          <div class="col-md-6">
+               <div class="card shadow-sm">
+                    <div class="card-body">
+                         <h5 class="card-title text-center mb-4">Informations personnelles</h5>
+                         <ul class="list-group list-group-flush">
+                              <li class="list-group-item"><strong>Prénom :</strong> <?= htmlspecialchars($utilisateur['prenom']) ?></li>
+                              <li class="list-group-item"><strong>Nom :</strong> <?= htmlspecialchars($utilisateur['nom']) ?></li>
+                              <li class="list-group-item"><strong>Email :</strong> <?= htmlspecialchars($utilisateur['email']) ?></li>
+                              <li class="list-group-item"><strong>Rôle :</strong> <?= isset($utilisateur['role']) ? htmlspecialchars($utilisateur['role']) : 'Non renseigné' ?></li>
+                         </ul>
+
+                         <div class="d-grid gap-2 mt-4">
+                              <a href="AccountEdit.php" class="btn btn-outline-warning">Modifier</a>
+                              <a href="AccountDelete.php" class="btn btn-outline-danger">Supprimer</a>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoIIfJcLyjU29tka7Sk3YSA8l7IgGKmFckcImFV8Qbsw3" crossorigin="anonymous"></script>
+</body>
+</html>
 
 
 
