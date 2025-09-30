@@ -35,7 +35,7 @@ $ligne = $sqlEmail -> fetch();
 
 if($ligne){
     echo "Cet email existe\n";
-    $urlBase= "http://".$_SERVER['HTTP_HOST'].dirname(['PHP_SELF']);
+    $urlBase= "http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']);
     $token = bin2hex(random_bytes(32));
     date_default_timezone_set('Europe/Paris');
     $expire_a = date("Y-m-d H:i:s", strtotime('+1 hour'));
@@ -45,7 +45,7 @@ if($ligne){
     $compte="";
     //Un email contenant un lien unique est envoyé à l’utilisateur.
     if($sqlToken){
-        $lien=$urlBase ."/reinitialiserMdp.php/?token=".$token;
+        $lien=$urlBase ."../../../view/reinitialiserMdp.php/?token=".$token;
         //$lien="http://localhost//projet-lprs/view/reinitialiserMdp.php?token=".$token;
         $compte = $ligne['email'];
         try {
