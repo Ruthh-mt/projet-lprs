@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -47,6 +48,19 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
 </header>
 <section class="container">
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
      <div class="d-grid gap-2">
         <a  class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php" role="button">Ajouter un évènement</a>
          <!---<button class="btn btn-outline-success text-uppercase my-3" type="button">Ajouter un évènement</button>--->
@@ -175,3 +189,7 @@ if (session_status() === PHP_SESSION_NONE) {
           </ul>
      </nav>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

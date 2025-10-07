@@ -1,12 +1,11 @@
 <?php
     Class Evenement{
         private $idEvenement;
-        private $titreEve;
+        private $titreEvenement;
         private $typeEvenement;
-        private $descEve;
-
-        private $lieuEve;
-        private $elementEve;
+        private $descEvenement;
+        private $lieuEvenement;
+        private $elementEvenement;
         private $nbPlace;
 
 
@@ -42,6 +41,22 @@
         /**
          * @return mixed
          */
+        public function getTitreEvenement()
+        {
+            return $this->titreEvenement;
+        }
+
+        /**
+         * @param mixed $titreEvenement
+         */
+        public function setTitreEvenement($titreEvenement): void
+        {
+            $this->titreEvenement = $titreEvenement;
+        }
+
+        /**
+         * @return mixed
+         */
         public function getTypeEvenement()
         {
             return $this->typeEvenement;
@@ -58,33 +73,49 @@
         /**
          * @return mixed
          */
-        public function getLieuEve()
+        public function getDescEvenement()
         {
-            return $this->lieuEve;
+            return $this->descEvenement;
         }
 
         /**
-         * @param mixed $lieuEve
+         * @param mixed $descEvenement
          */
-        public function setLieuEve($lieuEve): void
+        public function setDescEvenement($descEvenement): void
         {
-            $this->lieuEve = $lieuEve;
+            $this->descEvenement = $descEvenement;
         }
 
         /**
          * @return mixed
          */
-        public function getElementEve()
+        public function getLieuEvenement()
         {
-            return $this->elementEve;
+            return $this->lieuEvenement;
         }
 
         /**
-         * @param mixed $elementEve
+         * @param mixed $lieuEvenement
          */
-        public function setElementEve($elementEve): void
+        public function setLieuEvenement($lieuEvenement): void
         {
-            $this->elementEve = $elementEve;
+            $this->lieuEvenement = $lieuEvenement;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getElementEvenement()
+        {
+            return $this->elementEvenement;
+        }
+
+        /**
+         * @param mixed $elementEvenement
+         */
+        public function setElementEvenement($elementEvenement): void
+        {
+            $this->elementEvenement = $elementEvenement;
         }
 
         /**
@@ -103,37 +134,6 @@
             $this->nbPlace = $nbPlace;
         }
 
-        /**
-         * @return mixed
-         */
-        public function getDescEve()
-        {
-            return $this->descEve;
-        }
-
-        /**
-         * @param mixed $descEve
-         */
-        public function setDescEve($descEve): void
-        {
-            $this->descEve = $descEve;
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getTitreEve()
-        {
-            return $this->titreEve;
-        }
-
-        /**
-         * @param mixed $titreEve
-         */
-        public function setTitreEve($titreEve): void
-        {
-            $this->titreEve = $titreEve;
-        }
 
 
     }
