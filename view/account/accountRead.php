@@ -12,7 +12,7 @@ $utilisateur = $_SESSION['utilisateur'];
 <head>
      <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1">
-     <title>ACCUEIL • LPRS</title>
+     <title>LPRS</title>
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
@@ -23,7 +23,7 @@ $utilisateur = $_SESSION['utilisateur'];
      class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
      <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
           <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-               <img src="https://media.tenor.com/1DV7nkfj5OkAAAAM/blobgodeto-blobdance.gif"
+               <img src="https://i.pinimg.com/originals/a0/50/1e/a0501e0c5659dcfde397299e4234e75a.gif"
                     class="rounded-circle mx-3"
                     style="max-width: 15%; height: auto;">
                <div class="fs-4 text-light text-uppercase">LPRS</div>
@@ -55,14 +55,16 @@ $utilisateur = $_SESSION['utilisateur'];
 </section>
 <section class="container rounded my-3">
      <div class="row justify-content-center">
-          <div class="col-md-6">
-               <div class="card shadow-sm">
+          <div class="d-grid gap-2 my-3">
+               <a href="AccountUpdate.php" class="btn btn-outline-secondary">Modifier</a>
+          </div>
+               <div class="card my-3">
                     <div class="card-body">
                          <h5 class="card-title text-center mb-4">Informations personnelles</h5>
                          <ul class="list-group list-group-flush">
                               <li class="list-group-item"><strong>Prénom
                                         :</strong> <?= htmlspecialchars($utilisateur['prenom']) ?></li>
-                              <li class="list-group-item"><strong>Nom :</strong> <?= htmlspecialchars($utilisateur['nom']) ?>
+                              <li class="list-group-item"><strong>Nom : </strong><?= htmlspecialchars($utilisateur['nom']) ?>
                               </li>
                               <li class="list-group-item"><strong>Email
                                         :</strong> <?= htmlspecialchars($utilisateur['email']) ?></li>
@@ -72,9 +74,7 @@ $utilisateur = $_SESSION['utilisateur'];
                          </ul>
                     </div>
                </div>
-          </div>
-          <div class="col-md-6">
-               <div class="card shadow-sm">
+               <div class="card my-3">
                     <div class="card-body">
                          <h5 class="card-title text-center mb-4">Informations additionnelles</h5>
                          <ul class="list-group list-group-flush">
@@ -119,10 +119,6 @@ $utilisateur = $_SESSION['utilisateur'];
                     </div>
                </div>
 
-          </div>
-          <div class="d-grid gap-2 mt-4">
-               <a href="AccountUpdate.php" class="btn btn-outline-warning">Modifier</a>
-               <a href="AccountDelete.php" class="btn btn-outline-danger">Supprimer</a>
           </div>
      </div>
 </section>
