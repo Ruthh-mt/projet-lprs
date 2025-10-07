@@ -82,9 +82,8 @@ function e(?string $v): string
                               <label for="floatingInput">Prénom</label>
                          </div>
                          <div class="col mx-3 form-floating mb-3">
-                              <input type="nom" class="form-control" id="floatingInput" placeholder="Nom" name="nom"
-                                     value="<?= e($u['nom'] ?? '') ?>" required>
-                              <label for="floatingInput">Nom</label>
+                              <input type="text" class="form-control" id="nom" placeholder="Nom" name="nom" value="<?= e($u['nom'] ?? '') ?>" required >
+                              <label for="nom">Nom</label>
                          </div>
                     </div>
                     <div class="row g-3">
@@ -126,8 +125,7 @@ function e(?string $v): string
                                    <label for="cv" class="form-label">CV</label>
                                    <input class="form-control" type="file" id="cv" name="cv" accept=".pdf">
                                    <?php if (!empty($u['cv'])): ?>
-                                        <div class="form-text">CV actuel : <a href="<?= e($u['cv']) ?>" target="_blank"
-                                                                              rel="noopener">Voir</a></div>
+                                        <div class="form-text">CV actuel : <a href="<?= e($u['cv']) ?>" target="_blank">Voir</a></div>
                                    <?php endif; ?>
                               </div>
                          </div>

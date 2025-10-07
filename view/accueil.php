@@ -48,7 +48,7 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
 </header>
 
-<section class="container banner text-center bg-dark text-white text-center py-3 rounded">
+<section class="container banner bg-dark text-white text-center py-3 rounded">
      <h1>Bienvenue</h1>
 </section>
 <section class="container border rounded border-dark my-3">
