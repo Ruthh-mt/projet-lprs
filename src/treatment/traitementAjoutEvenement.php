@@ -32,13 +32,8 @@ function redirectWith(string $type, string $message, string $target): void {
             "nbPlace" => $nbPlace
         ));
         $evenementRepository = new EvenementRepository();
-        $resultat=$evenementRepository->createEvenement($evenement);
-        if($resultat){
-            redirectWith('Succes', "Creation de l'evenement reussi", '../../view/evenements.php');
-        }else{
-            redirectWith('erreur', "erreur lors de l'ajout", '../../view/crudEvenement/evenementCreate.php');
-
-        }
+        $evenementRepository->createEvenement($evenement);
+        redirectWith('success',"L'evenement a bien été ajouté",'../../view/evenements.php');
     } catch (PDOException $e) {
         redirectWith('error', "Erreur de la creation d'evenement : " . $e->getMessage(), '../../view/crudEvenement/evenementCreate.php');
     }

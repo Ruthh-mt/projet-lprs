@@ -12,7 +12,7 @@ require_once __DIR__ . '/../repository/professeurRepository.php';
 require_once __DIR__ . '/../repository/partenaireRepository.php';
 
 function redirectWith(string $type, string $message, string $target): void {
-    $_SESSION[$type] = $message;
+    $_SESSIONeve[$type] = $message;
     session_write_close();
     header("Location: $target");
     exit();

@@ -20,5 +20,6 @@ class EvenementUserRepository{
     }
     public function inscriptionEvenementUser(EvenementUser $eveUser){
 
+
     }
 }
