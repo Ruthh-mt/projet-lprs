@@ -62,9 +62,8 @@ $utilisateur = $_SESSION['utilisateur'];
                     <div class="card-body">
                          <h5 class="card-title text-center mb-4">Informations personnelles</h5>
                          <ul class="list-group list-group-flush">
-                              <li class="list-group-item"><strong>Prénom
-                                        :</strong> <?= htmlspecialchars($utilisateur['prenom']) ?></li>
-                              <li class="list-group-item"><strong>Nom : </strong><?= htmlspecialchars($utilisateur['nom']) ?>
+                              <li class="list-group-item"><strong>Prénom :</strong> <?= htmlspecialchars($utilisateur['prenom']) ?></li>
+                              <li class="list-group-item"><strong>Nom : </strong><?= htmlspecialchars($utilisateur['nom'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false) ?>
                               </li>
                               <li class="list-group-item"><strong>Email
                                         :</strong> <?= htmlspecialchars($utilisateur['email']) ?></li>
