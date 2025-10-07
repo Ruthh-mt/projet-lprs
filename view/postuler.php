@@ -1,18 +1,3 @@
-<?php
-
-
-
-require_once ('../src/bdd/config.php');
-$pdo  = (new Config())->connexion();
-
-$sql =$pdo->query("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
-$sql -> execute();
-$offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
-
-
-?>
-
-
 
 <!doctype html>
 <head>
@@ -40,7 +25,7 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
         <li class="nav-item"><a href="evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
         <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
         <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
-        <li class="nav-item"><a href="" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
                 <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>
@@ -58,41 +43,76 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
     </div>
 </header>
 
+<?php $ref_offre = $_GET['id'];
+ ?>
 
-
-<section class="creation-offre">
-<div class="card">
-    <div class="card-head"><h2>Offres d'emploi</h2></div>
-    <div class="table-wrap">
-        <table class="table">
-            <thead>
-            <tr><th>Titre</th><th>Description</th><th>Mission</th><th>Salaire</th><th>Entreprise</th><th>Type d'offre</th><th>Etat</th><th>Actions</th></tr>
-            </thead>
-            <tbody>
-            <?php foreach ($offres as $offre): ?>
-                    <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
-                    <td><?= htmlspecialchars($offre['description']) ?></td>
-                    <td><?= htmlspecialchars($offre['mission']) ?></td>
-                    <td><?= htmlspecialchars($offre['salaire']) ?></td>
-                    <td><?= htmlspecialchars($offre['nom_entreprise']) ?></td>
-                    <td><?= htmlspecialchars($offre['type']) ?></td>
-                    <td><?= htmlspecialchars($offre['etat']) ?></td>
-            <td><?php
-            echo '<a href="postuler.php?id='.$offre['id_offre'].'">Postuler</a></td></tr> ';
-
-              ?>
-              <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-</section>
-
-
-<br>
-<br>
-<br>
-<br>
+<form class="card"
+          action="../src/treatment/gestionPostuler.php"
+          method="POST"
+          enctype="multipart/form-data">
 
 
 
+        <div class="grid">
+            <input type="hidden" name="ref_offre" value="<?php echo htmlspecialchars($ref_offre ?? ''); ?>">
+
+            <div>
+                <label class="required" for="email">Adresse e-mail</label>
+                <input id="email" name="email" type="email" placeholder="vous@exemple.com" required />
+            </div>
+        </div>
+
+        <div class="grid-1">
+            <div>
+                <label class="required" for ="lettre">Lettre de motivation</label>
+                <textarea id="lettre_motivation" name="lettre" required></textarea>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div>
+                <label for="cv">CV (PDF, DOCX) — optionnel</label>
+                <input id="cv" name="CV" type="file" accept=".pdf,.doc,.docx" />
+            </div>
+            <div>
+                <label for="autre">Autre pièce jointe — optionnel</label>
+                <input id="autre" name="Autre pièce jointe" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+            </div>
+        </div>
+
+        <div class="inline" style="margin-top:8px">
+            <label><input type="checkbox" name="Consentement" required> J'accepte que mes données soient utilisées pour traiter ma candidature.</label>
+        </div>
+
+        <div class="actions">
+            <div class="footer-note">Les champs marqués * sont obligatoires.</div>
+        </div>
+    <?php
+    echo '<a href="../src/treatment/redirection_postuler.php?id='.$ref_offre.'">Envoyer candidature</a></td></tr>'
+   ?>
+    </form>
+</body>
+</html>
+
+
+<style>
+
+    .card {
+        border:1px solid rgba(255,255,255,0.08);
+        padding:24px;
+    }
+    label {
+        font-weight:600;
+        margin-bottom:6px;
+        display:block;
+    }
+    input[type=text],input[type=date],input[type=email],input[type=tel],textarea,select {
+        width:100%;
+        padding:12px 14px;
+        border:1px solid rgba(255,255,255,0.2);
+        border-radius:12px;
+        background:rgba(255,255,255,0.05);
+    }
+    textarea { min-height:120px; resize:vertical; }
+
+</style>

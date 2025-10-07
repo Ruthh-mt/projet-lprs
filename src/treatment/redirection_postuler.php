@@ -1,18 +1,3 @@
-<?php
-
-
-
-require_once ('../src/bdd/config.php');
-$pdo  = (new Config())->connexion();
-
-$sql =$pdo->query("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
-$sql -> execute();
-$offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
-
-
-?>
-
-
 
 <!doctype html>
 <head>
@@ -57,42 +42,15 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
         <?php endif; ?>
     </div>
 </header>
-
-
-
-<section class="creation-offre">
-<div class="card">
-    <div class="card-head"><h2>Offres d'emploi</h2></div>
-    <div class="table-wrap">
-        <table class="table">
-            <thead>
-            <tr><th>Titre</th><th>Description</th><th>Mission</th><th>Salaire</th><th>Entreprise</th><th>Type d'offre</th><th>Etat</th><th>Actions</th></tr>
-            </thead>
-            <tbody>
-            <?php foreach ($offres as $offre): ?>
-                    <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
-                    <td><?= htmlspecialchars($offre['description']) ?></td>
-                    <td><?= htmlspecialchars($offre['mission']) ?></td>
-                    <td><?= htmlspecialchars($offre['salaire']) ?></td>
-                    <td><?= htmlspecialchars($offre['nom_entreprise']) ?></td>
-                    <td><?= htmlspecialchars($offre['type']) ?></td>
-                    <td><?= htmlspecialchars($offre['etat']) ?></td>
-            <td><?php
-            echo '<a href="postuler.php?id='.$offre['id_offre'].'">Postuler</a></td></tr> ';
-
-              ?>
-              <?php endforeach; ?>
-            </tbody>
-        </table>
+<body>
+<div class="wrap">
+    <div class="card">
+        <br>
+        <h1>Merci pour votre candidature !</h1>
+        <br>
+        <p>Votre dossier a bien été transmis à notre équipe . Nous vous contacterons si votre profil correspond.</p>
+        <a class="button" href="../../view/emplois.php">Page d'accueil</a>
     </div>
 </div>
-</section>
-
-
-<br>
-<br>
-<br>
-<br>
-
-
-
+</body>
+</html>
