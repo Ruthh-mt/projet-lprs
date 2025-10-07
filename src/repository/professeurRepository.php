@@ -10,7 +10,7 @@ class professeurRepository
      public function findByUserId(int $ref_user): ?array
      {
           $sql = "SELECT * FROM professeur WHERE ref_user = :ref_user";
-          $stmt = $this->db->prepare($sql);
+          $stmt = $this->db->connexion()->prepare($sql);
           $stmt->execute(['ref_user' => $ref_user]);
           $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -21,7 +21,7 @@ class professeurRepository
      {
           $sql = "INSERT INTO professeur (ref_user, specialite) 
                 VALUES (:ref_user, :specialite)";
-          $stmt = $this->db->prepare($sql);
+          $stmt = $this->db->connexion()->prepare($sql);
 
           return $stmt->execute([
                'ref_user'   => $data['ref_user'],
@@ -34,7 +34,7 @@ class professeurRepository
           $sql = "UPDATE professeur 
                 SET specialite = :specialite
                 WHERE ref_user = :ref_user";
-          $stmt = $this->db->prepare($sql);
+          $stmt = $this->db->connexion()->prepare($sql);
 
           return $stmt->execute([
                'ref_user'   => $ref_user,
@@ -45,7 +45,7 @@ class professeurRepository
      public function delete(int $ref_user): bool
      {
           $sql = "DELETE FROM professeur WHERE ref_user = :ref_user";
-          $stmt = $this->db->prepare($sql);
+          $stmt = $this->db->connexion()->prepare($sql);
 
           return $stmt->execute(['ref_user' => $ref_user]);
      }
