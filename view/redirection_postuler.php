@@ -49,7 +49,7 @@
         <h1>Merci pour votre candidature !</h1>
         <br>
         <p>Votre dossier a bien été transmis à notre équipe . Nous vous contacterons si votre profil correspond.</p>
-        <a class="button" href="../../view/emplois.php">Page d'accueil</a>
+        <a class="button" href="emplois.php">Page d'accueil</a>
     </div>
 </div>
 </body>

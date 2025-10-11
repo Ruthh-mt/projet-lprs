@@ -72,7 +72,7 @@
         <div class="grid">
             <div>
                 <label for="cv">CV (PDF, DOCX) — optionnel</label>
-                <input id="cv" name="CV" type="file" accept=".pdf,.doc,.docx" />
+                <input id="cv" name="cv" type="file" accept=".pdf,.doc,.docx" />
             </div>
             <div>
                 <label for="autre">Autre pièce jointe — optionnel</label>
@@ -87,9 +87,9 @@
         <div class="actions">
             <div class="footer-note">Les champs marqués * sont obligatoires.</div>
         </div>
-    <?php
-    echo '<a href="../src/treatment/redirection_postuler.php?id='.$ref_offre.'">Envoyer candidature</a></td></tr>'
-   ?>
+       <div>
+           <button type="submit" class="btn btn-primary mt-3">Envoyer la candidature</button>
+       </div>
     </form>
 </body>
 </html>
