@@ -6,32 +6,19 @@ class EvenementUser
     private $refEvenement;
     private $estSuperviseur;
 
-    public function __construct(array $donnee){
+    public function __construct(array $donnee)
+    {
         $this->hydrate($donnee);
     }
-    public function hydrate(array $donnees){
+
+    public function hydrate(array $donnees)
+    {
         foreach ($donnees as $key => $value) {
-            $method = 'set'.ucfirst($key);
+            $method = 'set' . ucfirst($key);
             if (method_exists($this, $method)) {
                 $this->$method($value);
             }
         }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRefEvenement()
-    {
-        return $this->refEvenement;
-    }
-
-    /**
-     * @param mixed $refEvenement
-     */
-    public function setRefEvenement($refEvenement): void
-    {
-        $this->refEvenement = $refEvenement;
     }
 
     /**
@@ -53,6 +40,22 @@ class EvenementUser
     /**
      * @return mixed
      */
+    public function getRefEvenement()
+    {
+        return $this->refEvenement;
+    }
+
+    /**
+     * @param mixed $refEvenement
+     */
+    public function setRefEvenement($refEvenement): void
+    {
+        $this->refEvenement = $refEvenement;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getEstSuperviseur()
     {
         return $this->estSuperviseur;
@@ -65,6 +68,7 @@ class EvenementUser
     {
         $this->estSuperviseur = $estSuperviseur;
     }
-    
+
+
 
 }

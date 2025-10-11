@@ -7,7 +7,7 @@ class EvenementUserRepository{
     }
 
     public function createEvenementUser(EvenementUser $eveUser){
-        $req="INSERT INTO user_evenement (ref_user,ref_evenement, est_sperviseur) 
+        $req="INSERT INTO user_evenement (ref_user,ref_evenement,est_superviseur) 
             VALUES (:user,:event,:estSuperviseur)";
         $stm=$this->db->connexion()->prepare($req);
         $stm->execute([
@@ -15,8 +15,6 @@ class EvenementUserRepository{
             "event"=>$eveUser->getRefEvenement(),
             "estSuperviseur"=>$eveUser->getEstSuperviseur()
         ]);
-
-
     }
     public function inscriptionEvenementUser(EvenementUser $eveUser){
 

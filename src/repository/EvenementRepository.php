@@ -1,7 +1,7 @@
 <?php
 class EvenementRepository{
 
-    private $db;
+    private Config $db;
     public function __construct(){
         $this->db=New Config();
     }
@@ -18,6 +18,8 @@ class EvenementRepository{
             'element'=>$evenement->getElementEvenement(),
             'nbPlace'=>$evenement->getNbPlace()
         ]);
+
+        return $this->db->connexion()->lastInsertId();
     }
     public function getAllEvenement()
     {
@@ -25,6 +27,21 @@ class EvenementRepository{
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    public function getAnEvenement($evenement){
+        $sql="SELECT * FROM evenement WHERE id_evenement=:id";
+        $stmt=$this->db->connexion()->prepare($sql);
+        $stmt->execute(['id'=>$evenement->getIdEvenement()]);
+        $req=$stmt->fetch();
+        $evenement->setIdEvenement($req['id_evenement']);
+        $evenement->setTitreEvenement($req['titre_eve']);
+        $evenement->setTypeEvenement($req['type_eve']);
+        $evenement->setDescEvenement($req['desc_eve']);
+        $evenement->setLieuEvenement($req['lieu_eve']);
+        $evenement->setElementEvenement($req['element_eve']);
+        $evenement->setNbPlace($req['nb_place']);
+        return $evenement;
     }
 
 }
