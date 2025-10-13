@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ACCUEIL • LPRS</title>
+    <title>EVENEMENTS • LPRS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
@@ -50,6 +50,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </div>
 </header>
+<main>
 <?php if (isset($_SESSION['error'])): ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <?= $_SESSION['error']; unset($_SESSION['error']); ?>
@@ -88,6 +89,7 @@ if (session_status() === PHP_SESSION_NONE) {
                      <h5 class="card-title">'.$evenement["titre_eve"].'</h5>
                       <p class="card-text">'.$evenement["desc_eve"].'</p>
                   </div>
+                  <a href="crudEvenement/afficherEvenement?id='.$evenement["id_evenement"].'.php"><button class="btn btn-primary">En savoir plus</button></a>
                   <div class="card-footer">
                       <small class="text-body-secondary">Last updated 3 mins ago</small>
                   </div>
@@ -114,7 +116,7 @@ if (session_status() === PHP_SESSION_NONE) {
                </li>
           </ul>
      </nav>
-</section>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
