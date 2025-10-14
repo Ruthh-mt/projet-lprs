@@ -1,3 +1,27 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+     session_start();
+}
+if (!function_exists('e')) {
+     function e(?string $v): string {
+          return htmlspecialchars($v ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+     }
+}
+
+require_once '../../src/bdd/config.php';
+require_once '../../src/repository/utilisateurRepository.php';
+
+$cfg  = new Config();
+$pdo  = $cfg->connexion();
+$repo = new UtilisateurRepository($pdo);
+
+try {
+     $utilisateurs = $repo->findAll();
+} catch (Throwable $e) {
+     http_response_code(500);
+     $utilisateurs = [];
+}
+?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -64,3 +88,37 @@
           </div>
      </div>
 </nav>
+<div class="container table-responsive">
+     <table class="table table-striped table-hover align-middle">
+          <thead class="table-light">
+          <tr>
+               <th scope="col">ID</th>
+               <th scope="col">Nom</th>
+               <th scope="col">Prénom</th>
+               <th scope="col">Email</th>
+               <th scope="col">Rôle</th>
+               <th scope="col">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <?php if (empty($utilisateurs)): ?>
+               <tr><td colspan="6" class="text-center">Aucun utilisateur</td></tr>
+          <?php else: ?>
+               <?php foreach ($utilisateurs as $u): ?>
+                    <tr>
+                         <td><?= e($u['id_user'] ?? '') ?></td>
+                         <td><?= e($u['nom'] ?? '') ?></td>
+                         <td><?= e($u['prenom'] ?? '') ?></td>
+                         <td><?= e($u['email'] ?? '') ?></td>
+                         <td><?= e($u['role'] ?? '') ?></td>
+                         <td>
+                              <a href="utilisateurRead.php?id=<?= $u['id_user'] ?>" class="btn btn-info btn-sm">👁️</a>
+                              <a href="utilisateurUpdate.php?id=<?= $u['id_user'] ?>" class="btn btn-warning btn-sm">✏️</a>
+                              <a href="utilisateurDelete.php?id=<?= $u['id_user'] ?>" class="btn btn-danger btn-sm">🗑️</a>
+                         </td>
+                    </tr>
+               <?php endforeach; ?>
+          <?php endif; ?>
+          </tbody>
+     </table>
+</div>

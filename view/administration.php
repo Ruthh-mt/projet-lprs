@@ -16,13 +16,13 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 <body>
 <header
-     class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
+     class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
      <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
           <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
                <img src="https://media.tenor.com/1DV7nkfj5OkAAAAM/blobgodeto-blobdance.gif"
                     class="rounded-circle mx-3"
                     style="max-width: 15%; height: auto;">
-               <div class="fs-4 text-light text-uppercase">LPRS</div>
+               <div class="fs-4 text-light text-uppercase">LPRS • ADMIN</div>
           </a>
      </div>
      <ul class="nav col mb-2 justify-content-center mb-md-0">
@@ -30,6 +30,7 @@ if (session_status() === PHP_SESSION_NONE) {
           <li class="nav-item"><a href="evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
           <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
           <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
+          <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
           <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
                <li class="nav-item">
                     <a href="administration.php" class="btn btn-outline-warning active me-2">Administration</a>
@@ -46,344 +47,25 @@ if (session_status() === PHP_SESSION_NONE) {
           <?php endif; ?>
      </div>
 </header>
-<section class="row mx-3">
-          <article class="col">
-               <h5 class="bg-dark text-white text-center py-3 rounded">Liste des utilisateurs</h5>
-               <table class=" table table-primary table-striped table-hover">
-                    <thead>
-                    <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">First</th>
-                         <th scope="col">Last</th>
-                         <th scope="col">Handle</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                         <th scope="row">1</th>
-                         <td>Mark</td>
-                         <td>Otto</td>
-                         <td>@mdo</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">2</th>
-                         <td>Jacob</td>
-                         <td>Thornton</td>
-                         <td>@fat</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">3</th>
-                         <td>John</td>
-                         <td>Doe</td>
-                         <td>@social</td>
-                    </tr>
-                    </tbody>
-               </table>
-          </article>
-          <article class="col">
-               <h5 class="bg-dark text-white text-center py-3 rounded">Liste des alumnis</h5>
-               <table class="table table-secondary table-striped table-hover">
-                    <thead>
-                    <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">First</th>
-                         <th scope="col">Last</th>
-                         <th scope="col">Handle</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                         <th scope="row">1</th>
-                         <td>Mark</td>
-                         <td>Otto</td>
-                         <td>@mdo</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">2</th>
-                         <td>Jacob</td>
-                         <td>Thornton</td>
-                         <td>@fat</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">3</th>
-                         <td>John</td>
-                         <td>Doe</td>
-                         <td>@social</td>
-                    </tr>
-                    </tbody>
-               </table>
-          </article>
-</section>
-<section class="row mx-3">
-          <article class="col">
-               <h5 class="bg-dark text-white text-center py-3 rounded">Liste des étudiants</h5>
-               <table class="table table-success table-striped table-hover">
-                    <thead>
-                    <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">First</th>
-                         <th scope="col">Last</th>
-                         <th scope="col">Handle</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                         <th scope="row">1</th>
-                         <td>Mark</td>
-                         <td>Otto</td>
-                         <td>@mdo</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">2</th>
-                         <td>Jacob</td>
-                         <td>Thornton</td>
-                         <td>@fat</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">3</th>
-                         <td>John</td>
-                         <td>Doe</td>
-                         <td>@social</td>
-                    </tr>
-                    </tbody>
-               </table>
-          </article>
-          <article class="col">
-               <h5 class="bg-dark text-white text-center py-3 rounded">Liste des professeurs</h5>
-               <table class="table table-danger table-striped table-hover">
-                    <thead>
-                    <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">First</th>
-                         <th scope="col">Last</th>
-                         <th scope="col">Handle</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                         <th scope="row">1</th>
-                         <td>Mark</td>
-                         <td>Otto</td>
-                         <td>@mdo</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">2</th>
-                         <td>Jacob</td>
-                         <td>Thornton</td>
-                         <td>@fat</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">3</th>
-                         <td>John</td>
-                         <td>Doe</td>
-                         <td>@social</td>
-                    </tr>
-                    </tbody>
-               </table>
-          </article>
-</section>
-<section class="row mx-3">
-          <article class="col">
-               <h5 class="bg-dark text-white text-center py-3 rounded">Liste des partenaires</h5>
-               <table class="table table-warning table-striped table-hover">
-                    <thead>
-                    <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">First</th>
-                         <th scope="col">Last</th>
-                         <th scope="col">Handle</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                         <th scope="row">1</th>
-                         <td>Mark</td>
-                         <td>Otto</td>
-                         <td>@mdo</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">2</th>
-                         <td>Jacob</td>
-                         <td>Thornton</td>
-                         <td>@fat</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">3</th>
-                         <td>John</td>
-                         <td>Doe</td>
-                         <td>@social</td>
-                    </tr>
-                    </tbody>
-               </table>
-          </article>
-          <article class="col">
-               <h5 class="bg-dark text-white text-center py-3 rounded">Liste des gestionnaires</h5>
-               <table class="table table-info table-striped table-hover">
-                    <thead>
-                    <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">First</th>
-                         <th scope="col">Last</th>
-                         <th scope="col">Handle</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                         <th scope="row">1</th>
-                         <td>Mark</td>
-                         <td>Otto</td>
-                         <td>@mdo</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">2</th>
-                         <td>Jacob</td>
-                         <td>Thornton</td>
-                         <td>@fat</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">3</th>
-                         <td>John</td>
-                         <td>Doe</td>
-                         <td>@social</td>
-                    </tr>
-                    </tbody>
-               </table>
-          </article>
-</section>
-<hr class="border-3">
-<section class="row mx-3">
-          <article class="col">
-               <h5 class="bg-dark text-white text-center py-3 rounded">Liste des évènements</h5>
-               <table class="table table-danger table-striped table-hover">
-                    <thead>
-                    <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">First</th>
-                         <th scope="col">Last</th>
-                         <th scope="col">Handle</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                         <th scope="row">1</th>
-                         <td>Mark</td>
-                         <td>Otto</td>
-                         <td>@mdo</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">2</th>
-                         <td>Jacob</td>
-                         <td>Thornton</td>
-                         <td>@fat</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">3</th>
-                         <td>John</td>
-                         <td>Doe</td>
-                         <td>@social</td>
-                    </tr>
-                    </tbody>
-               </table>
-          </article>
-          <article class="col">
-               <h5 class="bg-dark text-white text-center py-3 rounded">Liste des formations</h5>
-               <table class="table table-success table-striped table-hover">
-                    <thead>
-                    <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">First</th>
-                         <th scope="col">Last</th>
-                         <th scope="col">Handle</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                         <th scope="row">1</th>
-                         <td>Mark</td>
-                         <td>Otto</td>
-                         <td>@mdo</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">2</th>
-                         <td>Jacob</td>
-                         <td>Thornton</td>
-                         <td>@fat</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">3</th>
-                         <td>John</td>
-                         <td>Doe</td>
-                         <td>@social</td>
-                    </tr>
-                    </tbody>
-               </table>
-          </article>
-</section>
-<section class="row mx-3">
-          <article class="col">
-               <h5 class="bg-dark text-white text-center py-3 rounded">Liste des entreprises</h5>
-               <table class="table table-primary table-striped table-hover">
-                    <thead>
-                    <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">First</th>
-                         <th scope="col">Last</th>
-                         <th scope="col">Handle</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                         <th scope="row">1</th>
-                         <td>Mark</td>
-                         <td>Otto</td>
-                         <td>@mdo</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">2</th>
-                         <td>Jacob</td>
-                         <td>Thornton</td>
-                         <td>@fat</td>
-                    </tr>
-                    <tr>
-                         <th scope="row">3</th>
-                         <td>John</td>
-                         <td>Doe</td>
-                         <td>@social</td>
-                    </tr>
-                    </tbody>
-               </table>
-          </article>
-     <article class="col">
-          <h5 class="bg-dark text-white text-center py-3 rounded">Liste des offres</h5>
-          <table class="table table-warning table-striped table-hover">
-               <thead>
-               <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-               </tr>
-               </thead>
-               <tbody>
-               <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-               </tr>
-               <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-               </tr>
-               <tr>
-                    <th scope="row">3</th>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>@social</td>
-               </tr>
-               </tbody>
-          </table>
-     </article>
-</section>
+<nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
+     <div class="nav col mb-2 justify-content-center mb-md-0">
+          <div class="btn-group mx-1" role="group" aria-label="Basic example">
+               <a href="crudUtilisateur/utilisateurList.php" class="btn btn-outline-info">Utilisateur</a>
+               <a href="#" class="btn btn-outline-info">Alumni</a>
+               <a href="#" class="btn btn-outline-info">Professeur</a>
+               <a href="#" class="btn btn-outline-info">Partenaire</a>
+               <a href="#" class="btn btn-outline-info">Étudiant</a>
+          </div>
+          <div class="btn-group mx-1" role="group" aria-label="Basic example">
+               <a href="#" class="btn btn-outline-info">Formation</a>
+               <a href="#" class="btn btn-outline-info">Offre</a>
+               <a href="#" class="btn btn-outline-info">Évènement</a>
+               <a href="#" class="btn btn-outline-info">Fiche entreprise</a>
+               <a href="#" class="btn btn-outline-info">Postuler</a>
+          </div>
+          <div class="btn-group mx-1" role="group" aria-label="Basic example">
+               <a href="#" class="btn btn-outline-info">Post</a>
+               <a href="#" class="btn btn-outline-info">Réponse</a>
+          </div>
+     </div>
+</nav>

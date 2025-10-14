@@ -3,83 +3,85 @@ declare(strict_types=1);
 
 class utilisateurRepository
 {
-     private $db;
+     private PDO $db;
 
-     public function __construct()
+     public function __construct(?PDO $pdo = null)
      {
-          $this->db=NEW Config();
+          if ($pdo instanceof PDO) {
+               $this->db = $pdo;
+          } else {
+               $this->db = (new Config())->connexion();
+          }
      }
-     public function findById(int $id_user): ?array
+
+     public function getUserById(int $id_user): ?array
      {
           $sql = "SELECT * FROM utilisateur WHERE id_user = :id_user";
           $stmt = $this->db->prepare($sql);
           $stmt->execute(['id_user' => $id_user]);
           $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
           return $result ?: null;
      }
+
      public function getUserByEmail(string $email): ?array
      {
           $sql = "SELECT * FROM utilisateur WHERE email = :email";
-          $stmt = $this->db->connexion()->prepare($sql);
+          $stmt = $this->db->prepare($sql);
           $stmt->execute(['email' => $email]);
           $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
           return $result ?: null;
      }
+
      public function findAll(): array
      {
-          $sql = "SELECT * FROM utilisateur";
+          $sql = "SELECT id_user, nom, prenom, email, role FROM utilisateur";
           $stmt = $this->db->query($sql);
-
-          return $stmt->fetchAll(PDO::FETCH_ASSOC);
+          return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
      }
+
      public function inscription(UserModel $data)
      {
           $sql = "INSERT INTO utilisateur (nom, prenom, email, mdp, role, ref_validateur)
                 VALUES (:nom, :prenom, :email, :mdp, :role, :ref_validateur)";
-          $stmt = $this->db->connexion()->prepare($sql);
-
+          $stmt = $this->db->prepare($sql);
           return $stmt->execute([
-               'nom'           => $data-> getNom(),
-               'prenom'        => $data-> getPrenom(),
-               'email'         => $data-> getEmail(),
-               'mdp'           => $data-> getMdp(),
-               'role'          => $data-> getRole(),
-               'ref_validateur'=> $data-> getRefValidateur() ?? null,
+               'nom'            => $data->getNom(),
+               'prenom'         => $data->getPrenom(),
+               'email'          => $data->getEmail(),
+               'mdp'            => $data->getMdp(),
+               'role'           => $data->getRole(),
+               'ref_validateur' => $data->getRefValidateur() ?? null,
           ]);
      }
+
      public function update(int $id_user, array $data): bool
      {
-          $sql = "UPDATE utilisateur 
-                SET nom = :nom,
-                    prenom = :prenom,
-                    email = :email,
-                    mdp = :mdp,
-                    role = :role,
-                    ref_validateur = :ref_validateur
-                WHERE id_user = :id_user";
-          $stmt = $this->db->connexion()->prepare($sql);
-
-          return $stmt->execute([
-               'id_user'       => $id_user,
-               'nom'           => $data['nom'],
-               'prenom'        => $data['prenom'],
-               'email'         => $data['email'],
-               'mdp'           => $data['mdp'],
-               'role'          => $data['role'],
-               'ref_validateur'=> $data['ref_validateur'] ?? null,
-          ]);
+          $allowed = [
+               'nom','prenom','email','mdp','role','ref_validateur',
+               'telephone','date_naissance','ville_residence'
+          ];
+          $set = [];
+          $params = ['id_user' => $id_user];
+          foreach ($allowed as $k) {
+               if (array_key_exists($k, $data)) {
+                    $set[] = "$k = :$k";
+                    $params[$k] = $data[$k];
+               }
+          }
+          if (!$set) return false;
+          $sql = "UPDATE utilisateur SET ".implode(', ', $set)." WHERE id_user = :id_user";
+          $stmt = $this->db->prepare($sql);
+          return $stmt->execute($params);
      }
+
      public function delete(int $id_user): bool
      {
           $sql = "DELETE FROM utilisateur WHERE id_user = :id_user";
-          $stmt = $this->db->connexion()->prepare($sql);
-
+          $stmt = $this->db->prepare($sql);
           return $stmt->execute(['id_user' => $id_user]);
      }
+
      public function changerMdp($mdp, $email)
      {
-
      }
 }
