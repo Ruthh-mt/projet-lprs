@@ -3,11 +3,10 @@ require_once "../bdd/config.php";
 require_once "../modele/UserModel.php";
 require_once "../repository/utilisateurRepository.php";
 
-$mdpnew="";
-$mdpConfirm="";
+$mdpnew=htmlspecialchars($_POST['mdp']);
+$mdpConfirm=htmlspecialchars($_POST['confirmation']);
 if(isset($_POST['token'])&&isset($mdpnew)&&isset($mdpConfirm)){
-    $mdpnew=htmlspecialchars($_POST['mdp']);
-    $mdpConfirm=htmlspecialchars($_POST['confirmation']);
+
     $config = new Config();
     $pdo = $config->connexion();
     if($mdpnew==$mdpConfirm) {
@@ -29,7 +28,7 @@ if(isset($_POST['token'])&&isset($mdpnew)&&isset($mdpConfirm)){
 
 }else {
     echo"veuillez remplir tous les champs";
-    header("Location:../../vue/connexion.php");
+    header("Location:../../view/reinitialiserMdp.php");
 }
 ?>
 <style>
