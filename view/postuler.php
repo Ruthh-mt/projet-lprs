@@ -74,10 +74,7 @@
                 <label for="cv">CV (PDF, DOCX) — optionnel</label>
                 <input id="cv" name="cv" type="file" accept=".pdf,.doc,.docx" />
             </div>
-            <div>
-                <label for="autre">Autre pièce jointe — optionnel</label>
-                <input id="autre" name="Autre pièce jointe" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
-            </div>
+
         </div>
 
         <div class="inline" style="margin-top:8px">
