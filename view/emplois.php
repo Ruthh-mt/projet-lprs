@@ -63,6 +63,7 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
 <section class="creation-offre">
 <div class="card">
     <div class="card-head"><h2>Offres d'emploi</h2></div>
+    <br>
     <div class="table-wrap">
         <table class="table">
             <thead>
@@ -78,9 +79,10 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
                     <td><?= htmlspecialchars($offre['type']) ?></td>
                     <td><?= htmlspecialchars($offre['etat']) ?></td>
             <td><?php
-            echo '<a href="postuler.php?id='.$offre['id_offre'].'">Postuler</a></td></tr> ';
+            echo '<a href="postuler.php?id='.$offre['id_offre']. '" style="text-decoration: none ; color: black" >Postuler</a> |
+                  <a href="../view/crudOffre/offreCreate.php" style="text-decoration: none ; color: black" >Créer une offre</a></td></tr> ';
 
-              ?>
+                ?>
               <?php endforeach; ?>
             </tbody>
         </table>
