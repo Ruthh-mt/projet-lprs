@@ -43,5 +43,30 @@ class EvenementRepository{
         $evenement->setNbPlace($req['nb_place']);
         return $evenement;
     }
+    public function updateEvenement(Evenement $evenement){
+        $sql="UPDATE evenement SET titre_eve=:titre, type_eve:type, desc_eve=:desc, lieu_eve=:lieu, element_eve=:element,
+         nb_place=:nbplace where id_evenement=:id ";
+        $stmt=$this->db->connexion()->prepare($sql);
+        $stmt->execute([
+            'titre'=>$evenement->getTitreEvenement(),
+            'type'=>$evenement->getTypeEvenement(),
+            'desc'=>$evenement->getDescEvenement(),
+            'lieu'=>$evenement->getLieuEvenement(),
+            'element'=>$evenement->getElementEvenement(),
+            'nbPlace'=>$evenement->getNbPlace()
+        ]);
+        $id=$evenement->getIdEvenement();
+        $sql2="SELECT * FROM evenement WHERE id_evenement=:id";
+        $stmt2=$this->db->connexion()->prepare($sql2);
+        $stmt2->execute(['id'=>$id]);
+        $req2=$stmt2->fetch();
+        $evenement->setIdEvenement($req2['id_evenement']);
+        $evenement->setTitreEvenement($req2['titre_eve']);
+        $evenement->setTypeEvenement($req2['type_eve']);
+        $evenement->setDescEvenement($req2['desc_eve']);
+        $evenement->setLieuEvenement($req2['lieu_eve']);
+        $evenement->setElementEvenement($req2['element_eve']);
+        $evenement->setNbPlace($req2['nb_place']);
+    }
 
 }

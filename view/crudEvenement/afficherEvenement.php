@@ -11,10 +11,6 @@ if (session_status() === PHP_SESSION_NONE) {
 if(isset($_GET['id'])){
     $id=$_GET["id"];
 }
-else{
-    //afficher un message d'erreur
-echo"pas d'eve choisi";
-}
 $evenement=new Evenement(["idEvenement" =>$id]);
 $evenementRepo=new EvenementRepository();
 $evenement=$evenementRepo->getAnEvenement($evenement)
@@ -78,11 +74,18 @@ $evenement=$evenementRepo->getAnEvenement($evenement)
                 <?php
                 $evenementUserRepository=new EvenementUserRepository();
                 $superviseur=$evenementUserRepository->getSuperviseur($evenement->getIdEvenement());
+                $eveUser=new EvenementUser(["refUser" => $_SESSION['utilisateur']['id_user']]);
+                $estInscrit=$evenementUserRepository->verifDejaInscritEvenement($eveUser);
                 if($_SESSION['utilisateur']['id_user'] == $superviseur->getRefUser()) {
                     echo'<a href="evenementUpdate?id='.$evenement->getIdEvenement().'.php"><button class="btn btn-primary">Modifier</button></a> ';
                 }
                 else{
+                    if(!$estInscrit) {
+                        echo'<button class="btn btn-primary" type="submit">Se desinscrire</button>';
+                    }
+                    else{
                     echo'<button class="btn btn-primary" type="submit">Participer</button>';
+                    }
                 }
                 ?>
             </div>

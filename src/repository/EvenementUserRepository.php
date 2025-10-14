@@ -21,7 +21,6 @@ class EvenementUserRepository{
         $stm=$this->db->connexion()->prepare($req);
         $stm->execute(["user"=>$eveUser->getRefUser()]);
         $resultat=$stm->fetchAll();
-        var_dump(count($resultat)==0);
         if(count($resultat)==0){
             return true;
         }
