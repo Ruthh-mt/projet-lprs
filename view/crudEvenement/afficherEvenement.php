@@ -1,5 +1,6 @@
 <?php
 require_once "../../src/modele/Evenement.php";
+require_once "../../src/modele/EvenementUser.php";
 require_once "../../src/repository/EvenementRepository.php";
 require_once "../../src/repository/EvenementUserRepository.php";
 require_once "../../src/bdd/config.php";
@@ -12,7 +13,7 @@ if(isset($_GET['id'])){
 }
 else{
     //afficher un message d'erreur
-    header("Location:../evenements?er=1.php");
+echo"pas d'eve choisi";
 }
 $evenement=new Evenement(["idEvenement" =>$id]);
 $evenementRepo=new EvenementRepository();
@@ -68,18 +69,20 @@ $evenement=$evenementRepo->getAnEvenement($evenement)
             <div class="card-body">
                 <h5 class="card-title">Information</h5>
                 <input type="hidden" value="<?=$evenement->getIdEvenement();?>" name="ref_eve">
-                <input type="hidden" value="<?=$_SESSION["utilisateur"]["id_user"]?>" name="ref_user">
+                <input type="hidden" value="<?=$_SESSION["utilisateur"]["id_user"]?>" name="refUser">
                 <p class="card-text">Type d'evenement : <input type="text" readonly class="form-control-plaintext" id="type_eve" name="type_eve" value="<?php echo $evenement->getTypeEvenement(); ?>"></p>
                 <p class="card-text">Lieu de l'evenement : <input type="text" readonly class="form-control-plaintext" id="lieu_eve" name="lieu_eve"  value="<?php echo $evenement->getLieuEvenement(); ?>"></p>
                 <p class="card-text">Description : <textarea class="form-control" readonly class="form-control-plaintext" id="desc_eve" name="desc_eve"  rows="5"> <?php echo $evenement->getDescEvenement(); ?></textarea class="textarea"></p>
                 <p class="card-text">Element necessaires : <input type="text" readonly class="form-control-plaintext" id="element_eve" name="element_eve"  value="<?php echo $evenement->getElementEvenement(); ?>"></p>
                 <p class="card-text">Nombre de place disponible : <input type="number" readonly class="form-control-plaintext" id="nb_place" name="nb_place"  value="<?php echo $evenement->getNbPlace(); ?>"></p>
-                <button class="btn btn-primary" type="submit">S'inscrire</button>
                 <?php
                 $evenementUserRepository=new EvenementUserRepository();
                 $superviseur=$evenementUserRepository->getSuperviseur($evenement->getIdEvenement());
-                if($_SESSION['utilisateur']['id_user'] === $superviseur){
-                    echo'<button class="btn btn-primary" type="submit">Modifier</button> ';
+                if($_SESSION['utilisateur']['id_user'] == $superviseur->getRefUser()) {
+                    echo'<a href="evenementUpdate?id='.$evenement->getIdEvenement().'.php"><button class="btn btn-primary">Modifier</button></a> ';
+                }
+                else{
+                    echo'<button class="btn btn-primary" type="submit">Participer</button>';
                 }
                 ?>
             </div>

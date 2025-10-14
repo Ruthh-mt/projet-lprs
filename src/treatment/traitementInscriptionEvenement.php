@@ -15,24 +15,29 @@ function redirectWith(string $type, string $message, string $target): void
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirectWith('error', "Méthode invalide.", '../../view/crudEvenement/evenementCreate.php');
-}
 $refUser = $_POST["refUser"];
 $refEvenement = $_POST["ref_eve"];
 
 if ($refUser===''||$refEvenement==='') {
-    redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementCreate.php');
+    redirectWith('error', "Vous n'avez pas l'air connecté ", '../../view/crudEvenement/afficherEvenement.php');
 }
 try {
     $evenementUser = new EvenementUser(array(
         "refUser" => $refUser,
-        "refEvenement" => $refEvenement
+        "refEvenement" => $refEvenement,
+        "estSuperviseur" => null
     ));
+
     $evenementUserRepository= new EvenementUserRepository();
-    $evenementUserRepository->inscriptionEvenementUser($evenementUser);
-    redirectWith('success', "Vous avez bien été inscrit", '../../view/evenements.php');
+    $estDejaInscrit=$evenementUserRepository->verifDejaInscritEvenement($evenementUser);
+    if($estDejaInscrit){
+        $evenementUserRepository->inscriptionEvenementUser($evenementUser);
+        redirectWith('success', "Vous avez bien été inscrit", '../../view/crudEvenement/afficherEvenement?id='.$refEvenement.'.php');
+    }
+    else{
+        redirectWith('Error', "Vous etes deja inscrit ", '../../view/crudEvenement/afficherEvenement?id='.$refEvenement.'.php');
+    }
 } catch (PDOException $e) {
-    redirectWith('error', "Erreur de la creation d'evenement : " . $e->getMessage(), '../../view/crudEvenement/evenementCreate.php');
+    redirectWith('error', "Erreur de l'inscription à l'evenement : " . $e->getMessage(), '../../view/evenements.php');
 }
 
