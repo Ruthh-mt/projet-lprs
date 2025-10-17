@@ -86,6 +86,7 @@
         </div>
        <div>
            <button type="submit" class="btn btn-primary mt-3">Envoyer la candidature</button>
+           <button type="button" class="btn btn-primary mt-3" onclick="window.location.href='emplois.php'">Retour</button>
        </div>
     </form>
 </body>
