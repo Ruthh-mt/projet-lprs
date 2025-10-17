@@ -23,6 +23,16 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
 
 </head>
 
@@ -65,7 +75,7 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
     <div class="card-head"><h2>Offres d'emploi</h2></div>
     <br>
     <div class="table-wrap">
-        <table class="table">
+        <table class="table" id="offre-table">
             <thead>
             <tr><th>Titre</th><th>Description</th><th>Mission</th><th>Salaire</th><th>Entreprise</th><th>Type d'offre</th><th>Etat</th><th>Actions</th></tr>
             </thead>
@@ -90,11 +100,21 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
 </div>
 </section>
 
+<!-- Datatable JS id="offre-table" -->
+<script>
+    $(document).ready(function () {
+        $('#offre-table').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
+            },
+            "pageLength": 10,  // nombre de lignes par page
+            "ordering": true,  // tri des colonnes activé
+            "searching": true, // barre de recherche activée
+            "responsive": true // design responsive
+        });
+    });
+</script>
 
-<br>
-<br>
-<br>
-<br>
 
 
 

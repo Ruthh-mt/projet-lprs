@@ -77,9 +77,15 @@
 
 <br>
     <label for="salaire">Salaire</label>
-    <input class="form-control" type="number" id="salaire" name="salaire" placeholder="Entrez le salaire"></input>
-    <button class="btn btn-outline-primary" type="submit">Valider</button>
+    <input class="form-control" type="number" id="salaire" name="salaire" placeholder="Entrez le salaire">
+    <div>
+        <button class="btn btn-outline-primary" type="submit">Valider</button>
+        <button class="btn btn-outline-primary" type="reset">Annuler</button>
+    </div>
+
 </form>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
