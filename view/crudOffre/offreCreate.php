@@ -84,11 +84,7 @@
         <!-- Bandeau titre -->
         <div class="offre-header d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">Création d’une offre d’emploi</h2>
-            <div class="offre-actions">
-                <a href="../crudOffre/offreUpdate.php" class="btn btn-outline-light">
-                    <i class="bi bi-pencil-square"></i> Modifier une offre
-                </a>
-            </div>
+
         </div>
         <!-- Formulaire -->
         <form class="mt-4" action="../../src/treatment/traitementAjoutOffre.php" method="post">

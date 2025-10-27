@@ -89,7 +89,7 @@ if (session_status() === PHP_SESSION_NONE) {
                      <h5 class="card-title">'.$evenement["titre_eve"].'</h5>
                       <p class="card-text">'.$evenement["desc_eve"].'</p>
                   </div>
-                  <a href="crudEvenement/afficherEvenement?id='.$evenement["id_evenement"].'.php"><button class="btn btn-primary">En savoir plus</button></a>
+                  <a href="../view/crudEvenement/afficherEvenement.php?id='.$evenement["id_evenement"].'.php"><button class="btn btn-primary">En savoir plus</button></a>
                   <div class="card-footer">
                       <small class="text-body-secondary">Last updated 3 mins ago</small>
                   </div>
