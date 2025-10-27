@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $anneePromo  = $_POST['annee_promo'] ?? null;
     $specialite  = $_POST['specialite'] ?? null;
     $poste       = $_POST['poste'] ?? null;
-    $raison      = $_POST['Raison'] ?? null;
+    $raison      = $_POST['raison'] ?? null;
     $cvFile      = $_FILES['cv'] ?? null;
 
     if (empty($nom) || empty($prenom) || empty($email) || empty($mdp) || empty($mdp_confirm) || empty($role)) {

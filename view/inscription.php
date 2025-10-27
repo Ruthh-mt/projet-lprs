@@ -156,7 +156,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <label for="floatingPoste">Poste occupé</label>
                 </div>
                 <div class="form-floating my-2">
-                    <input type="text" name="Raison" class="form-control" id="floatingRaison" placeholder="Raison de l'inscription">
+                    <input type="text" name="raison" class="form-control" id="floatingRaison" placeholder="Raison de l'inscription">
                     <label for="floatingRaison">Raison de l'inscription</label>
                 </div>
             `;
