@@ -127,16 +127,12 @@ if (!$ref_offre) {
 
         <!-- Formulaire de candidature -->
         <form class="card mt-4"
-              action="../src/treatment/gestionPostuler.php"
+              action="../src/treatment/traitementPostuler.php"
               method="POST"
               enctype="multipart/form-data">
 
             <input type="hidden" name="ref_offre" value="<?= htmlspecialchars($ref_offre) ?>">
 
-            <div class="mb-3">
-                <label for="email" class="form-label required">Adresse e-mail</label>
-                <input id="email" name="email" type="email" class="form-control" placeholder="vous@exemple.com" required>
-            </div>
 
             <div class="mb-3">
                 <label for="lettre" class="form-label required">Lettre de motivation</label>
@@ -159,7 +155,7 @@ if (!$ref_offre) {
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-send"></i> Envoyer la candidature
                 </button>
-                <button type="button" class="btn btn-secondary" onclick="window.location.href='../emplois.php'">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='emplois.php'">
                     <i class="bi bi-arrow-left"></i> Retour
                 </button>
             </div>
