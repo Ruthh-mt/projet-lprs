@@ -2,6 +2,15 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once('../src/bdd/config.php');
+$pdo = (new Config())->connexion();
+$sql = "SELECT * from offre limit 5" ;
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -13,7 +22,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
-     <fa
+    <fa
 </head>
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
@@ -49,107 +58,89 @@ if (session_status() === PHP_SESSION_NONE) {
 </header>
 
 <section class="container banner bg-dark text-white text-center py-3 rounded">
-     <h1>Bienvenue</h1>
+    <h1>Bienvenue</h1>
 </section>
 <section class="container border rounded border-dark my-3">
-     <h3 class="text-center py-3 text-center text-uppercase">Présentation</h3>
-     <article class="article" style="text-align: justify;">
-          <p>
-               L'école souhaite développer un site web dédié à la gestion des anciens élèves (alumni) et aux relations avec les entreprises.
-               Ce site servira de plateforme centrale pour renforcer les liens entre l'école, ses anciens élèves et les partenaires.
-               L'objectif est de faciliter la communication, le réseautage et la collaboration, tout en offrant des services supplémentaires aux anciens élèves et aux entreprises.
-          </p>
-     </article>
+    <h3 class="text-center py-3 text-center text-uppercase">Présentation</h3>
+    <article class="article" style="text-align: justify;">
+        <p>
+            L'école souhaite développer un site web dédié à la gestion des anciens élèves (alumni) et aux relations avec les entreprises.
+            Ce site servira de plateforme centrale pour renforcer les liens entre l'école, ses anciens élèves et les partenaires.
+            L'objectif est de faciliter la communication, le réseautage et la collaboration, tout en offrant des services supplémentaires aux anciens élèves et aux entreprises.
+        </p>
+    </article>
 </section>
 <section class="container border rounded border-dark my-3">
-     <h3 class="text-center py-3 text-center text-uppercase">Dernières offres postées</h3>
-     <article class="article row" style="text-align: justify;">
-          <div class="col card m-3" style="width: 18rem;">
-               <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                    <h5 class="card-title">Titre de l'offre</h5>
-                    <p class="card-text">Description de l'offre</p>
-                    <a href="#" class="btn btn-primary">Voir l'offre</a>
-               </div>
-          </div>
-          <div class="col card m-3" style="width: 18rem;">
-               <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                    <h5 class="card-title">Titre de l'offre</h5>
-                    <p class="card-text">Description de l'offre</p>
-                    <a href="#" class="btn btn-primary">Voir l'offre</a>
-               </div>
-          </div>
-          <div class="col card m-3" style="width: 18rem;">
-               <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                    <h5 class="card-title">Titre de l'offre</h5>
-                    <p class="card-text">Description de l'offre</p>
-                    <a href="#" class="btn btn-primary">Voir l'offre</a>
-               </div>
-          </div>
-          <div class="col card m-3" style="width: 18rem;">
-               <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                    <h5 class="card-title">Titre de l'offre</h5>
-                    <p class="card-text">Description de l'offre</p>
-                    <a href="#" class="btn btn-primary">Voir l'offre</a>
-               </div>
-          </div>
-          <div class="col card m-3" style="width: 18rem;">
-               <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                    <h5 class="card-title">Titre de l'offre</h5>
-                    <p class="card-text">Description de l'offre</p>
-                    <a href="#" class="btn btn-primary">Voir l'offre</a>
-               </div>
-          </div>
-     </article>
+    <h3 class="text-center py-3 text-center text-uppercase">Dernières offres postées</h3>
+    <article class="article row" style="text-align: justify;">
+
+        <?php foreach ($offres as $offre): ?>
+        <div class="col card m-3" style="width: 18rem;">
+            <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title"><?= $offre['titre'] ?></h5>
+                <p class="card-text"><?= $offre['description'] ?> </p>
+                <a href="#" class="btn btn-primary">Voir l'offre</a>
+            </div>
+        </div>
+        <?php endforeach; ?>
+        <div class="col card m-3" style="width: 18rem;">
+            <img src="https://images.hdqwalls.com/wallpapers/mountains-minimalists-4k-vx.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Titre de l'offre</h5>
+                <p class="card-text">Description de l'offre</p>
+                <a href="#" class="btn btn-primary">Voir l'offre</a>
+            </div>
+        </div>
+
+
+
+    </article>
 </section>
 <section class="container border rounded border-dark my-3">
-     <h3 class="text-center py-3 text-center text-uppercase">Derniers évènements créés</h3>
-     <article class="article row" style="text-align: justify;">
-          <div class="col card m-3" style="width: 18rem;">
-               <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                    <h5 class="card-title">Titre de l'évènement</h5>
-                    <p class="card-text">Description de l'évènement</p>
-                    <a href="#" class="btn btn-primary">Voir l'évènement</a>
-               </div>
-          </div>
-          <div class="col card m-3" style="width: 18rem;">
-               <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                    <h5 class="card-title">Titre de l'évènement</h5>
-                    <p class="card-text">Description de l'évènement</p>
-                    <a href="#" class="btn btn-primary">Voir l'évènement</a>
-               </div>
-          </div>
-          <div class="col card m-3" style="width: 18rem;">
-               <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                    <h5 class="card-title">Titre de l'évènement</h5>
-                    <p class="card-text">Description de l'évènement</p>
-                    <a href="#" class="btn btn-primary">Voir l'évènement</a>
-               </div>
-          </div>
-          <div class="col card m-3" style="width: 18rem;">
-               <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                    <h5 class="card-title">Titre de l'évènement</h5>
-                    <p class="card-text">Description de l'évènement</p>
-                    <a href="#" class="btn btn-primary">Voir l'évènement</a>
-               </div>
-          </div>
-          <div class="col card m-3" style="width: 18rem;">
-               <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                    <h5 class="card-title">Titre de l'évènement</h5>
-                    <p class="card-text">Description de l'évènement</p>
-                    <a href="#" class="btn btn-primary">Voir l'évènement</a>
-               </div>
-          </div>
-     </article>
+    <h3 class="text-center py-3 text-center text-uppercase">Derniers évènements créés</h3>
+    <article class="article row" style="text-align: justify;">
+        <div class="col card m-3" style="width: 18rem;">
+            <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Titre de l'évènement</h5>
+                <p class="card-text">Description de l'évènement</p>
+                <a href="#" class="btn btn-primary">Voir l'évènement</a>
+            </div>
+        </div>
+        <div class="col card m-3" style="width: 18rem;">
+            <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Titre de l'évènement</h5>
+                <p class="card-text">Description de l'évènement</p>
+                <a href="#" class="btn btn-primary">Voir l'évènement</a>
+            </div>
+        </div>
+        <div class="col card m-3" style="width: 18rem;">
+            <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Titre de l'évènement</h5>
+                <p class="card-text">Description de l'évènement</p>
+                <a href="#" class="btn btn-primary">Voir l'évènement</a>
+            </div>
+        </div>
+        <div class="col card m-3" style="width: 18rem;">
+            <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Titre de l'évènement</h5>
+                <p class="card-text">Description de l'évènement</p>
+                <a href="#" class="btn btn-primary">Voir l'évènement</a>
+            </div>
+        </div>
+        <div class="col card m-3" style="width: 18rem;">
+            <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Titre de l'évènement</h5>
+                <p class="card-text">Description de l'évènement</p>
+                <a href="#" class="btn btn-primary">Voir l'évènement</a>
+            </div>
+        </div>
+    </article>
 </section>
 </body>
 </html>
