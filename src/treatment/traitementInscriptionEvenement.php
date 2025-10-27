@@ -5,7 +5,7 @@ require_once "../bdd/config.php";
 require_once "../repository/EvenementRepository.php";
 require_once "../modele/EvenementUser.php";
 require_once "../repository/EvenementUserRepository.php";
-
+session_start();
 
 function redirectWith(string $type, string $message, string $target): void
 {
@@ -37,6 +37,7 @@ try {
     else{
         redirectWith('Error', "Vous etes deja inscrit ", '../../view/crudEvenement/afficherEvenement?id='.$refEvenement.'.php');
     }
+    session_write_close();
 } catch (PDOException $e) {
     redirectWith('error', "Erreur de l'inscription à l'evenement : " . $e->getMessage(), '../../view/evenements.php');
 }

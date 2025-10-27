@@ -3,7 +3,7 @@ require_once "../modele/Evenement.php";
 require_once "../bdd/config.php";
 require_once "../repository/EvenementRepository.php";
 
-
+session_start();
 
 function redirectWith(string $type, string $message, string $target): void {
     $_SESSION[$type] = $message;
@@ -39,6 +39,7 @@ try {
     $evenementRepository = new EvenementRepository();
     $refEvenement=$evenementRepository->updateEvenement($evenement);
     redirectWith('success',"L'evenement a bien été modifié",'../../view/crudEvenement/afficherEvenement?id='.$refEvenement.'.php');
+    session_write_close();
 } catch (PDOException $e) {
     redirectWith('error', "Erreur de la creation d'evenement : " . $e->getMessage(), '../../view/crudEvenement/evenementCreate.php');
 }

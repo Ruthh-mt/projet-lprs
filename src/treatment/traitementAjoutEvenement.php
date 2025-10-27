@@ -5,7 +5,7 @@ require_once "../repository/EvenementRepository.php";
 require_once "../modele/EvenementUser.php";
 require_once "../repository/EvenementUserRepository.php";
 
-
+session_start();
 function redirectWith(string $type, string $message, string $target): void {
     $_SESSION[$type] = $message;
     session_write_close();
@@ -46,6 +46,7 @@ function redirectWith(string $type, string $message, string $target): void {
         $evenementUserRepository = new EvenementUserRepository();
         $evenementUserRepository->createEvenementUser($evenementUser);
         redirectWith('success',"L'evenement a bien été ajouté",'../../view/evenements.php');
+        session_write_close();
     } catch (PDOException $e) {
         redirectWith('error', "Erreur de la creation d'evenement : " . $e->getMessage(), '../../view/crudEvenement/evenementCreate.php');
     }
