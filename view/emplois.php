@@ -5,7 +5,7 @@
 require_once ('../src/bdd/config.php');
 $pdo  = (new Config())->connexion();
 
-$sql =$pdo->query("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
+$sql =$pdo->prepare("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
 $sql -> execute();
 $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
 
@@ -75,26 +75,37 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
     <div class="card-head"><h2>Offres d'emploi</h2></div>
     <br>
     <div class="table-wrap">
-        <table class="table" id="offre-table">
-            <thead>
-            <tr><th>Titre</th><th>Description</th><th>Mission</th><th>Salaire</th><th>Entreprise</th><th>Type d'offre</th><th>Etat</th><th>Actions</th></tr>
-            </thead>
-            <tbody>
-            <?php foreach ($offres as $offre): ?>
-                    <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
-                    <td><?= htmlspecialchars($offre['description']) ?></td>
-                    <td><?= htmlspecialchars($offre['mission']) ?></td>
-                    <td><?= htmlspecialchars($offre['salaire']) ?></td>
-                    <td><?= htmlspecialchars($offre['nom_entreprise']) ?></td>
-                    <td><?= htmlspecialchars($offre['type']) ?></td>
-                    <td><?= htmlspecialchars($offre['etat']) ?></td>
-            <td><?php
-            echo '<a href="postuler.php?id='.$offre['id_offre']. '" style="text-decoration: none ; color: black" >Postuler</a> |
-                  <a href="../view/crudOffre/offreCreate.php" style="text-decoration: none ; color: black" >Créer une offre</a></td></tr> ';
+            <table class="table" id="offre-table">
+                <thead>
+                <tr><th>Titre</th><th>Description</th><th>Mission</th><th>Salaire</th><th>Entreprise</th><th>Type d'offre</th><th>Etat</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                <?php foreach ($offres as $offre): ?>
+                <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
+                <td><?= htmlspecialchars($offre['description']) ?></td>
+                <td><?= htmlspecialchars($offre['mission']) ?></td>
+                <td><?= htmlspecialchars($offre['salaire']) ?></td>
+                <td><?= htmlspecialchars($offre['nom_entreprise']) ?></td>
+                <td><?= htmlspecialchars($offre['type']) ?></td>
+                <td><?= htmlspecialchars($offre['etat']) ?></td>
+                    <td class="row-actions">
+                        <a href="crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>"
+                           class="btn btn-sm btn-outline" title="Modifier">
+                            <i class="bi bi-pencil"></i>
+                        </a>
 
-                ?>
-              <?php endforeach; ?>
-            </tbody>
+                        <form action="../view/crudOffre/deleteOffre.php" method="post" style="display:inline;">
+                            <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
+                            <input type="hidden" name="delete_offre" value="1">
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    title="Supprimer" onclick="return confirm('Supprimer cette offre ?')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                 <?php endforeach; ?>
+        </form>
+     </tbody>
         </table>
     </div>
 </div>
