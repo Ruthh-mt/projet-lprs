@@ -59,11 +59,11 @@ $evenement=$evenementRepo->getAnEvenement($evenement)
     </div>
 </header>
 <main>
-    <form action="../../src/treatment/traitementInscriptionEvenement.php" method="post">
         <div class="card">
             <h5 class="card-header"><?php echo $evenement->getTitreEvenement(); ?></h5>
             <div class="card-body">
                 <h5 class="card-title">Information</h5>
+                <form action="../../src/treatment/traitementInscriptionEvenement.php" method="post">
                 <input type="hidden" value="<?=$evenement->getIdEvenement();?>" name="ref_eve">
                 <input type="hidden" value="<?=$_SESSION["utilisateur"]["id_user"]?>" name="refUser">
                 <p class="card-text">Type d'evenement : <input type="text" readonly class="form-control-plaintext" id="type_eve" name="type_eve" value="<?php echo $evenement->getTypeEvenement(); ?>"></p>
@@ -76,10 +76,7 @@ $evenement=$evenementRepo->getAnEvenement($evenement)
                 $superviseur=$evenementUserRepository->getSuperviseur($evenement->getIdEvenement());
                 $eveUser=new EvenementUser(["refUser" => $_SESSION['utilisateur']['id_user']]);
                 $estInscrit=$evenementUserRepository->verifDejaInscritEvenement($eveUser);
-                if($_SESSION['utilisateur']['id_user'] == $superviseur->getRefUser()) {
-                    echo'<a href="evenementUpdate?id='.$evenement->getIdEvenement().'.php"><button class="btn btn-primary">Modifier</button></a> ';
-                }
-                else{
+                if(!$_SESSION['utilisateur']['id_user'] == $superviseur->getRefUser()) {
                     if(!$estInscrit) {
                         echo'<button class="btn btn-primary" type="submit">Se desinscrire</button>';
                     }
@@ -88,9 +85,15 @@ $evenement=$evenementRepo->getAnEvenement($evenement)
                     }
                 }
                 ?>
+    </form>
+
+    <?php
+                if($_SESSION['utilisateur']['id_user'] == $superviseur->getRefUser()) {
+                    echo'<a href="evenementUpdate?id='.$evenement->getIdEvenement().'.php"><button class="btn btn-primary">Modifier</button></a> ';
+                }
+
+                ?>
             </div>
         </div>
-    </form>
-    
 </main>
 

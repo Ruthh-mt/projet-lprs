@@ -5,9 +5,7 @@ require_once "../../src/repository/EvenementRepository.php";
 require_once "../../src/repository/EvenementUserRepository.php";
 require_once "../../src/bdd/config.php";
 $id='';
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 if(isset($_GET['id'])){
     $id=$_GET["id"];
 }
@@ -61,7 +59,7 @@ $evenement=$evenementRepo->getAnEvenement($evenement)
 <main>
     <form action="../../src/treatment/traitementUpdateEvenement.php" method="post">
         <div class="card">
-            <h5 class="card-header"><?php echo $evenement->getTitreEvenement(); ?></h5>
+            <h5 class="card-header"><input type="texte" class="form-control" id="titre_eve" name="titre_eve" value="<?php echo $evenement->getTitreEvenement(); ?>"></h5>
             <div class="card-body">
                 <h5 class="card-title">Information</h5>
                 <input type="hidden" value="<?=$evenement->getIdEvenement();?>" name="ref_eve">
@@ -71,16 +69,31 @@ $evenement=$evenementRepo->getAnEvenement($evenement)
                 <p class="card-text">Description : <textarea class="form-control"  class="form-control" id="desc_eve" name="desc_eve"  rows="5"> <?php echo $evenement->getDescEvenement(); ?></textarea class="textarea"></p>
                 <p class="card-text">Element necessaires : <input type="text"  class="form-control" id="element_eve" name="element_eve"  value="<?php echo $evenement->getElementEvenement(); ?>"></p>
                 <p class="card-text">Nombre de place disponible : <input type="number"  class="form-control" id="nb_place" name="nb_place"  value="<?php echo $evenement->getNbPlace(); ?>"></p>
-                <?php
-                $evenementUserRepository=new EvenementUserRepository();
-                $superviseur=$evenementUserRepository->getSuperviseur($evenement->getIdEvenement());
-                if($_SESSION['utilisateur']['id_user'] == $superviseur->getRefUser()) {
-                    echo'<button class="btn btn-primary" type="submit">Participer</button>';
-                }
-                ?>
+
+                <button class="btn btn-primary" type="submit">Modifier</button>
+                <button type='button' class='btn btn-danger' data-bs-toggle="modal" data-bs-target="#confirmModal">
+                    Supprimer
+                </button>
             </div>
         </div>
     </form>
+    <!-- Modale de confirmation Bootstrap -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirmation de suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Êtes-vous sûr de vouloir supprimer cet evenement ? Cette action est irréversible.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <form method="post" action="../../src/treatment/traitementDeleteEvenement.php">
+                        <input type="hidden" name="idevenement" value="<?=$evenement->getIdEvenement()?>">
+                        <button type="submit" class="btn btn-danger">Confirmer</button>
+                    </form>
 
 </main>
 

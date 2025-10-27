@@ -27,8 +27,9 @@ if(isset($_POST['token'])&&isset($mdpnew)&&isset($mdpConfirm)){
     }
 
 }else {
+    $token=$_POST['token'];
     echo"veuillez remplir tous les champs";
-    header("Location:../../view/reinitialiserMdp.php");
+    header("Location:../../view/reinitialiserMdp.php/?token='.$token");
 }
 ?>
 <style>
