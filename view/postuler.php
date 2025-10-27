@@ -1,15 +1,85 @@
+<?php
+require_once("../src/bdd/config.php");
+session_start();
+
+$pdo = (new Config())->connexion();
+
+// Récupère l'offre si un ID est passé
+$ref_offre = $_GET['id'] ?? null;
+if (!$ref_offre) {
+    echo "<script>alert('Aucune offre sélectionnée.'); window.location.href='../emplois.php';</script>";
+    exit;
+}
+?>
 
 <!doctype html>
+<html lang="fr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ACCUEIL • LPRS</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous">
+    <title>Postuler à une offre • LPRS</title>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .section-offre {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .offre-header {
+            background-color: #212529;
+            color: white;
+            border-radius: .75rem .75rem 0 0;
+            padding: 1.5rem;
+            border-bottom: 2px solid #0d6efd;
+        }
+
+        .offre-header h2 {
+            margin: 0;
+        }
+
+        .card {
+            border: 1px solid rgba(0,0,0,0.08);
+            padding: 24px;
+            border-radius: 12px;
+            background-color: #fff;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input[type=text],
+        input[type=date],
+        input[type=email],
+        input[type=tel],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+    </style>
 </head>
+
+<body>
+
 
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
@@ -25,7 +95,7 @@
         <li class="nav-item"><a href="evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
         <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
         <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
-        <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="" class="btn btn-outline-light me-2">Emplois</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
                 <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>
@@ -43,74 +113,60 @@
     </div>
 </header>
 
-<?php $ref_offre = $_GET['id'];
- ?>
+<!-- SECTION FORMULAIRE -->
+<div class="container mb-5">
+    <div class="section-offre">
 
-<form class="card"
-          action="../src/treatment/gestionPostuler.php"
-          method="POST"
-          enctype="multipart/form-data">
-
-
-
-        <div class="grid">
-            <input type="hidden" name="ref_offre" value="<?php echo htmlspecialchars($ref_offre ?? ''); ?>">
-
-            <div>
-                <label class="required" for="email">Adresse e-mail</label>
-                <input id="email" name="email" type="email" placeholder="vous@exemple.com" required />
-            </div>
+        <!-- Bandeau titre -->
+        <div class="offre-header d-flex justify-content-between align-items-center">
+            <h2 class="fw-bold">Postuler</h2>
+            <button type="button" class="btn btn-outline-light" onclick="window.location.href='emplois.php'">
+                <i class="bi bi-arrow-left-circle"></i> Retour
+            </button>
         </div>
 
-        <div class="grid-1">
-            <div>
-                <label class="required" for ="lettre">Lettre de motivation</label>
-                <textarea id="lettre_motivation" name="lettre" required></textarea>
-            </div>
-        </div>
+        <!-- Formulaire de candidature -->
+        <form class="card mt-4"
+              action="../src/treatment/gestionPostuler.php"
+              method="POST"
+              enctype="multipart/form-data">
 
-        <div class="grid">
-            <div>
-                <label for="cv">CV (PDF, DOCX) — optionnel</label>
-                <input id="cv" name="cv" type="file" accept=".pdf,.doc,.docx" />
+            <input type="hidden" name="ref_offre" value="<?= htmlspecialchars($ref_offre) ?>">
+
+            <div class="mb-3">
+                <label for="email" class="form-label required">Adresse e-mail</label>
+                <input id="email" name="email" type="email" class="form-control" placeholder="vous@exemple.com" required>
             </div>
 
-        </div>
+            <div class="mb-3">
+                <label for="lettre" class="form-label required">Lettre de motivation</label>
+                <textarea id="lettre" name="lettre" class="form-control" rows="5" required></textarea>
+            </div>
 
-        <div class="inline" style="margin-top:8px">
-            <label><input type="checkbox" name="Consentement" required> J'accepte que mes données soient utilisées pour traiter ma candidature.</label>
-        </div>
+            <div class="mb-3">
+                <label for="cv" class="form-label">CV (PDF, DOCX) — optionnel</label>
+                <input id="cv" name="cv" type="file" class="form-control" accept=".pdf,.doc,.docx">
+            </div>
 
-        <div class="actions">
-            <div class="footer-note">Les champs marqués * sont obligatoires.</div>
-        </div>
-       <div>
-           <button type="submit" class="btn btn-primary mt-3">Envoyer la candidature</button>
-           <button type="button" class="btn btn-primary mt-3" onclick="window.location.href='emplois.php'">Retour</button>
-       </div>
-    </form>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="consentement" name="consentement" required>
+                <label class="form-check-label" for="consentement">
+                    J'accepte que mes données soient utilisées pour traiter ma candidature.
+                </label>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-send"></i> Envoyer la candidature
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='../emplois.php'">
+                    <i class="bi bi-arrow-left"></i> Retour
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-
-<style>
-
-    .card {
-        border:1px solid rgba(255,255,255,0.08);
-        padding:24px;
-    }
-    label {
-        font-weight:600;
-        margin-bottom:6px;
-        display:block;
-    }
-    input[type=text],input[type=date],input[type=email],input[type=tel],textarea,select {
-        width:100%;
-        padding:12px 14px;
-        border:1px solid rgba(255,255,255,0.2);
-        border-radius:12px;
-        background:rgba(255,255,255,0.05);
-    }
-    textarea { min-height:120px; resize:vertical; }
-
-</style>

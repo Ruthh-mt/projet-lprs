@@ -92,8 +92,12 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
         <!-- Bandeau titre -->
         <div class="offre-header d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">Modifier une offre d’emploi</h2>
+            <button type="button" class="btn btn-outline-light" onclick="window.location.href='../emplois.php'">
+                <i class="bi bi-arrow-left-circle"></i> Retour
+            </button>
 
         </div>
+
         <!-- Formulaire -->
         <form class="mt-4" action="../../src/treatment/traitementUpdateOffre.php" method="post">
 
@@ -120,10 +124,15 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
 
             <div class="mb-3">
                 <label for="description" class="form-label">Description du contrat</label>
-                <textarea class="form-control" type="text" name="description" value="<?= $offre['description']?>"></textarea>
+                <textarea class="form-control"  name="description" ><?= $offre['description']?></textarea>
 
             </div>
 
+            <div class="mb-3">
+                <label for="mission" class="form-label">Mission</label>
+                <textarea class="form-control"  name="mission" ><?= $offre['mission']?></textarea>
+
+            </div>
             <div class="mb-3">
                 <label for="type_contrat" class="form-label">Type de contrat</label>
                 <select class="form-select" name="type_contrat">

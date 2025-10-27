@@ -1,3 +1,10 @@
+<?php
+require_once ("../../src/bdd/config.php");
+$pdo  = (new Config())->connexion();
+$sql =$pdo->prepare("SELECT * FROM  fiche_entreprise f  ");
+$sql -> execute();
+$entreprises = $sql -> fetchAll(PDO::FETCH_ASSOC);
+?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -84,7 +91,9 @@
         <!-- Bandeau titre -->
         <div class="offre-header d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">Création d’une offre d’emploi</h2>
-
+            <button type="button" class="btn btn-outline-light" onclick="window.location.href='../emplois.php'">
+                <i class="bi bi-arrow-left-circle"></i> Retour
+            </button>
         </div>
         <!-- Formulaire -->
         <form class="mt-4" action="../../src/treatment/traitementAjoutOffre.php" method="post">
@@ -103,24 +112,24 @@
             <?php endif; ?>
 
             <div class="mb-3">
-                <label for="titre_eve" class="form-label">Titre du poste</label>
-                <input class="form-control" type="text" id="titre_eve" name="titre_eve" placeholder="Entrez le titre du poste">
-            </div>
-
-            <div class="mb-3">
-                <label for="type_contrat" class="form-label">Type du contrat</label>
-                <input class="form-control" type="text" id="type_contrat" name="type_contrat" placeholder="Entrez le type de contrat">
+                <label for="titre_poste" class="form-label">Titre du poste</label>
+                <input class="form-control" type="text" id="titre_eve" name="titre_poste" placeholder="Entrez le titre du poste">
             </div>
 
             <div class="mb-3">
                 <label for="desc_contrat" class="form-label">Description du contrat</label>
                 <textarea class="form-control" id="desc_contrat" name="desc_contrat" rows="3" placeholder="Entrez la description du contrat"></textarea>
             </div>
+            <div class="mb-3">
+                <label for="mission" class="form-label">Mission</label>
+                <textarea class="form-control" id="mission" name="mission" rows="3" ></textarea>
+            </div>
 
             <div class="mb-3">
                 <label for="type_contrat" class="form-label">Type de contrat</label>
                 <select class="form-select" name="type_contrat">
                     <option value="cdi">CDI</option>
+                    <option value="stage">Stage</option>
                     <option value="cdd">CDD</option>
                     <option value="alternance">Alternance</option>
                 </select>
@@ -129,6 +138,14 @@
             <div class="mb-3">
                 <label for="salaire" class="form-label">Salaire</label>
                 <input class="form-control" type="number" id="salaire" name="salaire" placeholder="Entrez le salaire">
+            </div>
+            <div class="mb-3">
+                <label for="entreprise" class="form-label">Entreprise</label>
+                <select class="form-select" name="entreprise">
+                <?php foreach ($entreprises as $entreprise) : ?>
+                    <option value="<?= $entreprise['id_fiche_entreprise']?>"><?= $entreprise['nom_entreprise']?></option>
+                <?php endforeach; ?>
+                </select>
             </div>
 
             <div class="d-flex gap-2">

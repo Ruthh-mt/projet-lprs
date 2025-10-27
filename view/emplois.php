@@ -71,9 +71,13 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
 
 
 <section class="creation-offre">
-<div class="card">
-    <div class="card-head"><h2>Offres d'emploi</h2></div>
-    <br>
+    <div class="card">
+        <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
+            <h2 class="m-0">Offres d'emploi</h2>
+            <a href="crudOffre/offreCreate.php" class="btn btn-success btn-sm">
+                <i class="bi bi-plus-circle"></i> Créer une offre
+            </a>
+        </div>
     <div class="table-wrap">
             <table class="table" id="offre-table">
                 <thead>
@@ -81,6 +85,7 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
                 </thead>
                 <tbody>
                 <?php foreach ($offres as $offre): ?>
+                <tr>
                 <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
                 <td><?= htmlspecialchars($offre['description']) ?></td>
                 <td><?= htmlspecialchars($offre['mission']) ?></td>
@@ -102,8 +107,15 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>
+                        <form action="../view/postuler.php?id=<?= $offre['id_offre'] ?>" method="post" style="display:inline;">
+                            <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
+                            <button type="submit" class="btn btn-sm btn-outline-success" title="Postuler à cette offre">
+                                <i class="bi bi-send-fill"></i> Postuler
+                            </button>
+                        </form>
                     </td>
                  <?php endforeach; ?>
+                </tr>
         </form>
      </tbody>
         </table>
