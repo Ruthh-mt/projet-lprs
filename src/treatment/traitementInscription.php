@@ -22,9 +22,9 @@ function validatePassword(string $mdp) {
     if (!preg_match('/[0-9]/', $mdp)) {
         return "Le mot de passe doit contenir au moins un chiffre.";
     }
-    if (!preg_match('/[\W_]/', $mdp)) {
-        return "Le mot de passe doit contenir au moins un caractère spécial.";
-    }
+//    if (!preg_match('/[\W_]/', $mdp)) {
+//        return "Le mot de passe doit contenir au moins un caractère spécial.";
+//    }
     return true;
 }
 function handlePdfUpload(array $file): ?string

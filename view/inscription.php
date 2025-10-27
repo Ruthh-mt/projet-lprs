@@ -66,19 +66,19 @@ if (session_status() === PHP_SESSION_NONE) {
           <?php endif; ?>
          <form action="../src/treatment/traitementInscription.php" method="post" class="align-self-center" enctype="multipart/form-data">
          <div class="form-floating my-2">
-                    <input type="text" name="prenom" class="form-control" id="floatingPrenom" placeholder="Prénom" required>
+                    <input type="text" name="prenom" class="form-control" id="floatingPrenom" placeholder="Prénom" autocomplete="given-name" required>
                     <label for="floatingPrenom">Prénom</label>
                </div>
                <div class="form-floating my-2">
-                    <input type="text" name="nom" class="form-control" id="floatingNom" placeholder="Nom de famille" required>
+                    <input type="text" name="nom" class="form-control" id="floatingNom" placeholder="Nom de famille" autocomplete="family-name" required>
                     <label for="floatingNom">Nom de famille</label>
                </div>
                <div class="form-floating my-2">
-                    <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Adresse email" required>
+                    <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Adresse email" autocomplete="email" required>
                     <label for="floatingEmail">Adresse email</label>
                </div>
                <div class="form-floating my-2">
-                    <input type="password" name="mdp" class="form-control" id="floatingMdp" placeholder="Mot de passe" required>
+                    <input type="password" name="mdp" class="form-control" id="floatingMdp" placeholder="Mot de passe" autocomplete="new-password" required>
                     <label for="floatingMdp">Mot de passe</label>
                </div>
                <div class="form-floating my-2">
