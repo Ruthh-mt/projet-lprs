@@ -68,36 +68,39 @@ if (session_status() === PHP_SESSION_NONE) {
 <section class="container">
      <div class="d-grid gap-2">
         <a  class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php" role="button">Ajouter un évènement</a>
-         <!---<button class="btn btn-outline-success text-uppercase my-3" type="button">Ajouter un évènement</button>--->
      </div>
-     <article class="row my-3">
-          <div class="card-group">
-              <?php
-              $evenementRepository = new EvenementRepository();
-              $allEvenement = $evenementRepository->getAllEvenement();
-              $count=0;
-              foreach ($allEvenement as $evenement) {
-                  if($count==3){
-                      echo"</div></article>";
-                      echo'<article class="row my-3">
-          <div class="card-group">';
-                      $count=0;
-                  }
-                  echo'<div class="card">
-                  <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                     <h5 class="card-title">'.$evenement["titre_eve"].'</h5>
-                      <p class="card-text">'.$evenement["desc_eve"].'</p>
-                  </div>
-                  <a href="../view/crudEvenement/afficherEvenement.php?id='.$evenement["id_evenement"].'.php"><button class="btn btn-primary">En savoir plus</button></a>
-                  <div class="card-footer">
-                      <small class="text-body-secondary">Last updated 3 mins ago</small>
-                  </div>
-              </div>';
-                  $count++;
-              }
+    <section class="container my-4">
 
-              ?>
+
+        <div class="d-flex flex-wrap justify-content-start gap-4">
+            <?php
+            $evenementRepository = new EvenementRepository();
+            $allEvenement = $evenementRepository->getAllEvenement();
+
+            foreach ($allEvenement as $evenement): ?>
+                <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
+                    <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
+                         class="card-img-top"
+                         alt="Image événement"
+                         style="height: 180px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement["titre_eve"]) ?></h5>
+                        <p class="card-text flex-grow-1 text-muted">
+                            <?= htmlspecialchars(substr($evenement["desc_eve"], 0, 100)) ?>...
+                        </p>
+                        <a href="../view/crudEvenement/afficherEvenement.php?id=<?= $evenement["id_evenement"] ?>"
+                           class="btn btn-primary mt-auto">
+                            En savoir plus
+                        </a>
+                    </div>
+                    <div class="card-footer text-muted small">
+                        Dernière mise à jour : <?= date('d/m/Y') ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
+
 </section>
      <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">
