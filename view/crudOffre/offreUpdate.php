@@ -17,7 +17,7 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa; /* gris clair, contraste avec header sombre */
+            background-color: #f8f9fa;
         }
 
         .section-offre {
@@ -28,11 +28,11 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
         }
 
         .offre-header {
-            background-color: #212529; /* plus sombre, cohérent avec le header du site */
+            background-color: #212529;
             color: white;
             border-radius: .75rem .75rem 0 0;
             padding: 1.5rem;
-            border-bottom: 2px solid #0d6efd; /* fine ligne bleue pour rappeler ton thème */
+            border-bottom: 2px solid #0d6efd;
         }
 
         .offre-header h2 {

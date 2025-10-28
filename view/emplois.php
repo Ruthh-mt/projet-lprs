@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 
 
 require_once ('../src/bdd/config.php');
@@ -46,11 +46,11 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
-        <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light active dropdown me-2">Accueil</a></li>
+        <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light ">Accueil</a></li>
         <li class="nav-item"><a href="evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
         <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
         <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
-        <li class="nav-item"><a href="" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="" class="btn btn-outline-light me-2 active dropdown me-2" >Emplois</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
                 <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>
@@ -77,6 +77,11 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
             <a href="crudOffre/offreCreate.php" class="btn btn-success btn-sm">
                 <i class="bi bi-plus-circle"></i> Créer une offre
             </a>
+            <?php if (isset($_SESSION['utilisateur'])): ?>
+            <a href="candidatures.php?id=<?= $_SESSION['utilisateur']['id_user'] ?>" class="btn btn-success btn-sm">
+                <i class="bi bi-plus-circle"></i> Mes candidatures
+            </a>
+            <?php endif; ?>
         </div>
     <div class="table-wrap">
             <table class="table" id="offre-table">
@@ -94,7 +99,7 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
                 <td><?= htmlspecialchars($offre['type']) ?></td>
                 <td><?= htmlspecialchars($offre['etat']) ?></td>
                     <td class="row-actions">
-                        <a href="crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>"
+                        <a href="../view/crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>"
                            class="btn btn-sm btn-outline" title="Modifier">
                             <i class="bi bi-pencil"></i>
                         </a>

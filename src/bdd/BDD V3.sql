@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `post` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `postuler`
+-- Structure de la table `crudPostuler`
 --
 
 DROP TABLE IF EXISTS `postuler`;
@@ -333,7 +333,7 @@ ALTER TABLE `post`
   ADD CONSTRAINT `fk_utilisateur_post` FOREIGN KEY (`ref_user`) REFERENCES `utilisateur` (`id_user`);
 
 --
--- Contraintes pour la table `postuler`
+-- Contraintes pour la table `crudPostuler`
 --
 ALTER TABLE `postuler`
   ADD CONSTRAINT `fk_offre_postuler` FOREIGN KEY (`ref_offre`) REFERENCES `offre` (`id_offre`),

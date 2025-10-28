@@ -6,7 +6,7 @@ $pdo = (new Config())->connexion();
 
 // Vérification session
 if (!isset($_SESSION['utilisateur'])) {
-    echo "<script>alert('Veuillez vous connecter pour postuler.'); window.location.href='../../view/connexion.php';</script>";
+    echo "<script>alert('Veuillez vous connecter pour crudPostuler.'); window.location.href='../../view/connexion.php';</script>";
     exit;
 }
 

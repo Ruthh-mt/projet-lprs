@@ -14,7 +14,7 @@ if (isset($_POST['delete_offre'])) {
             $stmt->execute([$idOffre]);
 
         } catch (Exception $e) {
-            // Pour test : afficher l'erreur temporairement
+
             echo "Erreur SQL : " . $e->getMessage();
             exit;
         }
