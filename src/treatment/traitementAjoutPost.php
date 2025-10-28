@@ -25,7 +25,6 @@ try {
        "contenuPost" => $contenuPost,
        "dateHeurePost" => $dateHeurePost
     ));
-    var_dump($post);
     $postRepository = new PostRepository();
     $postRepository->createPost($post);
   $_SESSION['success']= "Le Post a bien été crée";

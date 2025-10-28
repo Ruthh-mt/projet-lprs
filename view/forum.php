@@ -5,6 +5,8 @@ require_once "../src/bdd/config.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+/*si la session utilisateur est vide(user non connecté) alors on va soit lui montrer que le forum/post du canal general ou
+soit on va rien lui montrer*/
 
 ?>
 <!doctype html>
@@ -79,16 +81,38 @@ if(!isset($_SESSION['utilisateur'])){
 $postRepository=new PostRepository();
 $allpost=$postRepository->getAllPost();
         foreach($allpost as $post){
+            $username=$postRepository->findUsername($post["id_post"]);
             echo'<div class="card">
-            <div class="card-header">'.
-                $postRepository->findUsername($post).'</div>'
-            .'</div>
+            <div class="card-header"><i class="bi bi-person-circle">'." ".'</i>'.
+                $username["prenom"].' '.$username["nom"] .'</i></div>
             <div class="card-body">
-                <h5 class="card-title">'.$post->getTitrePost().'</h5>
-                <p class="card-text">'.$post->getContenuPost().'</p>
-                <a href="afficherPost.php?id='.$post->getIdPost().'" class="btn btn-primary">Voir plus</a>
+                <h5 class="card-title">'.$post["titre_post"].'</h5>
+                <p class="col-20 text-truncate" id="contenu">'.$post["contenu_post"].'</p>
+                <a href="crudPost/afficherPost.php?id='.$post["id_post"].'" class="btn btn-primary">Voir plus</a>
             </div>
-        </div>';
+        </div> <br>';
         }
 ?>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
 
