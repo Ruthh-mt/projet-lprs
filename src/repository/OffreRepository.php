@@ -1,6 +1,6 @@
 <?php
 
-class offreRepository
+class OffreRepository
 {
 
     private Config $db;
@@ -13,17 +13,17 @@ class offreRepository
     public function createOffre(OffreModel $offre)
     {
         $sql = "INSERT INTO offre (titre,description, mission,salaire, type, etat, ref_fiche) 
-            VALUES ()";
+            VALUES (:titre, :description, :mission, :salaire, :type, :etat, :ref_fiche)";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute([
-            'titre' => $offre->getTitrePoste(),
-            'description' => $offre->getDescEvenement(),
-            'desc' => $evenement->getDescEvenement(),
-            'lieu' => $evenement->getLieuEvenement(),
-            'element' => $evenement->getElementEvenement(),
-            'nbPlace' => $evenement->getNbPlace()
+            'titre' => $offre->getTitreOffre(),
+            'description' => $offre->getDescription(),
+            'mission' => $offre->getMission(),
+            'salaire' => $offre->getSalaire(),
+            'type' => $offre->getTypeContrat(),
+            'etat' => $offre ->getEtat(),
+            'refFiche' => $offre->getRefFiche()
         ]);
-
         return $this->db->connexion()->lastInsertId();
     }
 

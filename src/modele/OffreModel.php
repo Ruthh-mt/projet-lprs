@@ -2,8 +2,15 @@
 
 class OffreModel
 {
-    private $idOffre;
-    private $titrePoste;
+
+    private $titreOffre;
+    private $description;
+    private $mission;
+    private $salaire;
+    private $typeContrat;
+    private $etat;
+    private $ref_fiche ;
+
 
     public function __construct(array $donnees){
         $this->hydrate($donnees);
@@ -37,7 +44,7 @@ class OffreModel
     /**
      * @return mixed
      */
-    public function getTitreOffre(): string
+    public function getTitreOffre()
     {
         return $this->titreOffre;
     }
@@ -101,30 +108,43 @@ class OffreModel
     /**
      * @return mixed
      */
-    public function getMission()
+    public function getEtat()
     {
-        return $this->mission;
+        return $this->etat;
     }
 
     /**
      * @param mixed $mission
      */
-    public function setMission($mission): void
+    public function setEtat($etat): void
     {
-        $this->mission = $elementEvenement;
+        $this->etat = $etat;
     }
 
     /**
      * @return mixed
      */
-    public function getType()
+    public function getTypeContrat()
     {
-        return $this->nbPlace;
+        return $this->typeContrat ;
     }
-    public function setType()
+    /**
+     * @param mixed $typeContrat
+     */
+    public function setType($typeContrat)
     {
-        return $this->type;
+        return $this->typeContrat = $typeContrat;
     }
-
+    public function getRefFiche()
+    {
+        return $this->ref_fiche ;
+    }
+    /**
+     * @param mixed $ref_fiche
+     */
+    public function setRefFiche($ref_fiche)
+    {
+        return $this->ref_fiche = $ref_fiche;
+    }
 
 }

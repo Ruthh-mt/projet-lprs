@@ -1,5 +1,9 @@
 <?php
 require_once("../../src/bdd/config.php");
+require_once "../modele/OffreModel.php";
+require_once "../../src/repository/OffreRepository.php";
+
+$offreRepository = new OffreRepository();
 
 try {
     $pdo = (new Config())->connexion();
@@ -24,6 +28,7 @@ try {
     $type = trim($_POST['type_contrat']);
     $salaire = (float) $_POST['salaire'];
     $id_entreprise = (int) $_POST['entreprise'];
+    $etat = "En attente"; // valeur par défaut
 
     // Vérification du salaire
     if ($salaire < 0) {
@@ -32,26 +37,22 @@ try {
     }
 
     // Requête d’insertion
-    $sql = $pdo->prepare("
-        INSERT INTO offre (titre, description, mission, salaire, type, etat, ref_fiche)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ");
+  $offre = new OffreModel(array(
+      'titre' => $titre,
+      'description' => $description,
+      'mission' => $mission,
+      'type' => $type,
+      'etat' => $etat,
+      'salaire' => $salaire,
+      'ref_fiche' => $id_entreprise
+  )) ;
 
-    $etat = "En attente"; // valeur par défaut
-
-    $sql->execute([
-        $titre,
-        $description,
-        $mission,
-        $salaire,
-        $type,
-        $etat,
-        $id_entreprise
-    ]);
-
-    // Message de succès et redirection
-    echo "<script>alert('Offre créée avec succès !'); window.location.href='../../view/emplois.php';</script>";
-    exit;
+   $ok = $offreRepository ->createOffre($offre);
+   if($ok){
+       // Message de succès et redirection
+       echo "<script>alert('Offre créée avec succès !'); window.location.href='../../view/emplois.php';</script>";
+       exit;
+   }
 
 } catch (PDOException $e) {
     echo "<script>alert('Erreur lors de la création de l’offre : " . addslashes($e->getMessage()) . "'); window.history.back();</script>";
