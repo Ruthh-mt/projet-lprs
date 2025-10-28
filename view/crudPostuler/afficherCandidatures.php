@@ -112,7 +112,7 @@ $candidature= $stmt->fetch();
             </button>
         </div>
 
-        <form class="mt-4" action="" method="post">
+
             <input type="hidden" name="id_offre" value="<?= htmlspecialchars($candidature['id_offre']) ?>">
             <input type="hidden" name="ref_user" value="<?= htmlspecialchars($_SESSION['utilisateur']['id_user']) ?>">
 
@@ -138,7 +138,7 @@ $candidature= $stmt->fetch();
                 <form action="candidatureDelete.php" method="post" style="display:inline;">
                     <input type="hidden" name="id_offre" value="<?= htmlspecialchars($candidature['id_offre']) ?>">
                     <input type="hidden" name="delete_candidature" value="1">
-                    <button type="button" class="btn btn-danger" title="Supprimer"
+                    <button type="submit" class="btn btn-danger" title="Supprimer"
                             onclick="return confirm('Supprimer cette offre ?')">Supprimer votre candidature</button>
                 </form>
             </div>

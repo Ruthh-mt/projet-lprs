@@ -17,7 +17,7 @@ if (isset($_POST['delete_candidature'])) {
     $stmt = $pdo->prepare("DELETE FROM postuler WHERE ref_user = ? and ref_offre = ? ;");
     $ok = $stmt->execute([$ref_user,$ref_offre]);
     if ($ok) {
-        echo "<script>alert('Votre candidature a été supprimé !'); window.location.href='../../view/redirection_postuler.php';</script>";
+        echo "<script>alert('Votre candidature a été supprimé !'); window.location.href='../../view/candidatures.php';</script>";
         exit;
     } else {
         echo "<script>alert('Erreur lors de la suppression de la candidature.'); window.history.back();</script>";

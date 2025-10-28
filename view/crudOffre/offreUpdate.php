@@ -140,6 +140,8 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
                     <option value="cdi">CDI</option>
                     <option value="cdd">CDD</option>
                     <option value="alternance">Alternance</option>
+                    <option value="contrat de professionnalisation">Contrat de professionnalisation</option>
+
                 </select>
             </div>
 
