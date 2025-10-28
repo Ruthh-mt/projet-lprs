@@ -141,8 +141,14 @@ $candidature= $stmt->fetch();
                     <button type="submit" class="btn btn-danger" title="Supprimer"
                             onclick="return confirm('Supprimer cette offre ?')">Supprimer votre candidature</button>
                 </form>
+                <form action="candidatureUpdate.php" method="post" style="display:inline;">
+                    <input type="hidden" name="id_offre" value="<?= htmlspecialchars($candidature['id_offre']) ?>">
+                    <input type="hidden" name="update_candidature" value="1">
+                    <button type="submit"  class="btn btn-warning" title="modifier"  onclick="window.location.href='../../view/candidatureUpdate.php'">Modifier votre candidature
+                    </button>
+                </form>
             </div>
-        </form>
+
     </div>
 </div>
 

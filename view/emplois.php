@@ -3,12 +3,10 @@ session_start();
 
 
 require_once ('../src/bdd/config.php');
+require_once "../src/repository/OffreRepository.php";
 $pdo  = (new Config())->connexion();
-
-$sql =$pdo->prepare("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
-$sql -> execute();
-$offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
-
+$offreRepo = new offreRepository();
+$offres = $offreRepo->getAllOffre();
 
 ?>
 
@@ -78,8 +76,7 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
                 <i class="bi bi-plus-circle"></i> Créer une offre
             </a>
             <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="candidatures.php?id=<?= $_SESSION['utilisateur']['id_user'] ?>" class="btn btn-success btn-sm">
-                <i class="bi bi-plus-circle"></i> Mes candidatures
+            <a href="candidatures.php?id=<?= $_SESSION['utilisateur']['id_user'] ?>" class="btn active" role="button" data-bs-toggle="button" aria-pressed="true"</i> Mes candidatures
             </a>
             <?php endif; ?>
         </div>

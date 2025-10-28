@@ -27,7 +27,7 @@ class OffreModel
     }
 
     /**
-     * @param mixed $idEvenement
+     * @param mixed $idOffre
      */
     public function setIdOfre($idOffre): void
     {
@@ -37,89 +37,93 @@ class OffreModel
     /**
      * @return mixed
      */
-    public function getTitrePoste()
+    public function getTitreOffre(): string
     {
-        return $this->titrePoste;
+        return $this->titreOffre;
     }
 
     /**
-     * @param mixed $titreEvenement
+     * @param mixed $titreOffre
      */
-    public function setTitreEvenement($titreEvenement): void
+    public function setTitreOffre($titreOffre): void
     {
-        $this->titreEvenement = $titreEvenement;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTypeEvenement()
-    {
-        return $this->typeEvenement;
-    }
-
-    /**
-     * @param mixed $typeEvenement
-     */
-    public function setTypeEvenement($typeEvenement): void
-    {
-        $this->typeEvenement = $typeEvenement;
+        $this->titreOffre = $titreOffre;
     }
 
     /**
      * @return mixed
      */
-    public function getDescEvenement()
+    public function getDescription()
     {
-        return $this->descEvenement;
+        return $this->description ;
     }
 
     /**
-     * @param mixed $descEvenement
+     * @param mixed $description
      */
-    public function setDescEvenement($descEvenement): void
+    public function setDescription($description): void
     {
-        $this->descEvenement = $descEvenement;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLieuEvenement()
-    {
-        return $this->lieuEvenement;
-    }
-
-    /**
-     * @param mixed $lieuEvenement
-     */
-    public function setLieuEvenement($lieuEvenement): void
-    {
-        $this->lieuEvenement = $lieuEvenement;
+        $this->description = $description;
     }
 
     /**
      * @return mixed
      */
-    public function getElementEvenement()
+    public function getMission()
     {
-        return $this->elementEvenement;
+        return $this->mission;
     }
 
     /**
-     * @param mixed $elementEvenement
+     * @param mixed $mission
      */
-    public function setElementEvenement($elementEvenement): void
+    public function setMission($mission): void
     {
-        $this->elementEvenement = $elementEvenement;
+        $this->mission = $mission;
     }
 
     /**
      * @return mixed
      */
-    public function getNbPlace()
+    public function getSalaire()
+    {
+        return $this->salaire ;
+    }
+
+    /**
+     * @param mixed $salaire
+     */
+    public function setSalaire($salaire): void
+    {
+        $this->salaire = $salaire;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMission()
+    {
+        return $this->mission;
+    }
+
+    /**
+     * @param mixed $mission
+     */
+    public function setMission($mission): void
+    {
+        $this->mission = $elementEvenement;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
     {
         return $this->nbPlace;
+    }
+    public function setType()
+    {
+        return $this->type;
     }
 
 

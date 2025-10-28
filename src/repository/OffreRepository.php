@@ -10,14 +10,14 @@ class offreRepository
         $this->db = new Config();
     }
 
-    public function createOffre(Evenement $evenement)
+    public function createOffre(OffreModel $offre)
     {
-        $sql = "INSERT INTO offre () 
+        $sql = "INSERT INTO offre (titre,description, mission,salaire, type, etat, ref_fiche) 
             VALUES ()";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute([
-            'titre' => $evenement->getTitreEvenement(),
-            'type' => $evenement->getTypeEvenement(),
+            'titre' => $offre->getTitrePoste(),
+            'description' => $offre->getDescEvenement(),
             'desc' => $evenement->getDescEvenement(),
             'lieu' => $evenement->getLieuEvenement(),
             'element' => $evenement->getElementEvenement(),
@@ -29,10 +29,12 @@ class offreRepository
 
     public function getAllOffre()
     {
-        $sql = "SELECT * FROM evenement";
+        $sql = "SELECT * FROM offre o inner join fiche_entreprise f
+    on o.ref_fiche = f.id_fiche_entreprise";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll();
+        $offres = $stmt->fetchAll();
+        return $offres;
     }
 
     public function getOffreById($user)

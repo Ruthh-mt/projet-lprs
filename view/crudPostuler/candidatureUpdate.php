@@ -4,7 +4,7 @@ session_start();
 
 $pdo = (new Config())->connexion();
 
-$ref_offre = $_GET['id'] ?? null;
+$ref_offre = $_POST['id_offre'] ?? null;
 if (!$ref_offre) {
     echo "<script>alert('Aucune offre sélectionnée.'); window.location.href='../emplois.php';</script>";
     exit;
@@ -139,7 +139,6 @@ $motivation = $candidature['motivation'];
 
 
             <div class="mb-3">
-
                 <label>
                     <textarea name="lettre" class="form-control" required> <?php echo $motivation ?>  </textarea>
                 </label>
@@ -161,7 +160,7 @@ $motivation = $candidature['motivation'];
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-send"></i> Envoyer la candidature
                 </button>
-                <button type="button" class="btn btn-secondary" onclick="window.location.href='emplois.php'">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='../../view/candidatures.php'">
                     <i class="bi bi-arrow-left"></i> Retour
                 </button>
             </div>
