@@ -1,6 +1,8 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+
+    $page = 'Utilisateur';
 }
 ?>
 <!doctype html>
@@ -26,43 +28,47 @@ if (session_status() === PHP_SESSION_NONE) {
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
-        <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
-        <li class="nav-item"><a href="evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
-        <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
-        <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
-        <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
-        <li class="nav-item"><a href="forum.php" class="btn btn-outline-light me-2">Forum</a></li>
+        <li class="nav-item"><a href="../accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
+        <li class="nav-item"><a href="../evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
+        <li class="nav-item"><a href="../annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
+        <li class="nav-item"><a href="../listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
+        <li class="nav-item"><a href="../emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="../forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
-                <a href="administration.php" class="btn btn-outline-warning active me-2">Administration</a>
+                <a href="../administration.php" class="btn btn-outline-warning active me-2">Administration</a>
             </li>
         <?php endif; ?>
     </ul>
     <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
         <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
-            <a href="../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
+            <a href="../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
+            <a href="../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
         <?php else: ?>
-            <a href="connexion.php" class="btn btn-outline-success">Connexion</a>
-            <a href="inscription.php" class="btn btn-outline-primary">Inscription</a>
+            <a href="../connexion.php" class="btn btn-outline-success">Connexion</a>
+            <a href="../inscription.php" class="btn btn-outline-primary">Inscription</a>
         <?php endif; ?>
     </div>
 </header>
 <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
-            <a href="utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
-            <a href="#" class="btn btn-outline-info">Alumni</a>
-            <a href="#" class="btn btn-outline-info">Professeur</a>
-            <a href="#" class="btn btn-outline-info">Partenaire</a>
-            <a href="#" class="btn btn-outline-info">Étudiant</a>
+            <a href="../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
+            <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
+            <a href="../crudEtudiant/etudiantRead.php" class="btn btn-outline-info">Étudiant</a>
+            <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-info">Évènement</a>
+            <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Fiche entreprise</a>
             <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
-            <a href="#" class="btn btn-outline-info">Offre</a>
-            <a href="#" class="btn btn-outline-info">Évènement</a>
-            <a href="#" class="btn btn-outline-info">Fiche entreprise</a>
-            <a href="#" class="btn btn-outline-info">Postuler</a>
-            <a href="#" class="btn btn-outline-info">Post</a>
-            <a href="#" class="btn btn-outline-info">Réponse</a>
+            <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
+            <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
+            <a href="../crudPost/postRead.php" class="btn btn-outline-info">Post</a>
+            <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-info">Postuler</a>
+            <a href="../crudProfesseur/professeurRead.php" class="btn btn-outline-info">Professeur</a>
+            <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
+            <a href="../crudUtilisateur" class="btn btn-outline-info active">Utilisateur</a>
         </div>
     </div>
 </nav>
+<section class="container banner bg-info text-white text-center py-1 rounded border">
+    <h1>Gestion <?=$page?></h1>
+</section>
