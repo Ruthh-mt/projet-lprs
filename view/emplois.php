@@ -102,7 +102,7 @@ $offres = $offreRepo->getAllOffre();
                             <i class="bi bi-pencil"></i>
                         </a>
 
-                        <form action="../view/crudOffre/deleteOffre.php" method="post" style="display:inline;">
+                        <form action="crudOffre/offreDelete.php" method="post" style="display:inline;">
                             <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                             <input type="hidden" name="delete_offre" value="1">
                             <button type="submit" class="btn btn-sm btn-outline-danger"

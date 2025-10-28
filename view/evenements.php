@@ -92,7 +92,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <p class="card-text flex-grow-1 text-muted">
                             '.htmlspecialchars(substr($evenement["desc_eve"], 0, 100)).'...
                         </p>
-                        <a href="../view/crudEvenement/afficherEvenement.php?id='. $evenement["id_evenement"].'"
+                        <a href="../view/crudEvenement/evenementRead.php?id='. $evenement["id_evenement"].'"
                            class="btn btn-primary mt-auto">
                             En savoir plus
                         </a>

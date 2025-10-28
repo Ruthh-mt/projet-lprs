@@ -88,7 +88,7 @@ $allpost=$postRepository->getAllPost();
             <div class="card-body">
                 <h5 class="card-title">'.$post["titre_post"].'</h5>
                 <p class="col-20 text-truncate" id="contenu">'.$post["contenu_post"].'</p>
-                <a href="crudPost/afficherPost.php?id='.$post["id_post"].'" class="btn btn-primary">Voir plus</a>
+                <a href="crudPost/postRead.php?id='.$post["id_post"].'" class="btn btn-primary">Voir plus</a>
             </div>
         </div> <br>';
         }

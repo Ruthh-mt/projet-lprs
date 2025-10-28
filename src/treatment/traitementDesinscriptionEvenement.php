@@ -30,9 +30,9 @@ try {
             "refUser" => $refUser,
         ));
     $evenementUserRepository->desinscription($evenementuser);
-    redirectWith('success', "Vous avez bien été desinscrit de l'evenement ", '../../view/crudEvenement/afficherEvenement.php?id=' . $idEve);
+    redirectWith('success', "Vous avez bien été desinscrit de l'evenement ", '../../view/crudEvenement/evenementRead.php?id=' . $idEve);
     session_write_close();
 } catch (PDOException $e) {
-    redirectWith('error', "Erreur de la desinscription  : " . $e->getMessage(), '../../view/crudEvenement/afficherEvenement.php?id=' . $idEve);
+    redirectWith('error', "Erreur de la desinscription  : " . $e->getMessage(), '../../view/crudEvenement/evenementRead.php?id=' . $idEve);
 }
 

@@ -87,7 +87,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title fw-bold"><?= htmlspecialchars($candidature["titre"]) ?></h5>
                             <p><?= $candidature['motivation'] ?></p>
-                            <a href="crudPostuler/afficherCandidatures.php?id=<?=$candidature['ref_offre'] ?>"
+                            <a href="crudPostuler/candidatureRead.php?id=<?=$candidature['ref_offre'] ?>"
                                class="btn btn-outline-success text-uppercase">Voir le candidature</a>
 
                         </div>

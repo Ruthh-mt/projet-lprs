@@ -2,7 +2,16 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/TraitementFormationUpdate.php';
+if (file_exists(__DIR__ . '/db.php')) require_once __DIR__ . '/db.php';
+if (file_exists(__DIR__ . '/FormationsModel.php')) require_once __DIR__ . '/FormationsModel.php';
+if (file_exists(__DIR__ . '/FormationRepository.php')) require_once __DIR__ . '/FormationRepository.php';
+
+$formations = [];
+if (isset($pdo) && $pdo instanceof PDO) {
+    $repo = new FormationRepository($pdo);
+    $formations = $repo->findAll(100, 0);
+    $total = $repo->count();
+}
 ?>
 <!doctype html>
 <html lang="fr">
@@ -68,30 +77,32 @@ require_once __DIR__ . '/TraitementFormationUpdate.php';
     </div>
 </nav>
 
-<h1>Modifier une formation</h1>
+<h1>Formations</h1>
 
-<?php if (!empty($errors)): ?>
-    <ul style="color:red;">
-        <?php foreach ($errors as $k => $v): ?>
-            <li><?= htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8') ?></li>
+<?php if (isset($_GET['created'])): ?><p style="color:green">Formation créée.</p><?php endif; ?>
+<?php if (isset($_GET['updated'])): ?><p style="color:green">Formation mise à jour.</p><?php endif; ?>
+<?php if (isset($_GET['deleted'])): ?><p style="color:green">Formation supprimée.</p><?php endif; ?>
+
+<p><a href="formationCreate.php">Créer une nouvelle formation</a></p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+    <thead><tr><th>#</th><th>Nom</th><th>Actions</th></tr></thead>
+    <tbody>
+    <?php if (empty($formations)): ?>
+        <tr><td colspan="3">Aucune formation.</td></tr>
+    <?php else: ?>
+        <?php foreach ($formations as $f): ?>
+            <tr>
+                <td><?= htmlspecialchars((string)$f->id_formation, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($f->nom, ENT_QUOTES, 'UTF-8') ?></td>
+                <td>
+                    <a href="FormationUpdate.php?id=<?= urlencode((string)$f->id_formation) ?>">Modifier</a> |
+                    <a href="FormationDelete.php?id=<?= urlencode((string)$f->id_formation) ?>">Supprimer</a>
+                </td>
+            </tr>
         <?php endforeach; ?>
-    </ul>
-<?php endif; ?>
-
-<?php if (isset($formation) && $formation instanceof FormationsModel): ?>
-    <form method="post" action="">
-        <input type="hidden" name="id_formation" value="<?= htmlspecialchars((string)$formation->id_formation, ENT_QUOTES, 'UTF-8') ?>">
-        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
-        <label>Nom (max 50) :
-            <input type="text" name="nom" maxlength="50" required value="<?= htmlspecialchars($old['nom'] ?? $formation->nom, ENT_QUOTES, 'UTF-8') ?>">
-        </label>
-        <br><br>
-        <button type="submit">Enregistrer</button>
-        <a href="FormationRead.php">Annuler</a>
-    </form>
-<?php else: ?>
-    <p>Formation introuvable ou erreur.</p>
-    <p><a href="FormationRead.php">Retour</a></p>
-<?php endif; ?>
+    <?php endif; ?>
+    </tbody>
+</table>
 </body>
 </html>

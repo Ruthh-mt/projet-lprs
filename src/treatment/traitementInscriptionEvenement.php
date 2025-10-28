@@ -19,7 +19,7 @@ $refUser = $_POST["refUser"];
 $refEvenement = $_POST["ref_eve"];
 
 if ($refUser===''||$refEvenement==='') {
-    redirectWith('error', "Vous n'avez pas l'air connecté ", '../../view/crudEvenement/afficherEvenement.php');
+    redirectWith('error', "Vous n'avez pas l'air connecté ", '../../view/crudEvenement/evenementRead.php');
 }
 try {
     $evenementUser = new EvenementUser(array(
