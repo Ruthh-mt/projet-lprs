@@ -49,6 +49,7 @@ $offres = $offreRepo->getAllOffre();
         <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
         <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
         <li class="nav-item"><a href="" class="btn btn-outline-light me-2 active dropdown me-2" >Emplois</a></li>
+        <li class="nav-item"><a href="forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
                 <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>
