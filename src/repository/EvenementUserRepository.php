@@ -49,6 +49,16 @@ class EvenementUserRepository{
             ]
         );
 
-
+    }
+    public function desinscription($evenementUser){
+        $req="DELETE FROM user_evenement WHERE ref_evenement=:evenement AND  ref_user=:user";
+        $stm=$this->db->connexion()->prepare($req);
+        $stm->execute(["evenement"=>$evenementUser->getRefEvenement(),
+        "user"=>$evenementUser->getRefUser()]);
+    }
+    public function deleteUserEvenement($evenementUser){
+        $req="DELETE FROM user_evenement WHERE ref_evenement=:evenement";
+        $stm=$this->db->connexion()->prepare($req);
+        $stm->execute(["evenement"=>$evenementUser->getRefEvenement()]);
     }
 }

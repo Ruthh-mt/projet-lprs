@@ -44,7 +44,7 @@ class EvenementRepository{
         return $evenement;
     }
     public function updateEvenement(Evenement $evenement){
-        $sql="UPDATE evenement SET titre_eve=:titre, type_eve:type, desc_eve=:desc, lieu_eve=:lieu, element_eve=:element,
+        $sql="UPDATE evenement SET titre_eve=:titre, type_eve=:type, desc_eve=:desc, lieu_eve=:lieu, element_eve=:element,
          nb_place=:nbplace WHERE id_evenement=:id ";
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute([
@@ -54,10 +54,17 @@ class EvenementRepository{
             'desc'=>$evenement->getDescEvenement(),
             'lieu'=>$evenement->getLieuEvenement(),
             'element'=>$evenement->getElementEvenement(),
-            'nbPlace'=>$evenement->getNbPlace()
+            'nbplace'=>$evenement->getNbPlace()
         ]);
+        return $evenement->getIdEvenement();
 
-        return $this->db->connexion()->lastInsertId();
+    }
+
+    public function deleteEvenement($evenement)
+    {
+        $delete="delete from evenement where id_evenement=:id";
+        $stmt=$this->db->connexion()->prepare($delete);
+        $stmt->execute(['id'=>$evenement->getIdEvenement()]);
     }
 
 }

@@ -135,13 +135,13 @@ $evenement = $evenementRepo->getAnEvenement(new Evenement(["idEvenement" => $id]
 
             <div class="text-center mt-4">
                 <?php if ($_SESSION['utilisateur']['id_user'] != $superviseur->getRefUser()): ?>
-                    <?php if (!$estInscrit): ?>
+                    <?php if ($estInscrit): ?>
                         <button class="btn btn-primary" type="submit">
                             <i class="bi bi-person-plus"></i> Participer
                         </button>
                     <?php else: ?>
-                        <button class="btn btn-danger" type="submit">
-                            <i class="bi bi-person-dash"></i> Se désinscrire
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                            <i class="bi bi-trash"></i> Se desinscrire
                         </button>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -157,7 +157,45 @@ $evenement = $evenementRepo->getAnEvenement(new Evenement(["idEvenement" => $id]
         <?php endif; ?>
     </div>
 </div>
+<!-- MODALE DE CONFIRMATION -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmer la desinscription</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir vous desinscrire ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <form method="post" action="../../src/treatment/traitementDesinscriptionEvenement.php">
+                    <input type="hidden" name="idevenement" value="<?= htmlspecialchars($evenement->getIdEvenement()) ?>">
+                    <input type="hidden" name="refuser" value="<?= htmlspecialchars($eveUser->getRefUser()) ?>">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-exclamation-octagon"></i> Se Desinscrire
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function autoResize(textarea) {
+        textarea.style.height = 'auto'; // Reset height
+        textarea.style.height = textarea.scrollHeight + 'px'; // Set to content height
+    }
 
+    // Get the textarea
+    const ta = document.getElementById('desc_eve');
+
+    // Adjust height on input
+    ta.addEventListener('input', () => autoResize(ta));
+
+    // Adjust height on page load for prefilled content
+    window.addEventListener('load', () => autoResize(ta));
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

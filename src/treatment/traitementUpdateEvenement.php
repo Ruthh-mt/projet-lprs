@@ -24,7 +24,7 @@ $idEve=$_POST["ref_eve"];
 
 if($titreEve==='' || $typeEve==='' || $descEve==='' || $lieuEve===''
     || $elementEve==='' || $nbPlace==='' ||$idEve===''){
-    redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementCreate.php');
+    redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementUpdate.php');
 }
 try {
     $evenement = new Evenement(array(
@@ -41,6 +41,6 @@ try {
     redirectWith('success',"L'evenement a bien été modifié",'../../view/crudEvenement/afficherEvenement?id='.$refEvenement.'.php');
     session_write_close();
 } catch (PDOException $e) {
-    redirectWith('error', "Erreur de la creation d'evenement : " . $e->getMessage(), '../../view/crudEvenement/evenementCreate.php');
+    redirectWith('error', "Erreur de la modification d'evenement : " . $e->getMessage(), '../../view/crudEvenement/evenementUpdate.php?id='.$idEve);
 }
 

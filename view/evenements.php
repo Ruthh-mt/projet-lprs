@@ -64,41 +64,46 @@ if (session_status() === PHP_SESSION_NONE) {
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php endif; ?>
-
 <section class="container">
      <div class="d-grid gap-2">
         <a  class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php" role="button">Ajouter un évènement</a>
      </div>
     <section class="container my-4">
-
-
-        <div class="d-flex flex-wrap justify-content-start gap-4">
-            <?php
+        <?php
+    if(!isset($_SESSION['utilisateur'])){
+    echo'<h5> Vous etes pas connecté. Veuillez vous connecter</h5>
+    <a  class="btn btn-secondary" href="connexion.php" role="button">Se connecter</a>
+    <p>Erreur : Identify yourself who are you</p>';
+    }
+    else {
+        echo'<div class="d-flex flex-wrap justify-content-start gap-4">';
             $evenementRepository = new EvenementRepository();
             $allEvenement = $evenementRepository->getAllEvenement();
 
-            foreach ($allEvenement as $evenement): ?>
-                <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
+            foreach ($allEvenement as $evenement) {
+                echo '<div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
                     <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
                          class="card-img-top"
                          alt="Image événement"
                          style="height: 180px; object-fit: cover;">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement["titre_eve"]) ?></h5>
+                        <h5 class="card-title fw-bold">'.htmlspecialchars($evenement["titre_eve"]).'</h5>
                         <p class="card-text flex-grow-1 text-muted">
-                            <?= htmlspecialchars(substr($evenement["desc_eve"], 0, 100)) ?>...
+                            '.htmlspecialchars(substr($evenement["desc_eve"], 0, 100)).'...
                         </p>
-                        <a href="../view/crudEvenement/afficherEvenement.php?id=<?= $evenement["id_evenement"] ?>"
+                        <a href="../view/crudEvenement/afficherEvenement.php?id='. $evenement["id_evenement"].'"
                            class="btn btn-primary mt-auto">
                             En savoir plus
                         </a>
                     </div>
                     <div class="card-footer text-muted small">
-                        Dernière mise à jour : <?= date('d/m/Y') ?>
+                        Dernière mise à jour :'.date("d / m / Y").'
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
+                </div>';
+            }
+        echo'</div>';
+    } ?>
+
     </section>
 
 </section>

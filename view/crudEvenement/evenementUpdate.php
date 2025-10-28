@@ -8,7 +8,7 @@ require_once "../../src/bdd/config.php";
 session_start();
 
 $id = $_GET['id'] ?? null;
-if (!$id) {
+if (!isset($_GET['id'])) {
     echo "<script>alert('Aucun évènement sélectionné'); window.location.href='../evenements.php';</script>";
     exit;
 }
@@ -68,7 +68,6 @@ $evenement = $evenementRepo->getAnEvenement(new Evenement(["idEvenement" => $id]
 </head>
 
 <body>
-
 <header class="d-flex flex-wrap align-items-center justify-content-between py-3 mb-4 border-bottom bg-dark px-4">
     <div class="d-flex align-items-center">
         <a href="../accueil.php" class="d-inline-flex align-items-center text-decoration-none">
@@ -84,6 +83,19 @@ $evenement = $evenementRepo->getAnEvenement(new Evenement(["idEvenement" => $id]
         </a>
     </div>
 </header>
+<?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
+
+<?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
 
 <!-- SECTION FORMULAIRE -->
 <div class="container mb-5">
@@ -176,7 +188,21 @@ $evenement = $evenementRepo->getAnEvenement(new Evenement(["idEvenement" => $id]
         </div>
     </div>
 </div>
+<script>
+    function autoResize(textarea) {
+        textarea.style.height = 'auto'; // Reset height
+        textarea.style.height = textarea.scrollHeight + 'px'; // Set to content height
+    }
 
+    // Get the textarea
+    const ta = document.getElementById('desc_eve');
+
+    // Adjust height on input
+    ta.addEventListener('input', () => autoResize(ta));
+
+    // Adjust height on page load for prefilled content
+    window.addEventListener('load', () => autoResize(ta));
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
