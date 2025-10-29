@@ -1,6 +1,6 @@
 <?php
 
-class FormationsModel
+class ModeleFormation
 {
     public ?int $id_formation;
     public string $nom;

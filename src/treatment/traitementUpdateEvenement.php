@@ -1,5 +1,5 @@
 <?php
-require_once "../modele/Evenement.php";
+require_once "../modele/ModeleEvenement.php";
 require_once "../bdd/config.php";
 require_once "../repository/EvenementRepository.php";
 
@@ -27,7 +27,7 @@ if($titreEve==='' || $typeEve==='' || $descEve==='' || $lieuEve===''
     redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementUpdate.php');
 }
 try {
-    $evenement = new Evenement(array(
+    $evenement = new ModeleEvenement(array(
         "idEvenement" => $idEve,
         "titreEvenement" => $titreEve,
         "typeEvenement" => $typeEve,

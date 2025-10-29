@@ -1,6 +1,6 @@
 <?php
 
-class EvenementUser
+class ModeleEvenementUser
 {
     private $refUser;
     private $refEvenement;

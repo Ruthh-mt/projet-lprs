@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 $page = 'Formation';
-require_once __DIR__ . '/TraitementFormationUpdate.php';
+require_once __DIR__ . '/traitementFormationUpdate.php';
 ?>
 
 <!doctype html>
@@ -83,7 +83,7 @@ require_once __DIR__ . '/TraitementFormationUpdate.php';
     </ul>
 <?php endif; ?>
 
-<?php if (isset($formation) && $formation instanceof FormationsModel): ?>
+<?php if (isset($formation) && $formation instanceof ModeleFormation): ?>
     <form method="post" action="">
         <input type="hidden" name="id_formation" value="<?= htmlspecialchars((string)$formation->id_formation, ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">

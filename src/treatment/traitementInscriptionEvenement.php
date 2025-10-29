@@ -1,9 +1,9 @@
 <?php
 
-require_once "../modele/Evenement.php";
+require_once "../modele/ModeleEvenement.php";
 require_once "../bdd/config.php";
 require_once "../repository/EvenementRepository.php";
-require_once "../modele/EvenementUser.php";
+require_once "../modele/ModeleEvenementUser.php";
 require_once "../repository/EvenementUserRepository.php";
 session_start();
 
@@ -22,7 +22,7 @@ if ($refUser===''||$refEvenement==='') {
     redirectWith('error', "Vous n'avez pas l'air connecté ", '../../view/crudEvenement/evenementRead.php');
 }
 try {
-    $evenementUser = new EvenementUser(array(
+    $evenementUser = new ModeleEvenementUser(array(
         "refUser" => $refUser,
         "refEvenement" => $refEvenement,
         "estSuperviseur" => null

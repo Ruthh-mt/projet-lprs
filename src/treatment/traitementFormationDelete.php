@@ -1,6 +1,6 @@
 <?php
 require_once '../bdd/config.php';
-require_once '../modele/FormationsModel.php';
+require_once '../modele/ModeleFormation.php';
 require_once '../repository/FormationRepository.php';
 
     $errors = [];

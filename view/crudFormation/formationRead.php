@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 if (file_exists(__DIR__ . '/db.php')) require_once __DIR__ . '/db.php';
-if (file_exists(__DIR__ . '/FormationsModel.php')) require_once __DIR__ . '/FormationsModel.php';
+if (file_exists(__DIR__ . '/ModeleFormation.php')) require_once __DIR__ . '/ModeleFormation.php';
 if (file_exists(__DIR__ . '/FormationRepository.php')) require_once __DIR__ . '/FormationRepository.php';
 $page = 'Formation';
 $formations = [];

@@ -1,6 +1,6 @@
 <?php
 require_once "../bdd/config.php";
-require_once "../modele/EvenementUser.php";
+require_once "../modele/ModeleEvenementUser.php";
 require_once "../repository/EvenementUserRepository.php";
 
 
@@ -25,7 +25,7 @@ if ($idEve === '' || $refUser === '') {
 }
 try {
     $evenementUserRepository = new EvenementUserRepository();
-    $evenementuser = new EvenementUser(array(
+    $evenementuser = new ModeleEvenementUser(array(
             "refEvenement" => $idEve,
             "refUser" => $refUser,
         ));

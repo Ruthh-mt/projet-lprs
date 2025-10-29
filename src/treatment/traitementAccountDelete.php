@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../bdd/config.php';
-require_once __DIR__ . '/../repository/utilisateurRepository.php';
+require_once __DIR__ . '/../repository/UtilisateurRepository.php';
 session_start();
 
 function redirect(string $url): void { header('Location: ' . $url, true, 302); exit; }

@@ -1,6 +1,6 @@
 <?php
 require_once("../../src/bdd/config.php");
-require_once "../modele/OffreModel.php";
+require_once "../modele/ModeleOffre.php";
 require_once "../../src/repository/OffreRepository.php";
 
 $offreRepository = new OffreRepository();
@@ -37,7 +37,7 @@ try {
     }
 
     // Requête d’insertion
-  $offre = new OffreModel(array(
+  $offre = new ModeleOffre(array(
       'titre' => $titre,
       'description' => $description,
       'mission' => $mission,

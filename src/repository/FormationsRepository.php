@@ -1,6 +1,6 @@
 <?php
 require_once '../bdd/config.php';
-require_once '../modele/FormationsModel.php';
+require_once '../modele/ModeleFormation.php';
 class FormationRepository
 {
     private $db;
@@ -11,7 +11,7 @@ class FormationRepository
         $this->db=NEW Config();
     }
 
-    public function create(FormationsModel $m): int
+    public function create(ModeleFormation $m): int
     {
         $sql = "INSERT INTO {$this->table} (nom) VALUES (:nom)";
         $stmt = $this->db->connexion()->prepare($sql);
@@ -19,7 +19,7 @@ class FormationRepository
         return (int)$this->pdo->lastInsertId();
     }
 
-    public function update(FormationsModel $m): bool
+    public function update(ModeleFormation $m): bool
     {
         if ($m->id_formation === null) {
             throw new InvalidArgumentException('ID requis pour update.');
@@ -36,13 +36,13 @@ class FormationRepository
         return $stmt->execute([':id' => $id]);
     }
 
-    public function find(int $id): ?FormationsModel
+    public function find(int $id): ?ModeleFormation
     {
         $sql = "SELECT * FROM {$this->table} WHERE id_formation = :id LIMIT 1";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute([':id' => $id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? FormationsModel::fromArray($row) : null;
+        return $row ? ModeleFormation::fromArray($row) : null;
     }
 
     public function findAll(int $limit = 100, int $offset = 0): array
@@ -55,7 +55,7 @@ class FormationRepository
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $out = [];
         foreach ($rows as $r) {
-            $out[] = FormationsModel::fromArray($r);
+            $out[] = ModeleFormation::fromArray($r);
         }
         return $out;
     }

@@ -4,8 +4,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once('../bdd/config.php');
-require_once('../repository/utilisateurRepository.php');
-require_once('../modele/UserModel.php');
+require_once('../repository/UtilisateurRepository.php');
+require_once('../modele/ModeleUtilisateur.php');
 
 session_start();
 

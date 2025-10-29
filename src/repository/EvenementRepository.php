@@ -6,7 +6,7 @@ class EvenementRepository{
         $this->db=New Config();
     }
 
-    public function createEvenement(Evenement $evenement){
+    public function createEvenement(ModeleEvenement $evenement){
         $sql="INSERT INTO evenement (titre_eve,type_eve,desc_eve,lieu_eve,element_eve,nb_place) 
             VALUES (:titre, :type, :desc, :lieu, :element, :nbPlace)";
         $stmt=$this->db->connexion()->prepare($sql);
@@ -43,7 +43,7 @@ class EvenementRepository{
         $evenement->setNbPlace($req['nb_place']);
         return $evenement;
     }
-    public function updateEvenement(Evenement $evenement){
+    public function updateEvenement(ModeleEvenement $evenement){
         $sql="UPDATE evenement SET titre_eve=:titre, type_eve=:type, desc_eve=:desc, lieu_eve=:lieu, element_eve=:element,
          nb_place=:nbplace WHERE id_evenement=:id ";
         $stmt=$this->db->connexion()->prepare($sql);

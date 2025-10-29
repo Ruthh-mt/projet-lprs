@@ -1,5 +1,5 @@
 <?php
-class Post
+class ModelePost
 {
 private $idPost;
 private $titrePost;

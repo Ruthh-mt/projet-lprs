@@ -1,12 +1,10 @@
 <?php
-require_once '../src/modele/Post.php';
+require_once '../src/modele/ModelePost.php';
 require_once '../src/repository/PostRepository.php';
 require_once "../src/bdd/config.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-/*si la session utilisateur est vide(user non connecté) alors on va soit lui montrer que le forum/post du canal general ou
-soit on va rien lui montrer*/
 
 ?>
 <!doctype html>

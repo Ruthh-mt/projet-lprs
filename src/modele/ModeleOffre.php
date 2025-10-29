@@ -1,6 +1,6 @@
 <?php
 
-class OffreModel
+class ModeleOffre
 {
 
     private $titreOffre;
