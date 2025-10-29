@@ -81,14 +81,14 @@ if(!isset($_SESSION['utilisateur'])){
 $postRepository=new PostRepository();
 $allpost=$postRepository->getAllPost();
         foreach($allpost as $post){
-            $username=$postRepository->findUsername($post["id_post"]);
+            $username=$postRepository->findUsername($post->id_post);
             echo'<div class="card">
             <div class="card-header"><i class="bi bi-person-circle">'." ".'</i>'.
                 $username["prenom"].' '.$username["nom"] .'</i></div>
             <div class="card-body">
-                <h5 class="card-title">'.$post["titre_post"].'</h5>
-                <p class="col-20 text-truncate" id="contenu">'.$post["contenu_post"].'</p>
-                <a href="crudPost/postRead.php?id='.$post["id_post"].'" class="btn btn-primary">Voir plus</a>
+                <h5 class="card-title">'.$post->titre_post.'</h5>
+                <p class="col-20 text-truncate" id="contenu">'.$post->contenu_post.'</p>
+                <a href="crudPost/postRead.php?id='.$post->id_post.'" class="btn btn-primary">Voir plus</a>
             </div>
         </div> <br>';
         }
