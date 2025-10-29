@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-
 require_once ('../src/bdd/config.php');
 require_once "../src/repository/OffreRepository.php";
 $pdo  = (new Config())->connexion();
@@ -21,19 +19,11 @@ $offres = $offreRepo->getAllOffre();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
-    <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-    <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-
 </head>
-
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
@@ -66,29 +56,37 @@ $offres = $offreRepo->getAllOffre();
         <?php endif; ?>
     </div>
 </header>
-
-
-
-<section class="creation-offre">
-    <div class="card">
-        <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
-            <h2 class="m-0">Offres d'emploi</h2>
-            <a href="crudOffre/offreCreate.php" class="btn btn-success btn-sm">
-                <i class="bi bi-plus-circle"></i> Créer une offre
-            </a>
+<section class="container banner bg-dark text-white text-center py-1 rounded">
+    <h1>Offres d'emplois</h1>
+</section>
+<section class="container">
+    <div class="d-grid gap-2 row">
+        <div class="row">
             <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="candidatures.php?id=<?= $_SESSION['utilisateur']['id_user'] ?>" class="btn active" role="button" data-bs-toggle="button" aria-pressed="true"</i> Mes candidatures
-            </a>
+                <a  class="btn btn-outline-success text-uppercase m-3 col" href="candidatures.php?id=<?= $_SESSION['utilisateur']['id_user'] ?>" data-bs-toggle="button" role="button" aria-pressed="true">Ajouter une offre d'emplois</a>
+                <a  class="btn btn-outline-secondary text-uppercase my-3 col" role="button" data-bs-toggle="button" </i> Mes candidatures</a>
             <?php endif; ?>
         </div>
+    </div>
+</section>
+<section class="container creation-offre">
     <div class="table-wrap">
-            <table class="table" id="offre-table">
-                <thead>
-                <tr><th>Titre</th><th>Description</th><th>Mission</th><th>Salaire</th><th>Entreprise</th><th>Type d'offre</th><th>Etat</th><th>Actions</th></tr>
-                </thead>
-                <tbody>
-                <?php foreach ($offres as $offre): ?>
+        <table class="table table-hover" id="offre-table">
+            <thead>
                 <tr>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Mission</th>
+                    <th>Salaire</th>
+                    <th>Entreprise</th>
+                    <th>Type d'offre</th>
+                    <th>Etat</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($offres as $offre): ?>
+            <tr>
                 <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
                 <td><?= htmlspecialchars($offre['description']) ?></td>
                 <td><?= htmlspecialchars($offre['mission']) ?></td>
@@ -97,16 +95,11 @@ $offres = $offreRepo->getAllOffre();
                 <td><?= htmlspecialchars($offre['type']) ?></td>
                 <td><?= htmlspecialchars($offre['etat']) ?></td>
                     <td class="row-actions">
-                        <a href="../view/crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>"
-                           class="btn btn-sm btn-outline" title="Modifier">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-
+                        <a href="../view/crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>" class="btn btn-sm btn-outline" title="Modifier"><i class="bi bi-pencil"></i></a>
                         <form action="crudOffre/offreDelete.php" method="post" style="display:inline;">
                             <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                             <input type="hidden" name="delete_offre" value="1">
-                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                    title="Supprimer" onclick="return confirm('Supprimer cette offre ?')">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer" onclick="return confirm('Supprimer cette offre ?')">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>
@@ -119,24 +112,21 @@ $offres = $offreRepo->getAllOffre();
                     </td>
                  <?php endforeach; ?>
                 </tr>
-        </form>
-     </tbody>
+            </tbody>
         </table>
     </div>
 </div>
 </section>
-
-<!-- Datatable JS id="offre-table" -->
 <script>
     $(document).ready(function () {
         $('#offre-table').DataTable({
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
             },
-            "pageLength": 10,  // nombre de lignes par page
-            "ordering": true,  // tri des colonnes activé
-            "searching": true, // barre de recherche activée
-            "responsive": true // design responsive
+            "pageLength": 10,
+            "ordering": true,
+            "searching": true,
+            "responsive": true
         });
     });
 </script>
