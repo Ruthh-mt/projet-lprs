@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $cvPath = handlePdfUpload($cvFile);
     }
     try {
-        $user = New UserModel([
+        $user = New ModeleUtilisateur([
             'nom'   => $nom,
             'prenom'=> $prenom,
             'email' => $email,

@@ -1,5 +1,5 @@
 <?php
-class ModeleProfesseur extends userModel{
+class ModeleProfesseur extends ModeleUtilisateur{
     private $specialite;
     private$ref_utilisateur;
     public function __construct(PDO $db, array $donnees){

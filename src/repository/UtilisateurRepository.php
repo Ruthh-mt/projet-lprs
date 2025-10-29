@@ -39,7 +39,7 @@ class utilisateurRepository
           return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
      }
 
-     public function inscription(UserModel $data)
+     public function inscription(ModeleUtilisateur $data)
      {
           $sql = "INSERT INTO utilisateur (nom, prenom, email, mdp, role, ref_validateur)
                 VALUES (:nom, :prenom, :email, :mdp, :role, :ref_validateur)";
