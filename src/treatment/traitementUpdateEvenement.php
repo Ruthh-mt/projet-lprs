@@ -14,6 +14,7 @@ function redirectWith(string $type, string $message, string $target): void {
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirectWith('error', "Méthode invalide.", '../../view/crudEvenement/evenementUpdate.php');
 }
+
 $titreEve=$_POST["titre_eve"];
 $typeEve=$_POST["type_eve"];
 $descEve=$_POST["desc_eve"];

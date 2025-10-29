@@ -50,6 +50,9 @@ class EvenementUserRepository{
         );
 
     }
+    public function getAllInscritsByEvenement(){
+        $sql="SELECT utilisateur.nom,utilisateur.prenom FROM user_evenement inner join utilisateur on user_evenement.ref_userwhere=utilisateur.id_user WHERE est_superviseur =:estSuperviseur AND ref_evenement =:evenement";
+    }
     public function desinscription($evenementUser){
         $req="DELETE FROM user_evenement WHERE ref_evenement=:evenement AND  ref_user=:user";
         $stm=$this->db->connexion()->prepare($req);

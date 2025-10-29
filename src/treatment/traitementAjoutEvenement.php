@@ -16,6 +16,7 @@ function redirectWith(string $type, string $message, string $target): void {
         redirectWith('error', "Méthode invalide.", '../../view/crudEvenement/evenementCreate.php');
     }
     $refUser=$_POST["id_user"];
+    $role=$_POST["role"];
     $titreEve=$_POST["titre_eve"];
     $typeEve=$_POST["type_eve"];
     $descEve=$_POST["desc_eve"];
@@ -24,28 +25,51 @@ function redirectWith(string $type, string $message, string $target): void {
     $nbPlace=$_POST["nb_plc"];
 
     if($titreEve==='' || $typeEve==='' || $descEve==='' || $lieuEve===''
-        || $elementEve==='' || $nbPlace==='' ||$refUser===''){
+        || $elementEve==='' || $nbPlace==='' ||$refUser==='' || $role==='' ){
        redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementCreate.php');
     }
     try {
+        if ($role == "Étudiant") {
+
         $evenement = new Evenement(array(
             "titreEvenement" => $titreEve,
             "typeEvenement" => $typeEve,
             "descEvenement" => $descEve,
             "lieuEvenement" => $lieuEve,
             "elementEvenement" => $elementEve,
-            "nbPlace" => $nbPlace
+            "nbPlace" => $nbPlace,
+            "status" =>"inactive",
+            "estValide" => 0
         ));
+        }
+        else {
+            $evenement = new Evenement(array(
+                "titreEvenement" => $titreEve,
+                "typeEvenement" => $typeEve,
+                "descEvenement" => $descEve,
+                "lieuEvenement" => $lieuEve,
+                "elementEvenement" => $elementEve,
+                "nbPlace" => $nbPlace,
+                "status" =>"active",
+                "estValide" => 1
+            ));
+
+        }
         $evenementRepository = new EvenementRepository();
-        $refEvenement=$evenementRepository->createEvenement($evenement);
-        $evenementUser=new EvenementUser(array(
+        $refEvenement = $evenementRepository->createEvenement($evenement);
+        $evenementUser = new EvenementUser(array(
             "refUser" => $refUser,
             "refEvenement" => $refEvenement,
-            "estSuperviseur"=>1
+            "estSuperviseur" => 1
         ));
         $evenementUserRepository = new EvenementUserRepository();
         $evenementUserRepository->createEvenementUser($evenementUser);
-        redirectWith('success',"L'evenement a bien été ajouté",'../../view/evenements.php');
+        if($role=="Étudiant") {
+            redirectWith('success', "L'evenement a bien été ajouté, il est en attende d'une validation par un professeur", '../../view/evenements.php');
+        }
+        else{
+            redirectWith('success',"L'evenement a bien été ajouté",'../../view/evenements.php');
+        }
         session_write_close();
     } catch (PDOException $e) {
         redirectWith('error', "Erreur de la creation d'evenement : " . $e->getMessage(), '../../view/crudEvenement/evenementCreate.php');

@@ -7,6 +7,8 @@
         private $lieuEvenement;
         private $elementEvenement;
         private $nbPlace;
+        private $estValide;
+        private $status;
 
 
         public function __construct(array $donnees){
@@ -132,6 +134,38 @@
         public function setNbPlace($nbPlace): void
         {
             $this->nbPlace = $nbPlace;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getEstValide()
+        {
+            return $this->estValide;
+        }
+
+        /**
+         * @param mixed $estValide
+         */
+        public function setEstValide($estValide): void
+        {
+            $this->estValide = $estValide;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getStatus()
+        {
+            return $this->status;
+        }
+
+        /**
+         * @param mixed $status
+         */
+        public function setStatus($status): void
+        {
+            $this->status = $status;
         }
 
 
