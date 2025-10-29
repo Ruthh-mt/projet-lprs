@@ -10,7 +10,7 @@ class PostRepository
         $sql="SELECT * FROM post";
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
     public function createPost($post){
         $ajout="INSERT INTO post(titre_post,contenu_post,date_heure_post,ref_user) VALUES (:titrePost,:contenuPost,:dateHeurePost,:refUser)";
