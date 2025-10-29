@@ -1,6 +1,6 @@
 <?php
 
-class EtudientModel extends userModel
+class ModeleEtudient extends ModeleUtilisateur
 {
     private $ref_user;
     private $annee_promo;

@@ -1,5 +1,5 @@
 <?php
-require_once "../modele/Post.php";
+require_once "../modele/ModelePost.php";
 require_once "../bdd/config.php";
 require_once "../repository/PostRepository.php";
 session_start();
@@ -19,7 +19,7 @@ if($titrePost==='' || $contenuPost==='' || $refUser===''){
     header('Location: ../../view/crudPost/postCreate.php');
 }
 try {
-    $post = new Post(array(
+    $post = new ModelePost(array(
        "refUser" => $refUser,
        "titrePost" => $titrePost,
        "contenuPost" => $contenuPost,

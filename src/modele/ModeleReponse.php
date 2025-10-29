@@ -1,6 +1,6 @@
 <?php
 
-class Reponse
+class ModeleReponse
 {
     private $idReponse;
     private $contenuReponse;

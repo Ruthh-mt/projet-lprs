@@ -1,7 +1,7 @@
 <?php
 
-require_once "../modele/Evenement.php";
-require_once "../modele/EvenementUser.php";
+require_once "../modele/ModeleEvenement.php";
+require_once "../modele/ModeleEvenementUser.php";
 require_once "../bdd/config.php";
 require_once "../repository/EvenementRepository.php";
 require_once "../repository/EvenementUserRepository.php";
@@ -26,13 +26,13 @@ if ($idEve === '') {
     redirectWith('error', "Veuillez choisir un evenement.", '../../view/evenements.php');
 }
 try {
-    $evenement = new Evenement(array(
+    $evenement = new ModeleEvenement(array(
         "idEvenement" => $idEve,
 
     ));
     $evenementRepository = new EvenementRepository();
     $evenementUserRepository = new EvenementUserRepository();
-    $evenementuser = new EvenementUser(array(
+    $evenementuser = new ModeleEvenementUser(array(
         "refEvenement" => $idEve,
     ));
     $evenementUserRepository->deleteUserEvenement($evenementuser);

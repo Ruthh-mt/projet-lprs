@@ -1,5 +1,5 @@
 <?php
-require_once '../src/modele/evenement.php';
+require_once '../src/modele/ModeleEvenement.php';
 require_once '../src/repository/evenementRepository.php';
 require_once "../src/bdd/config.php";
 
@@ -51,6 +51,9 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </div>
 </header>
+<section class="container banner bg-dark text-white text-center py-1 rounded">
+    <h1>Évènements</h1>
+</section>
 <main>
 <?php if (isset($_SESSION['error'])): ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -66,15 +69,15 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
 <?php endif; ?>
 <section class="container">
+    <?php if (isset($_SESSION['utilisateur'])): ?>
      <div class="d-grid gap-2">
-        <a  class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php" role="button">Ajouter un évènement</a>
+        <a  class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php" role="button">Créer un évènement</a>
      </div>
+    <?php endif; ?>
     <section class="container my-4">
         <?php
     if(!isset($_SESSION['utilisateur'])){
-    echo'<h5> Vous etes pas connecté. Veuillez vous connecter</h5>
-    <a  class="btn btn-secondary" href="connexion.php" role="button">Se connecter</a>
-    <p>Erreur : Identify yourself who are you</p>';
+    echo'<h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>';
     }
     else {
         echo'<div class="d-flex flex-wrap justify-content-start gap-4">';
@@ -98,7 +101,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         </a>
                     </div>
                     <div class="card-footer text-muted small">
-                        Dernière mise à jour :'.date("d / m / Y").'
+                        Dernière mise à jour : '.date("d/m/Y H:i").'
                     </div>
                 </div>';
             }

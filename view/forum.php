@@ -1,12 +1,10 @@
 <?php
-require_once '../src/modele/Post.php';
+require_once '../src/modele/ModelePost.php';
 require_once '../src/repository/PostRepository.php';
 require_once "../src/bdd/config.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-/*si la session utilisateur est vide(user non connecté) alors on va soit lui montrer que le forum/post du canal general ou
-soit on va rien lui montrer*/
 
 ?>
 <!doctype html>
@@ -53,6 +51,9 @@ soit on va rien lui montrer*/
         <?php endif; ?>
     </div>
 </header>
+<section class="container banner bg-dark text-white text-center py-1 rounded">
+    <h1>Forum</h1>
+</section>
 <main>
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -70,7 +71,6 @@ soit on va rien lui montrer*/
     <section class="container">
         <div class="d-grid gap-2">
             <a  class="btn btn-outline-success text-uppercase my-3" href="crudPost/postCreate.php" role="button">Créer un post</a>
-            <!---<button class="btn btn-outline-success text-uppercase my-3" type="button">Ajouter un évènement</button>--->
         </div>
         <?php
 if(!isset($_SESSION['utilisateur'])){

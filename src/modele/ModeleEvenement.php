@@ -1,5 +1,5 @@
 <?php
-    Class Evenement{
+    Class ModeleEvenement{
         private $idEvenement;
         private $titreEvenement;
         private $typeEvenement;

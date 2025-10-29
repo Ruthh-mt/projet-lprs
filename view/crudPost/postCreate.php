@@ -1,5 +1,5 @@
 <?php
-require_once '../../src/modele/Post.php';
+require_once '../../src/modele/ModelePost.php';
 require_once '../../src/repository/PostRepository.php';
 require_once "../../src/bdd/config.php";
 

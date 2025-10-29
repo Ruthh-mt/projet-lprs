@@ -10,7 +10,7 @@ class OffreRepository
         $this->db = new Config();
     }
 
-    public function createOffre(OffreModel $offre)
+    public function createOffre(ModeleOffre $offre)
     {
         $sql = "INSERT INTO offre (titre,description, mission,salaire, type, etat, ref_fiche) 
             VALUES (:titre, :description, :mission, :salaire, :type, :etat, :ref_fiche)";
@@ -50,7 +50,7 @@ class OffreRepository
         return $req[0];
     }
 
-    public function updateEvenement(Evenement $evenement)
+    public function updateEvenement(ModeleEvenement $evenement)
     {
         $sql = "UPDATE evenement SET titre_eve=:titre, type_eve:type, desc_eve=:desc, lieu_eve=:lieu, element_eve=:element,
          nb_place=:nbplace WHERE id_evenement=:id ";

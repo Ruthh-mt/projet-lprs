@@ -1,6 +1,6 @@
 <?php
-require_once "../../src/modele/Evenement.php";
-require_once "../../src/modele/EvenementUser.php";
+require_once "../../src/modele/ModeleEvenement.php";
+require_once "../../src/modele/ModeleEvenementUser.php";
 require_once "../../src/repository/EvenementRepository.php";
 require_once "../../src/repository/EvenementUserRepository.php";
 require_once "../../src/bdd/config.php";
@@ -16,7 +16,7 @@ if (!$id) {
 }
 
 $evenementRepo = new EvenementRepository();
-$evenement = $evenementRepo->getAnEvenement(new Evenement(["idEvenement" => $id]));
+$evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" => $id]));
 ?>
 <!doctype html>
 <html lang="fr">
@@ -129,7 +129,7 @@ $evenement = $evenementRepo->getAnEvenement(new Evenement(["idEvenement" => $id]
             <?php
             $evenementUserRepository = new EvenementUserRepository();
             $superviseur = $evenementUserRepository->getSuperviseur($evenement->getIdEvenement());
-            $eveUser = new EvenementUser(["refUser" => $_SESSION['utilisateur']['id_user']]);
+            $eveUser = new ModeleEvenementUser(["refUser" => $_SESSION['utilisateur']['id_user']]);
             $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
             ?>
 

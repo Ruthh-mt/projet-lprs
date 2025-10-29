@@ -1,6 +1,6 @@
 <?php
-require_once "../../src/modele/Post.php";
-require_once "../../src/modele/Reponse.php";
+require_once "../../src/modele/ModelePost.php";
+require_once "../../src/modele/ModeleReponse.php";
 require_once "../../src/repository/PostRepository.php";
 require_once "../../src/repository/ReponseRepository.php";
 require_once "../../src/bdd/config.php";
@@ -16,7 +16,7 @@ if (!$id) {
 }
 
 $postRepo = new PostRepository();
-$post = $postRepo->getPostById(new Post(["idPost" => $id]));
+$post = $postRepo->getPostById(new ModelePost(["idPost" => $id]));
 $reponseRepo = new ReponseRepository();
 $reponses=$reponseRepo->getAllReponsebyPostId($id)
 ?>
@@ -124,7 +124,7 @@ $reponses=$reponseRepo->getAllReponsebyPostId($id)
         <h5>Commentaire</h5>
         <?php
         foreach ($reponses as $reponse) {
-            $userpost = $reponseRepo->findUsernamePost(New Reponse(["idReponse"=>$reponse["id_reponse"],
+            $userpost = $reponseRepo->findUsernamePost(New ModeleReponse(["idReponse"=>$reponse["id_reponse"],
                 "refPost"=>$reponse["ref_post"]]));
             echo'<div class="chat chat-start">
             <div class="chat-header"><div class="card-header">'.$userpost["prenom"]." ".$userpost["nom"].'

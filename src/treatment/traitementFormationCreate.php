@@ -3,7 +3,7 @@ if (!defined('TRAITEMENT_FORMATION_CREATE_INCLUDED')) {
     define('TRAITEMENT_FORMATION_CREATE_INCLUDED', true);
 
     require_once '../bdd/config.php';;
-    require_once '../modele/FormationsModel.php';;
+    require_once '../modele/ModeleFormation.php';;
     require_once '../repository/FormationRepository.php';
 
     $errors = [];
@@ -30,7 +30,7 @@ if (!defined('TRAITEMENT_FORMATION_CREATE_INCLUDED')) {
             }
 
             if (empty($errors)) {
-                $model = new FormationsModel(null, $nom);
+                $model = new ModeleFormation(null, $nom);
                 try {
                     $newId = $repo->create($model);
                     header('Location: FormationRead.php?created=1');

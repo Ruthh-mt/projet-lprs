@@ -2,7 +2,9 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/TraitementFormationDelete.php';
+require_once __DIR__ . '/traitementFormationDelete.php';
+
+$page = 'Formation';
 ?>
 <!doctype html>
 <html lang="fr">
@@ -17,10 +19,10 @@ require_once __DIR__ . '/TraitementFormationDelete.php';
 </head>
 <body>
 <header
-    class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
+        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
-        <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img src="https://media.tenor.com/1DV7nkfj5OkAAAAM/blobgodeto-blobdance.gif"
+        <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
+            <img src="https://media.tenor.com/ifEkV-aGn3EAAAAi/fat-cat.gif"
                  class="rounded-circle mx-3"
                  style="max-width: 15%; height: auto;">
             <div class="fs-4 text-light text-uppercase">LPRS • ADMIN</div>
@@ -52,22 +54,25 @@ require_once __DIR__ . '/TraitementFormationDelete.php';
 <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
-            <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
-            <a href="#" class="btn btn-outline-info">Alumni</a>
-            <a href="#" class="btn btn-outline-info">Professeur</a>
-            <a href="#" class="btn btn-outline-info">Partenaire</a>
-            <a href="#" class="btn btn-outline-info">Étudiant</a>
-            <a href="formationRead.php" class="btn btn-outline-info active">Formation</a>
-            <a href="#" class="btn btn-outline-info">Offre</a>
-            <a href="#" class="btn btn-outline-info">Évènement</a>
-            <a href="#" class="btn btn-outline-info">Fiche entreprise</a>
-            <a href="#" class="btn btn-outline-info">Postuler</a>
-            <a href="#" class="btn btn-outline-info">Post</a>
-            <a href="#" class="btn btn-outline-info">Réponse</a>
+            <a href="../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
+            <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
+            <a href="../crudEtudiant/etudiantRead.php" class="btn btn-outline-info">Étudiant</a>
+            <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-info">Évènement</a>
+            <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Fiche entreprise</a>
+            <a href="../crudFormation/formationRead.php" class="btn btn-outline-info active">Formation</a>
+            <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
+            <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
+            <a href="../crudPost/postRead.php" class="btn btn-outline-info">Post</a>
+            <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-info">Postuler</a>
+            <a href="../crudProfesseur/professeurRead.php" class="btn btn-outline-info">Professeur</a>
+            <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
+            <a href="../crudUtilisateur" class="btn btn-outline-info">Utilisateur</a>
         </div>
     </div>
 </nav>
-
+<section class="container banner bg-info text-white text-center py-1 rounded border">
+    <h1>Gestion <?=$page?></h1>
+</section>
 <h1>Supprimer une formation</h1>
 
 <?php if (!empty($errors)): ?>
@@ -78,7 +83,7 @@ require_once __DIR__ . '/TraitementFormationDelete.php';
     </ul>
 <?php endif; ?>
 
-<?php if (isset($formation) && $formation instanceof FormationsModel): ?>
+<?php if (isset($formation) && $formation instanceof ModeleFormation): ?>
     <p>Voulez-vous vraiment supprimer la formation : <strong><?= htmlspecialchars($formation->nom, ENT_QUOTES, 'UTF-8') ?></strong> ?</p>
     <form method="post" action="">
         <input type="hidden" name="id_formation" value="<?= htmlspecialchars((string)$formation->id_formation, ENT_QUOTES, 'UTF-8') ?>">

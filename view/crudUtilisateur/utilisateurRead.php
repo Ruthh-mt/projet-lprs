@@ -1,6 +1,8 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+
+    $page = 'Utilisateur';
 }
 ?>
 <!doctype html>
@@ -52,6 +54,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
             <a href="../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
+            <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
             <a href="../crudEtudiant/etudiantRead.php" class="btn btn-outline-info">Étudiant</a>
             <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-info">Évènement</a>
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Fiche entreprise</a>
@@ -59,13 +62,13 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
             <a href="../crudPost/postRead.php" class="btn btn-outline-info">Post</a>
-            <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Post</a>
             <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-info">Postuler</a>
             <a href="../crudProfesseur/professeurRead.php" class="btn btn-outline-info">Professeur</a>
-            <a href="../crudUtilisateur" class="btn btn-outline-info">Utilisateur</a>
+            <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
+            <a href="../crudUtilisateur" class="btn btn-outline-info active">Utilisateur</a>
         </div>
     </div>
 </nav>
 <section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Utilisateur</h1>
+    <h1>Gestion <?=$page?></h1>
 </section>

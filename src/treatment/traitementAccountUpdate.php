@@ -4,11 +4,11 @@ error_reporting(E_ALL);
 session_start();
 
 require_once __DIR__ . '/../bdd/config.php';
-require_once __DIR__ . '/../repository/utilisateurRepository.php';
-require_once __DIR__ . '/../repository/etudiantRepository.php';
-require_once __DIR__ . '/../repository/alumniRepository.php';
-require_once __DIR__ . '/../repository/professeurRepository.php';
-require_once __DIR__ . '/../repository/partenaireRepository.php';
+require_once __DIR__ . '/../repository/UtilisateurRepository.php';
+require_once __DIR__ . '/../repository/EtudiantRepository.php';
+require_once __DIR__ . '/../repository/AlumniRepository.php';
+require_once __DIR__ . '/../repository/ProfesseurRepository.php';
+require_once __DIR__ . '/../repository/PartenaireRepository.php';
 
 function redirectWith(string $type, string $message, string $target): void {
      $_SESSION[$type] = $message;

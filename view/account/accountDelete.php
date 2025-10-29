@@ -42,9 +42,12 @@ $action = '../../src/treatment/traitementAccountDelete.php';
         <li class="nav-item"><a href="../evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
         <li class="nav-item"><a href="../annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
         <li class="nav-item"><a href="../listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
-        <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
-        <?php if (isset($_SESSION['utilisateur']) && ($_SESSION['utilisateur']['role'] ?? '') === 'Gestionnaire'): ?>
-            <li class="nav-item"><a href="../administration.php" class="btn btn-outline-warning active me-2">Administration</a></li>
+        <li class="nav-item"><a href="../emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="../forum.php" class="btn btn-outline-light me-2">Forum</a></li>
+        <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
+            <li class="nav-item">
+                <a href="../administration.php" class="btn btn-outline-warning me-2">Administration</a>
+            </li>
         <?php endif; ?>
     </ul>
     <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
