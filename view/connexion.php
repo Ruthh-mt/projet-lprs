@@ -54,17 +54,8 @@ if (session_status() === PHP_SESSION_NONE) {
                <?php if (isset($_SESSION['error'])): ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                          <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                <?php endif; ?>
-
-               <?php if (isset($_SESSION['success'])): ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                         <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-               <?php endif; ?>
-
                <form action="../src/treatment/traitementConnexion.php" method="post">
                     <div class="form-floating mb-3">
                          <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Adresse email" required autocomplete="email">
