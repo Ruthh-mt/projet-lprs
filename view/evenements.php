@@ -1,5 +1,5 @@
 <?php
-require_once '../src/modele/evenement.php';
+require_once '../src/modele/ModeleEvenement.php';
 require_once '../src/repository/evenementRepository.php';
 require_once "../src/bdd/config.php";
 
@@ -22,7 +22,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img src="https://media.tenor.com/1DV7nkfj5OkAAAAM/blobgodeto-blobdance.gif"
+            <img src="https://gifdb.com/images/high/yellow-lively-blob-dancing-emoji-cwouznave21jqjlk.gif"
                  class="rounded-circle mx-3"
                  style="max-width: 15%; height: auto;">
             <div class="fs-4 text-light text-uppercase">LPRS</div>
@@ -34,6 +34,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
         <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
         <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
                 <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>
@@ -50,6 +51,9 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </div>
 </header>
+<section class="container banner bg-dark text-white text-center py-1 rounded">
+    <h1>Évènements</h1>
+</section>
 <main>
 <?php if (isset($_SESSION['error'])): ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -64,41 +68,46 @@ if (session_status() === PHP_SESSION_NONE) {
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php endif; ?>
-
 <section class="container">
+    <?php if (isset($_SESSION['utilisateur'])): ?>
      <div class="d-grid gap-2">
-        <a  class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php" role="button">Ajouter un évènement</a>
+        <a class="btn btn-outline-success text-uppercase my-3" href="admin/crudEvenement/evenementCreate.php" role="button">Créer un évènement</a>
      </div>
+    <?php endif; ?>
     <section class="container my-4">
-
-
-        <div class="d-flex flex-wrap justify-content-start gap-4">
-            <?php
+        <?php
+    if(!isset($_SESSION['utilisateur'])){
+    echo'<h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>';
+    }
+    else {
+        echo'<div class="d-flex flex-wrap justify-content-start gap-4">';
             $evenementRepository = new EvenementRepository();
             $allEvenement = $evenementRepository->getAllEvenement();
 
-            foreach ($allEvenement as $evenement): ?>
-                <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
+            foreach ($allEvenement as $evenement) {
+                echo '<div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
                     <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
                          class="card-img-top"
                          alt="Image événement"
                          style="height: 180px; object-fit: cover;">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement["titre_eve"]) ?></h5>
+                        <h5 class="card-title fw-bold">'.htmlspecialchars($evenement["titre_eve"]).'</h5>
                         <p class="card-text flex-grow-1 text-muted">
-                            <?= htmlspecialchars(substr($evenement["desc_eve"], 0, 100)) ?>...
+                            '.htmlspecialchars(substr($evenement["desc_eve"], 0, 100)).'...
                         </p>
-                        <a href="../view/crudEvenement/afficherEvenement.php?id=<?= $evenement["id_evenement"] ?>"
+                        <a href="../view/crudEvenement/evenementRead.php?id='. $evenement["id_evenement"].'"
                            class="btn btn-primary mt-auto">
                             En savoir plus
                         </a>
                     </div>
                     <div class="card-footer text-muted small">
-                        Dernière mise à jour : <?= date('d/m/Y') ?>
+                        Dernière mise à jour : '.date("d/m/Y H:i").'
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
+                </div>';
+            }
+        echo'</div>';
+    } ?>
+
     </section>
 
 </section>

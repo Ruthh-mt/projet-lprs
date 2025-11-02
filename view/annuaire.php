@@ -30,6 +30,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light active me-2">Annuaire</a></li>
         <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
         <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
                 <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>
@@ -46,6 +47,9 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </div>
 </header>
+<section class="container banner bg-dark text-white text-center py-1 rounded">
+    <h1>Annuaire</h1>
+</section>
 <section class="container">
      <form class="container-fluid">
           <div class="input-group">

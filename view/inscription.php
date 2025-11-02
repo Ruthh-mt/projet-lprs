@@ -47,79 +47,93 @@ if (session_status() === PHP_SESSION_NONE) {
 </header>
 
 <div class="row">
-     <div class="col">
-     </div>
-     <div class="col">
-          <h4 class="text-center">INSCRIPTION</h4>
-          <?php if (isset($_SESSION['error'])): ?>
-               <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-               </div>
-          <?php endif; ?>
+    <div class="col">
+    </div>
+    <div class="col">
+        <h4 class="text-center">INSCRIPTION</h4>
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= $_SESSION['error'];
+                unset($_SESSION['error']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
 
-          <?php if (isset($_SESSION['success'])): ?>
-               <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-               </div>
-          <?php endif; ?>
-         <form action="../src/treatment/traitementInscription.php" method="post" class="align-self-center" enctype="multipart/form-data">
-         <div class="form-floating my-2">
-                    <input type="text" name="prenom" class="form-control" id="floatingPrenom" placeholder="Prénom" autocomplete="given-name" required>
-                    <label for="floatingPrenom">Prénom</label>
-               </div>
-               <div class="form-floating my-2">
-                    <input type="text" name="nom" class="form-control" id="floatingNom" placeholder="Nom de famille" autocomplete="family-name" required>
-                    <label for="floatingNom">Nom de famille</label>
-               </div>
-               <div class="form-floating my-2">
-                    <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Adresse email" autocomplete="email" required>
-                    <label for="floatingEmail">Adresse email</label>
-               </div>
-               <div class="form-floating my-2">
-                    <input type="password" name="mdp" class="form-control" id="floatingMdp" placeholder="Mot de passe" autocomplete="new-password" required>
-                    <label for="floatingMdp">Mot de passe</label>
-               </div>
-               <div class="form-floating my-2">
-                    <input type="password" name="confirmation_mot_de_passe" class="form-control" id="floatingMdpConfirm" placeholder="Confirmation du mot de passe" required>
-                    <label for="floatingMdpConfirm">Confirmation du mot de passe</label>
-               </div>
-               <select class="form-select my-2" aria-label="Default select example" id="choix" name="role">
-                    <option value="">Rôles</option>
-                    <option value="Étudiant">Étudiant</option>
-                    <option value="Professeur">Professeur</option>
-                    <option value="Alumni">Alumni / Ancien élève</option>
-                    <option value="Partenaire">Partenaire / Entreprise</option>
-               </select>
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= $_SESSION['success'];
+                unset($_SESSION['success']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        <form action="../src/treatment/traitementInscription.php" method="post" class="align-self-center"
+              enctype="multipart/form-data">
+            <div class="form-floating my-2">
+                <input type="text" name="prenom" class="form-control" id="floatingPrenom" placeholder="Prénom"
+                       autocomplete="given-name" required>
+                <label for="floatingPrenom">Prénom</label>
+            </div>
+            <div class="form-floating my-2">
+                <input type="text" name="nom" class="form-control" id="floatingNom" placeholder="Nom de famille"
+                       autocomplete="family-name" required>
+                <label for="floatingNom">Nom de famille</label>
+            </div>
+            <div class="form-floating my-2">
+                <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Adresse email"
+                       autocomplete="email" required>
+                <label for="floatingEmail">Adresse email</label>
+            </div>
+            <div class="form-floating my-2">
+                <input type="password" name="mdp" class="form-control" id="floatingMdp" placeholder="Mot de passe"
+                       autocomplete="new-password" required>
+                <label for="floatingMdp">Mot de passe</label>
+            </div>
+            <div class="form-floating my-2">
+                <input type="password" name="confirmation_mot_de_passe" class="form-control" id="floatingMdpConfirm"
+                       placeholder="Confirmation du mot de passe" required>
+                <label for="floatingMdpConfirm">Confirmation du mot de passe</label>
+            </div>
+            <select class="form-select my-2" aria-label="Default select example" id="choix" name="role">
+                <option value="">Rôles</option>
+                <option value="Étudiant">Étudiant</option>
+                <option value="Professeur">Professeur</option>
+                <option value="Alumni">Alumni / Ancien élève</option>
+                <option value="Partenaire">Partenaire / Entreprise</option>
+            </select>
 
-               <div id="extraFields"></div>
+            <div id="extraFields"></div>
 
-               <div class="d-grid gap-2 my-2 ">
-                    <button class="btn btn-outline-success" type="submit">S'INSCRIRE</button>
-                    <a class="btn btn-outline-primary" href="connexion.php" type="button">SE CONNECTER</a>
-               </div>
-          </form>
-     </div>
-     <div class="col">
-     </div>
-     <script>
-         document.addEventListener("DOMContentLoaded", () => {
-             const extraFields = document.getElementById("extraFields");
-             const selectRole = document.getElementById("choix");
+            <div class="d-grid gap-2 my-2 ">
+                <button class="btn btn-outline-success" type="submit">S'INSCRIRE</button>
+                <a class="btn btn-outline-primary" href="connexion.php" type="button">SE CONNECTER</a>
+            </div>
+        </form>
+    </div>
+    <div class="col">
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const extraFields = document.getElementById("extraFields");
+            const selectRole = document.getElementById("choix");
 
-             selectRole.addEventListener("change", () => {
-                 extraFields.innerHTML = "";
+            selectRole.addEventListener("change", () => {
+                extraFields.innerHTML = "";
 
-                 if (selectRole.value === "Étudiant") {
-                     extraFields.innerHTML = `
+                if (selectRole.value === "Étudiant") {
+                    extraFields.innerHTML = `
                  <div class="form-selectfloating my-2">
-                    <select class="form-select" name="classe" id="floatingClasse">
-                        <option value="L1">Licence 1</option>
-                        <option value="L2">Licence 2</option>
-                        <option value="L3">Licence 3</option>
-                        <option value="M1">Master 1</option>
-                        <option value="M2">Master 2</option>
+                    <select class="form-select" name="classe"   id="floatingClasse">
+                        <option value="3° Pro">Troisième Pro</option>
+                        <option value="Bac TRPM">Bac Pro TRPM</option>
+                        <option value="BAC MSPC">Bac Pro MSPC</option>
+                        <option value="BAC CIEL">Bac Pro CIEL</option>
+                        <option value="Formation SST">Formation SST</option>
+                        <option value="BAC STI2D">Bac STI2D</option>
+                        <option value="BTS CPRP">BTS CPRP</option>
+                        <option value="BTS SIO SISR">BTS SIO SISR</option>
+                        <option value="BTS SIO SLAM">BTS SIO SLAM</option>
+                        <option value="BTS MS">BTS MS</option>
+                        <option value="BTS CQPM">BTS CQPM</option>
                     </select>
                 </div>
                 <div class="form-floating my-2">
@@ -131,37 +145,41 @@ if (session_status() === PHP_SESSION_NONE) {
                     <input class="form-control" type="file" id="formFile" name="cv" accept="application/pdf">
                </div>
             `;
-                 } else if (selectRole.value === "Alumni") {
-                     extraFields.innerHTML = `
+                } else if (selectRole.value === "Alumni") {
+                    extraFields.innerHTML = `
                 <div class="form-floating my-2">
-                    <input type="number" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion" min="1900" max="2100" step="1">
+                    <input type="number" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion" min="1900" max="2100" step="1" required>
                     <label for="floatingAnnee">Année de promotion</label>
+               </div>
+<div class="form-floating my-2">
+                    <input type="text" name="poste" class="form-control" id="floatingPoste" placeholder="Poste actuel">
+                    <label for="floatingPoste">Poste actuel</label>
                </div>
                <div class="mb-3">
                     <label for="formFile" class="form-label">Curriculum Vitae</label>
                     <input class="form-control" type="file" id="formFile" name="cv" accept="application/pdf">
                </div>
             `;
-                 } else if (selectRole.value === "Professeur") {
-                     extraFields.innerHTML = `
+                } else if (selectRole.value === "Professeur") {
+                    extraFields.innerHTML = `
                 <div class="form-floating my-2">
-                    <input type="text" name="specialite" class="form-control" id="floatingSpe" placeholder="Matière enseignée">
+                    <input type="text" name="specialite" class="form-control" id="floatingSpe" placeholder="Matière enseignée" required>
                     <label for="floatingSpe">Matière enseignée</label>
                 </div>
             `;
-                 } else if (selectRole.value === "Partenaire") {
-                     extraFields.innerHTML = `
+                } else if (selectRole.value === "Partenaire") {
+                    extraFields.innerHTML = `
                 <div class="form-floating my-2">
-                    <input type="text" name="poste" class="form-control" id="floatingPoste" placeholder="Poste occupé">
+                    <input type="text" name="poste" class="form-control" id="floatingPoste" placeholder="Poste occupé" required>
                     <label for="floatingPoste">Poste occupé</label>
                 </div>
                 <div class="form-floating my-2">
-                    <input type="text" name="raison" class="form-control" id="floatingRaison" placeholder="Raison de l'inscription">
+                    <input type="text" name="raison" class="form-control" id="floatingRaison" placeholder="Raison de l'inscription" required>
                     <label for="floatingRaison">Raison de l'inscription</label>
                 </div>
             `;
-                 }
-             });
-         });
-     </script>
+                }
+            });
+        });
+    </script>
 </div>

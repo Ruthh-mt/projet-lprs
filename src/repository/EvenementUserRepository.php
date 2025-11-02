@@ -6,7 +6,7 @@ class EvenementUserRepository{
         $this->db=New Config();
     }
 
-    public function createEvenementUser(EvenementUser $eveUser){
+    public function createEvenementUser(ModeleEvenementUser $eveUser){
         $req="INSERT INTO user_evenement (ref_user,ref_evenement,est_superviseur) 
             VALUES (:user,:event,:estSuperviseur)";
         $stm=$this->db->connexion()->prepare($req);
@@ -16,7 +16,7 @@ class EvenementUserRepository{
             "estSuperviseur"=>$eveUser->getEstSuperviseur()
         ]);
     }
-    public function verifDejaInscritEvenement(EvenementUser $eveUser){
+    public function verifDejaInscritEvenement(ModeleEvenementUser $eveUser){
         $req="SELECT * FROM user_evenement where ref_user=:user";
         $stm=$this->db->connexion()->prepare($req);
         $stm->execute(["user"=>$eveUser->getRefUser()]);
@@ -29,7 +29,7 @@ class EvenementUserRepository{
         }
 
     }
-    public function inscriptionEvenementUser(EvenementUser $eveUser){
+    public function inscriptionEvenementUser(ModeleEvenementUser $eveUser){
         $req="INSERT INTO user_evenement (ref_user,ref_evenement,est_superviseur) 
             VALUES (:user,:event,:estSuperviseur) ";
         $stmt=$this->db->connexion()->prepare($req);
@@ -44,11 +44,24 @@ class EvenementUserRepository{
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute(["id"=>$id,
             "estSuperviseur"=>1]);
-        return New EvenementUser([
+        return New ModeleEvenementUser([
             "refUser"=>$stmt->fetch()["ref_user"]
             ]
         );
 
-
+    }
+    public function getAllInscritsByEvenement(){
+        $sql="SELECT utilisateur.nom,utilisateur.prenom FROM user_evenement inner join utilisateur on user_evenement.ref_userwhere=utilisateur.id_user WHERE est_superviseur =:estSuperviseur AND ref_evenement =:evenement";
+    }
+    public function desinscription($evenementUser){
+        $req="DELETE FROM user_evenement WHERE ref_evenement=:evenement AND  ref_user=:user";
+        $stm=$this->db->connexion()->prepare($req);
+        $stm->execute(["evenement"=>$evenementUser->getRefEvenement(),
+        "user"=>$evenementUser->getRefUser()]);
+    }
+    public function deleteUserEvenement($evenementUser){
+        $req="DELETE FROM user_evenement WHERE ref_evenement=:evenement";
+        $stm=$this->db->connexion()->prepare($req);
+        $stm->execute(["evenement"=>$evenementUser->getRefEvenement()]);
     }
 }

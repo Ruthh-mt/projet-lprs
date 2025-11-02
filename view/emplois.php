@@ -1,12 +1,19 @@
 <?php
-session_start();
+
+
+
 require_once ('../src/bdd/config.php');
-require_once '../src/repository/OffreRepository.php';
-require_once '../src/repository/OffreRepository.php';
 $pdo  = (new Config())->connexion();
-$offreRepository = new OffreRepository() ;
-$allOffres = $offreRepository->getAllOffres();
+
+$sql =$pdo->prepare("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
+$sql -> execute();
+$offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
+
+
+
 <!doctype html>
 <head>
     <meta charset="utf-8">
@@ -25,7 +32,10 @@ $allOffres = $offreRepository->getAllOffres();
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+
 </head>
+
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
@@ -58,13 +68,12 @@ $allOffres = $offreRepository->getAllOffres();
     </div>
 </header>
 
+
+
 <section class="creation-offre">
     <div class="card">
         <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
             <h2 class="m-0">Offres d'emploi</h2>
-            <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Partenaire'): ?>
-            <a href="crudPartenaire/mesOffres.php" class="btn btn-outline-dark">Mes offres</a>
-            <?php endif; ?>
             <a href="crudOffre/offreCreate.php" class="btn btn-success btn-sm">
                 <i class="bi bi-plus-circle"></i> Créer une offre
             </a>
@@ -75,7 +84,7 @@ $allOffres = $offreRepository->getAllOffres();
                 <tr><th>Titre</th><th>Description</th><th>Mission</th><th>Salaire</th><th>Entreprise</th><th>Type d'offre</th><th>Etat</th><th>Actions</th></tr>
                 </thead>
                 <tbody>
-                <?php foreach ($allOffres as  $offre): ?>
+                <?php foreach ($offres as $offre): ?>
                 <tr>
                 <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
                 <td><?= htmlspecialchars($offre['description']) ?></td>

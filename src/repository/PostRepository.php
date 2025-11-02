@@ -10,7 +10,7 @@ class PostRepository
         $sql="SELECT * FROM post";
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
     public function createPost($post){
         $ajout="INSERT INTO post(titre_post,contenu_post,date_heure_post,ref_user) VALUES (:titrePost,:contenuPost,:dateHeurePost,:refUser)";
@@ -23,12 +23,24 @@ class PostRepository
         ]);
 
     }
-    public function findUsername($post){
-        $sql="SELECT utilisateur.nom,utilisateur.prenom FROM post WHERE idPost=:idPost INNER JOIN  utilisateur ON utilisateur.idUtilisateur=post.refUser ";
+    public function findUsername($idPost){
+        $sql="SELECT utilisateur.nom,utilisateur.prenom FROM post INNER JOIN  utilisateur ON post.ref_user = utilisateur.id_user WHERE id_post=:idPost";
         $stmt=$this->db->connexion()->prepare($sql);
-        $stmt->execute(["idPost" => $post->getIdPost()]);
+        $stmt->execute(["idPost" => $idPost]);
         return $stmt->fetch();
     }
-
+    public function getPostById($post){
+        $sql="SELECT * FROM post WHERE id_post=:idPost";
+        $stmt=$this->db->connexion()->prepare($sql);
+        $stmt->execute(["idPost" => $post->getidPost()]);
+        $req=$stmt->fetch();
+        $post->setIdPost($req['id_post']);
+        $post->setTitrePost($req['titre_post']);
+        $post->setCanal($req['canal']);
+        $post->setContenuPost($req['contenu_post']);
+        $post->setDateHeurePost($req['date_heure_post']);
+        $post->setRefUser($req['ref_user']);
+        return $post;
+    }
 
 }

@@ -1,86 +1,70 @@
 <?php
-declare(strict_types=1);
+
 class OffreRepository
 {
-    private $db;
+
+    private Config $db;
+
     public function __construct()
     {
-        $this->db=NEW Config();
+        $this->db = new Config();
     }
-    public function createOffre(Offre $offre): bool
+
+    public function createOffre(ModeleOffre $offre)
     {
-        $sql = "INSERT INTO offre (titre, description, mission, salaire, type, etat, ref_fiche)
+        $sql = "INSERT INTO offre (titre,description, mission,salaire, type, etat, ref_fiche) 
             VALUES (:titre, :description, :mission, :salaire, :type, :etat, :ref_fiche)";
         $stmt = $this->db->connexion()->prepare($sql);
-
-        return $stmt->execute([
-            'titre'       => $offre->getTitre(),
+        $stmt->execute([
+            'titre' => $offre->getTitreOffre(),
             'description' => $offre->getDescription(),
-            'mission'     => $offre->getMission(),
-            'salaire'     => $offre->getSalaire(),
-            'type'        => $offre->getType(),
-            'etat'        => $offre->getEtat(),
-            'ref_fiche'   => $offre->getRefFiche(),
+            'mission' => $offre->getMission(),
+            'salaire' => $offre->getSalaire(),
+            'type' => $offre->getTypeContrat(),
+            'etat' => $offre ->getEtat(),
+            'refFiche' => $offre->getRefFiche()
         ]);
+        return $this->db->connexion()->lastInsertId();
     }
-    public function getAllOffres()
+
+    public function getAllOffre()
     {
-        $sql="SELECT * FROM offre";
-        $stmt=$this->db->connexion()->prepare($sql);
+        $sql = "SELECT * FROM offre o inner join fiche_entreprise f
+    on o.ref_fiche = f.id_fiche_entreprise";
+        $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll();
+        $offres = $stmt->fetchAll();
+        return $offres;
     }
 
-    public function getAnOffre(int $idOffre): ?Offre
+    public function getOffreById($user)
     {
-        $sql = "SELECT * FROM offre WHERE id_offre = :id";
+        $sql = "SELECT * FROM offre o inner join crudPostuler p inner join utilisateur u
+         on o.id_offre = p.ref_offre 
+         on p.ref_user = u.id_user
+         WHERE id_user =?";
         $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute(['id' => $idOffre]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->execute(['id' => $user->getIdUser()]);
+        $req = $stmt->fetchAll();
 
-        if (!$row) {
-            return null;
-        }
-        $offre = new Offre([
-            'idOffre'   => $row['id_offre'],
-            'titre'     => $row['titre'],
-            'description' => $row['description'],
-            'mission'   => $row['mission'],
-            'salaire'   => $row['salaire'],
-            'type'      => $row['type'],
-            'etat'      => $row['etat'],
-            'refFiche'  => $row['ref_fiche']
+        return $req[0];
+    }
+
+    public function updateEvenement(ModeleEvenement $evenement)
+    {
+        $sql = "UPDATE evenement SET titre_eve=:titre, type_eve:type, desc_eve=:desc, lieu_eve=:lieu, element_eve=:element,
+         nb_place=:nbplace WHERE id_evenement=:id ";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute([
+            'id' => $evenement->getIdEvenement(),
+            'titre' => $evenement->getTitreEvenement(),
+            'type' => $evenement->getTypeEvenement(),
+            'desc' => $evenement->getDescEvenement(),
+            'lieu' => $evenement->getLieuEvenement(),
+            'element' => $evenement->getElementEvenement(),
+            'nbPlace' => $evenement->getNbPlace()
         ]);
 
-        return $offre;
+        return $this->db->connexion()->lastInsertId();
     }
-
-    public function updateOffre(Offre $offre): bool
-    {
-        $sql = "UPDATE offre 
-            SET 
-                titre = :titre,
-                description = :description,
-                mission = :mission,
-                salaire = :salaire,
-                type = :type,
-                etat = :etat,
-                ref_fiche = :refFiche
-            WHERE id_offre = :idOffre";
-
-        $stmt = $this->db->connexion()->prepare($sql);
-
-        return $stmt->execute([
-            'titre'     => $offre->getTitre(),
-            'description' => $offre->getDescription(),
-            'mission'   => $offre->getMission(),
-            'salaire'   => $offre->getSalaire(),
-            'type'      => $offre->getType(),
-            'etat'      => $offre->getEtat(),
-            'refFiche'  => $offre->getRefFiche(),
-            'idOffre'   => $offre->getIdOffre()
-        ]);
-    }
-
-
 }

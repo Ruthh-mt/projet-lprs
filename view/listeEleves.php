@@ -18,7 +18,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img src="https://media.tenor.com/1DV7nkfj5OkAAAAM/blobgodeto-blobdance.gif"
+            <img src="https://media.tenor.com/JhVlbsQoCboAAAAi/cute-dancing.gif"
                  class="rounded-circle mx-3"
                  style="max-width: 15%; height: auto;">
             <div class="fs-4 text-light text-uppercase">LPRS</div>
@@ -30,6 +30,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
         <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light active me-2">Liste des élèves</a></li>
         <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
                 <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>
@@ -46,3 +47,6 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </div>
 </header>
+<section class="container banner bg-dark text-white text-center py-1 rounded">
+    <h1>Liste des élèves actuels</h1>
+</section>

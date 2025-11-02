@@ -55,8 +55,12 @@ $offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endif; ?>
     </div>
 </header>
-
-<section class="container banner bg-dark text-white text-center py-3 rounded">
+<?php if (isset($_SESSION['success'])): ?>
+    <div class="container alert alert-success alert-dismissible fade show" role="alert">
+        <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+    </div>
+<?php endif; ?>
+<section class="container banner bg-dark text-white text-center py-1 rounded">
     <h1>Bienvenue</h1>
 </section>
 <section class="container border rounded border-dark my-3">
