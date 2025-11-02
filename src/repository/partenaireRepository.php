@@ -57,4 +57,12 @@ class partenaireRepository
 
           return $stmt->execute(['ref_user' => $ref_user]);
      }
+     public function getAllOffresByPartenaire(int $ref_user){
+         $sql = "SELECT * FROM offre WHERE ref_user = :ref_user";
+         $stmt = $this->db->connexion()->prepare($sql);
+         $stmt->execute(['ref_user' => $ref_user]);
+         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+         return $result ?: null;
+     }
 }

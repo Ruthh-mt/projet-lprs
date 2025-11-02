@@ -1,5 +1,11 @@
 <?php
+session_start();
 require_once("../../src/bdd/config.php");
+require_once "../repository/OffreRepository.php";
+require_once "../modele/Offre.php";
+require_once "../repository/EvenementUserRepository.php";
+$offreRepository = new OffreRepository();
+
 
 try {
     $pdo = (new Config())->connexion();
@@ -25,30 +31,29 @@ try {
     $salaire = (float) $_POST['salaire'];
     $id_entreprise = (int) $_POST['entreprise'];
 
+    if ($id_entreprise === null) {
+        echo "<script>alert('Aucune entreprise sélectionnée.'); window.history.back();</script>";
+        exit;
+    }
+
+    $etat = "En attente";
     // Vérification du salaire
     if ($salaire < 0) {
         echo "<script>alert('Le salaire doit être un nombre positif.'); window.history.back();</script>";
         exit;
     }
-
+    $offre = new Offre(array(
+        'titre'       => $titre,
+        'description' => $description,
+        'mission'     => $mission,
+        'salaire'     => $salaire,
+        'type'        => $type,
+        'etat'        => $etat,
+        'refFiche'   => $id_entreprise
+    ));
+    var_dump($offre->getRefFiche());
     // Requête d’insertion
-    $sql = $pdo->prepare("
-        INSERT INTO offre (titre, description, mission, salaire, type, etat, ref_fiche)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ");
-
-    $etat = "En attente"; // valeur par défaut
-
-    $sql->execute([
-        $titre,
-        $description,
-        $mission,
-        $salaire,
-        $type,
-        $etat,
-        $id_entreprise
-    ]);
-
+    $sql = $offreRepository->createOffre($offre);
     // Message de succès et redirection
     echo "<script>alert('Offre créée avec succès !'); window.location.href='../../view/emplois.php';</script>";
     exit;

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once ("../../src/bdd/config.php");
 $pdo  = (new Config())->connexion();
 
@@ -95,7 +96,6 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
             <button type="button" class="btn btn-outline-light" onclick="window.location.href='../emplois.php'">
                 <i class="bi bi-arrow-left-circle"></i> Retour
             </button>
-
         </div>
 
         <!-- Formulaire -->

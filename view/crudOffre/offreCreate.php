@@ -97,19 +97,7 @@ $entreprises = $sql -> fetchAll(PDO::FETCH_ASSOC);
         </div>
         <!-- Formulaire -->
         <form class="mt-4" action="../../src/treatment/traitementAjoutOffre.php" method="post">
-            <?php if (isset($_SESSION['error'])): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            <?php endif; ?>
 
-            <?php if (isset($_SESSION['success'])): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            <?php endif; ?>
 
             <div class="mb-3">
                 <label for="titre_poste" class="form-label">Titre du poste</label>

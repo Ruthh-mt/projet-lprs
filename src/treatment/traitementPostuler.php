@@ -56,6 +56,7 @@ if (!empty($_FILES['cv']['name'])) {
 }
 
 // -------------------------------- Insertion BDD -----------------------------------------
+
 $sql = $pdo->prepare("
     INSERT INTO postuler (ref_user, ref_offre, motivation, est_accepte)
     VALUES (?,  ?, ?, ?)
