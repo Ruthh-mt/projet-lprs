@@ -102,6 +102,11 @@ $candidature= $stmt->fetch();
 <body>
 
 
+<section class="container banner bg-danger text-warning text-center py-1 rounded border">
+    <h1>Cette page est censé être pour le gestionnaire</h1>
+</section>
+
+
 <!-- SECTION DETAIL -->
 <div class="container mb-5">
     <div class="section-offre">

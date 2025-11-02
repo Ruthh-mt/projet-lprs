@@ -83,6 +83,13 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
         </a>
     </div>
 </header>
+
+
+<section class="container banner bg-danger text-warning text-center py-1 rounded border">
+    <h1>Cette page est censé être pour le gestionnaire</h1>
+</section>
+
+
 <?php if (isset($_SESSION['error'])): ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <?= $_SESSION['error']; unset($_SESSION['error']); ?>

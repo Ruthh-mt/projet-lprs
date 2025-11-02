@@ -55,18 +55,18 @@ $page = 'Formation';
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
             <a href="../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
+            <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-danger">Candidature</a>
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
             <a href="../crudEtudiant/etudiantRead.php" class="btn btn-outline-info">Étudiant</a>
-            <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-info">Évènement</a>
-            <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Fiche entreprise</a>
+            <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger">Évènement</a>
             <a href="../crudFormation/formationRead.php" class="btn btn-outline-info active">Formation</a>
+            <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
             <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
-            <a href="../crudPost/postRead.php" class="btn btn-outline-info">Post</a>
-            <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-info">Postuler</a>
+            <a href="../crudPost/postRead.php" class="btn btn-outline-danger">Post</a>
             <a href="../crudProfesseur/professeurRead.php" class="btn btn-outline-info">Professeur</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
-            <a href="../crudUtilisateur" class="btn btn-outline-info">Utilisateur</a>
+            <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
         </div>
     </div>
 </nav>

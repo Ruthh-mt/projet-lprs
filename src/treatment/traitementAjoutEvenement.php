@@ -1,5 +1,5 @@
 <?php
-require_once "../modele/Evenement.php";
+require_once "../modele/ModeleEvenement.php";
 require_once "../bdd/config.php";
 require_once "../repository/EvenementRepository.php";
 require_once "../modele/EvenementUser.php";
