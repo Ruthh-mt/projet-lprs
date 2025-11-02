@@ -95,8 +95,8 @@ $offres = $offreRepo->getAllOffre();
                 <td><?= htmlspecialchars($offre['type']) ?></td>
                 <td><?= htmlspecialchars($offre['etat']) ?></td>
                     <td class="row-actions">
-                        <a href="../view/crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>" class="btn btn-sm btn-outline" title="Modifier"><i class="bi bi-pencil"></i></a>
-                        <form action="crudOffre/offreDelete.php" method="post" style="display:inline;">
+                        <a href="admin/crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>" class="btn btn-sm btn-outline" title="Modifier"><i class="bi bi-pencil"></i></a>
+                        <form action="admin/crudOffre/offreDelete.php" method="post" style="display:inline;">
                             <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                             <input type="hidden" name="delete_offre" value="1">
                             <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer" onclick="return confirm('Supprimer cette offre ?')">
