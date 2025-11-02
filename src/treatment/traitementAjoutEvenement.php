@@ -1,8 +1,8 @@
 <?php
 require_once "../modele/ModeleEvenement.php";
+require_once "../modele/ModeleEvenementUser.php";
 require_once "../bdd/config.php";
 require_once "../repository/EvenementRepository.php";
-require_once "../modele/EvenementUser.php";
 require_once "../repository/EvenementUserRepository.php";
 
 session_start();
@@ -43,7 +43,7 @@ function redirectWith(string $type, string $message, string $target): void {
         ));
         }
         else {
-            $evenement = new Evenement(array(
+            $evenement = new ModeleEvenement(array(
                 "titreEvenement" => $titreEve,
                 "typeEvenement" => $typeEve,
                 "descEvenement" => $descEve,
@@ -57,7 +57,7 @@ function redirectWith(string $type, string $message, string $target): void {
         }
         $evenementRepository = new EvenementRepository();
         $refEvenement = $evenementRepository->createEvenement($evenement);
-        $evenementUser = new EvenementUser(array(
+        $evenementUser = new ModeleEvenementUser(array(
             "refUser" => $refUser,
             "refEvenement" => $refEvenement,
             "estSuperviseur" => 1
