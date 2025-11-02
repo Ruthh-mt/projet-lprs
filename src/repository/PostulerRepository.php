@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../bdd/config.php';
-require_once __DIR__ . '/../modele/Postuler.php';
+require_once __DIR__ . '/../modele/ModelePostuler.php';
 
 class PostulerRepository
 {
@@ -11,7 +11,7 @@ class PostulerRepository
         $this->db = new Config();
     }
 
-    public function insert(Postuler $postuler): bool
+    public function insert(ModelePostuler $postuler): bool
     {
         $sql = "INSERT INTO postuler (ref_user, ref_offre, motivation)
                 VALUES (:refUser, :refOffre, :motivation)";
@@ -33,19 +33,19 @@ class PostulerRepository
 
         $candidatures = [];
         foreach ($rows as $row) {
-            $candidatures[] = new Postuler($row);
+            $candidatures[] = new ModelePostuler($row);
         }
         return $candidatures;
     }
 
-    public function findByUserAndOffre(int $refUser, int $refOffre): ?Postuler
+    public function findByUserAndOffre(int $refUser, int $refOffre): ?ModelePostuler
     {
         $sql = "SELECT * FROM postuler WHERE ref_user = :refUser AND ref_offre = :refOffre";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute(['refUser' => $refUser, 'refOffre' => $refOffre]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $row ? new Postuler($row) : null;
+        return $row ? new ModelePostuler($row) : null;
     }
 
     public function findByUser(int $refUser): array
@@ -57,7 +57,7 @@ class PostulerRepository
 
         $candidatures = [];
         foreach ($rows as $row) {
-            $candidatures[] = new Postuler($row);
+            $candidatures[] = new ModelePostuler($row);
         }
         return $candidatures;
     }

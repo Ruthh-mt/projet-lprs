@@ -1,6 +1,6 @@
 <?php
 
-class Postuler
+class ModelePostuler
 {
 private $refUser ;
 private $refOffre ;

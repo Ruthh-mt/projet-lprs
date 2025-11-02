@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../bdd/config.php";
-require_once __DIR__ . "/../modele/FicheEntreprise.php";
+require_once __DIR__ . "/../modele/ModeleFicheEntreprise.php";
 
 class FicheRepository
 {
@@ -20,7 +20,7 @@ class FicheRepository
 
         $entreprises = [];
         foreach ($rows as $row) {
-            $entreprises[] = new FicheEntreprise($row);
+            $entreprises[] = new ModeleFicheEntreprise($row);
         }
         return $entreprises;
     }
@@ -45,7 +45,7 @@ class FicheRepository
         return $offre;
     }
 
-    public function createFiche(FicheEntreprise $fiche): bool
+    public function createFiche(ModeleFicheEntreprise $fiche): bool
     {
         $sql = "INSERT INTO fiche_entreprise (nom_entreprise, adresse_entreprise, adresse_web)
                 VALUES (:nom, :adresse, :web)";
@@ -57,7 +57,7 @@ class FicheRepository
             'adresseWeb'     => $fiche->getAdresseWeb()
         ]);
     }
-    public function updateFiche(FicheEntreprise $fiche): bool
+    public function updateFiche(ModeleFicheEntreprise $fiche): bool
     {
         $sql = "UPDATE fiche_entreprise 
                 SET nom_entreprise = :nom,

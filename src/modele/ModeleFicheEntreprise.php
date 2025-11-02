@@ -1,6 +1,6 @@
 <?php
 
-class FicheEntreprise
+class ModeleFicheEntreprise
 {
 private $idFicheEntreprise ;
 private $nomEntreprise ;
