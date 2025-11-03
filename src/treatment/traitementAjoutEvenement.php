@@ -1,8 +1,8 @@
 <?php
-require_once "../modele/Evenement.php";
+require_once "../modele/ModeleEvenement.php";
 require_once "../bdd/config.php";
 require_once "../repository/EvenementRepository.php";
-require_once "../modele/EvenementUser.php";
+require_once "../modele/ModeleEvenementUser.php";
 require_once "../repository/EvenementUserRepository.php";
 
 session_start();
@@ -23,41 +23,42 @@ function redirectWith(string $type, string $message, string $target): void {
     $lieuEve=$_POST["lieu_eve"];
     $elementEve=$_POST["element_eve"];
     $nbPlace=$_POST["nb_plc"];
+    $status=$_POST["status"];
 
     if($titreEve==='' || $typeEve==='' || $descEve==='' || $lieuEve===''
-        || $elementEve==='' || $nbPlace==='' ||$refUser==='' || $role==='' ){
+        || $elementEve==='' || $nbPlace==='' ||$refUser==='' || $role==='' || $status===''){
        redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementCreate.php');
     }
     try {
         if ($role == "Étudiant") {
 
-        $evenement = new Evenement(array(
+        $evenement = new ModeleEvenement(array(
             "titreEvenement" => $titreEve,
             "typeEvenement" => $typeEve,
             "descEvenement" => $descEve,
             "lieuEvenement" => $lieuEve,
             "elementEvenement" => $elementEve,
             "nbPlace" => $nbPlace,
-            "status" =>"inactive",
+            "status" =>$status,
             "estValide" => 0
         ));
         }
         else {
-            $evenement = new Evenement(array(
+            $evenement = new ModeleEvenement(array(
                 "titreEvenement" => $titreEve,
                 "typeEvenement" => $typeEve,
                 "descEvenement" => $descEve,
                 "lieuEvenement" => $lieuEve,
                 "elementEvenement" => $elementEve,
                 "nbPlace" => $nbPlace,
-                "status" =>"active",
+                "status" =>$status,
                 "estValide" => 1
             ));
 
         }
         $evenementRepository = new EvenementRepository();
         $refEvenement = $evenementRepository->createEvenement($evenement);
-        $evenementUser = new EvenementUser(array(
+        $evenementUser = new ModeleEvenementUser(array(
             "refUser" => $refUser,
             "refEvenement" => $refEvenement,
             "estSuperviseur" => 1

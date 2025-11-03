@@ -1,8 +1,5 @@
 <?php
-
-require_once "../modele/ModeleEvenement.php";
 require_once "../bdd/config.php";
-require_once "../repository/EvenementRepository.php";
 require_once "../modele/ModeleEvenementUser.php";
 require_once "../repository/EvenementUserRepository.php";
 session_start();
@@ -19,24 +16,18 @@ $refUser = $_POST["refUser"];
 $refEvenement = $_POST["ref_eve"];
 
 if ($refUser===''||$refEvenement==='') {
-    redirectWith('error', "Vous n'avez pas l'air connecté ", '../../view/crudEvenement/evenementRead?id='.$refEvenement.'.php');
+    redirectWith('error', "Vous n'avez pas l'air connecté ", '../../view/evenements.php');
 }
 try {
     $evenementUser = new ModeleEvenementUser(array(
         "refUser" => $refUser,
         "refEvenement" => $refEvenement,
-        "estSuperviseur" => null
+        "estSuperviseur" => 1
     ));
 
     $evenementUserRepository= new EvenementUserRepository();
-    $estDejaInscrit=$evenementUserRepository->verifDejaInscritEvenement($evenementUser);
-    if($estDejaInscrit){
-        $evenementUserRepository->inscriptionEvenementUser($evenementUser);
-        redirectWith('success', "Vous avez bien été inscrit", '../../view/crudEvenement/evenementRead?id='.$refEvenement.'.php');
-    }
-    else{
-        redirectWith('Error', "Vous etes deja inscrit ", '../../view/crudEvenement/evenementRead?id='.$refEvenement.'.php');
-    }
+    redirectWith('success', "L'evenement a bien été validé, N'oubliez c'est pour la vie", '../../view/crudEvenement/evenementRead?id='.$refEvenement.'.php');
+
     session_write_close();
 } catch (PDOException $e) {
     redirectWith('error', "Erreur de l'inscription à l'evenement : " . $e->getMessage(), '../../view/evenements.php');

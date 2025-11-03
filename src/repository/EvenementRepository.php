@@ -7,8 +7,8 @@ class EvenementRepository{
     }
 
     public function createEvenement(ModeleEvenement $evenement){
-        $sql="INSERT INTO evenement (titre_eve,type_eve,desc_eve,lieu_eve,element_eve,nb_place) 
-            VALUES (:titre, :type, :desc, :lieu, :element, :nbPlace)";
+        $sql="INSERT INTO evenement (titre_eve,type_eve,desc_eve,lieu_eve,element_eve,nb_place,status,est_valide) 
+            VALUES (:titre, :type, :desc, :lieu, :element, :nbPlace,:status,:estValide)";
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute([
            'titre'=>$evenement->getTitreEvenement(),
@@ -16,7 +16,10 @@ class EvenementRepository{
             'desc'=>$evenement->getDescEvenement(),
             'lieu'=>$evenement->getLieuEvenement(),
             'element'=>$evenement->getElementEvenement(),
-            'nbPlace'=>$evenement->getNbPlace()
+            'nbPlace'=>$evenement->getNbPlace(),
+            'status'=>$evenement->getStatus(),
+            'estValide'=>$evenement->getEstValide()
+
         ]);
 
         return $this->db->connexion()->lastInsertId();
@@ -26,9 +29,18 @@ class EvenementRepository{
         $sql="SELECT * FROM evenement";
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-
+    public function getAllEvenementNonValidated()
+    {
+        $sql="SELECT * FROM evenement WHERE est_valide=:estValide AND status=:status ";
+        $stmt=$this->db->connexion()->prepare($sql);
+        $stmt->execute([
+            'estValide'=>0,
+            'status'=>"en attente"
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
     public function getAnEvenement($evenement){
         $sql="SELECT * FROM evenement WHERE id_evenement=:id";
         $stmt=$this->db->connexion()->prepare($sql);

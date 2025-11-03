@@ -39,6 +39,17 @@ class EvenementUserRepository{
             "estSuperviseur"=>$eveUser->getEstSuperviseur()
             ));
     }
+    public function addSuperviseur( $eveUser){
+        $sql="INSERT INTO user_evenement (ref_user,est_superviseur) VALUES (:refUser,:estSuperviseur) WHERE ref_evenement=:refEvenement";
+        $stm=$this->db->connexion()->prepare($sql);
+        $stm->execute(array(
+            "refUser"=>$eveUser->getRefUser(),
+            "estSuperviseur"=>$eveUser->getEstSuperviseur(),
+             "refEvenement"=>$eveUser->getRefEvenement()
+        ));
+
+
+    }
     public function getSuperviseur($id){
         $sql="SELECT ref_user FROM user_evenement WHERE ref_evenement=:id AND est_superviseur =:estSuperviseur";
         $stmt=$this->db->connexion()->prepare($sql);
@@ -50,8 +61,19 @@ class EvenementUserRepository{
         );
 
     }
-    public function getAllInscritsByEvenement(){
+    public function getAllInscritsByEvenement($eveuser){
         $sql="SELECT utilisateur.nom,utilisateur.prenom FROM user_evenement inner join utilisateur on user_evenement.ref_userwhere=utilisateur.id_user WHERE est_superviseur =:estSuperviseur AND ref_evenement =:evenement";
+        $stmt=$this->db->connexion()->prepare($sql);
+        $stmt->execute(["estSuperviseur"=>null,
+            "evenement"=>$eveuser->getRefEvenement()]);
+    }
+
+    public function countAllInscritsByEvenement($eveuser){
+        $sql="SELECT count(ref_user) FROM user_evenement WHERE est_superviseur =:estSuperviseur AND ref_evenement =:evenement";
+        $stmt=$this->db->connexion()->prepare($sql);
+        $stmt->execute(["estSuperviseur"=>null,
+            "evenement"=>$eveuser->getRefEvenement()]);
+
     }
     public function desinscription($evenementUser){
         $req="DELETE FROM user_evenement WHERE ref_evenement=:evenement AND  ref_user=:user";

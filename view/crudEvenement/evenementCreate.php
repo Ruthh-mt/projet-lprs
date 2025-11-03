@@ -125,6 +125,21 @@ $role = $_SESSION['utilisateur']["role"];
             </div>
 
             <div class="mb-3">
+                <label for="status">Status de l'evenement</label>
+                <select class="form-select" aria-label="Default select example"  name="status" required>
+                    <option selected>Choisissez le status</option>
+                    <option value="en attente">En attente de validation par un prof</option>
+                    <?php
+                    if($_SESSION["utilisateur"]['role']!="Étudiant" ){
+                        echo'<option value="actif">Actif</option>
+                    <option value="inactif">Inactif</option>';
+                    }
+                    ?>
+                </select>
+
+            </div>
+
+            <div class="mb-3">
                 <label for="desc_eve">Description</label>
                 <textarea class="form-control" id="desc_eve" name="desc_eve" placeholder="Entrez la description de l’évènement" required></textarea>
             </div>
