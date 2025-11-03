@@ -9,8 +9,6 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-
 ?>
 <!doctype html>
 <html lang="fr">
