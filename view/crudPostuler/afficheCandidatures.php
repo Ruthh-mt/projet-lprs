@@ -1,9 +1,14 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-
+session_start();
     $page = 'Etudiant';
-}
+    require_once '../../src/modele/ModelePostuler.php';
+    require_once '../../src/repository/PostulerRepository.php';
+    require_once "../../src/bdd/config.php";
+    $id_offre = $_GET['id'];
+    $postulerRepository = new PostulerRepository();
+    $candidaturesPostule = $postulerRepository->findOffreAndUser($_SESSION['utilisateur']['id_user'], $id_offre);
+
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -20,7 +25,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <header
     class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
-        <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
+        <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
             <img src="https://media.tenor.com/ifEkV-aGn3EAAAAi/fat-cat.gif"
                  class="rounded-circle mx-3"
                  style="max-width: 15%; height: auto;">
@@ -50,11 +55,12 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </div>
 </header>
+<body>
 <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
             <a href="../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
-            <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-danger">Candidature</a>
+            <a href="candidatureRead.php" class="btn btn-outline-danger">Candidature</a>
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
             <a href="p" class="btn btn-outline-info active">Étudiant</a>
             <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger">Évènement</a>
@@ -69,6 +75,73 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </nav>
-<section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
-</section>
+
+<?php
+
+?>
+<!-- SECTION DETAIL -->
+<div class="container mb-5">
+    <div class="section-offre">
+        <div class="offre-header d-flex justify-content-between align-items-center">
+            <h2 class="fw-bold"><?= htmlspecialchars($candidaturesPostule['titre']) ?></h2>
+            <button type="button" class="btn btn-outline-light" onclick="window.location.href='../evenements.php'">
+                <i class="bi bi-arrow-left-circle"></i> Retour
+            </button>
+        </div>
+
+        <form class="mt-4" action="" method="post">
+            <input type="hidden" name="ref_offre" value="<?= htmlspecialchars($id_offre) ?>">
+            <input type="hidden" name="refUser" value="<?= htmlspecialchars($_SESSION['utilisateur']['id_user']) ?>">
+
+            <div class="mb-3">
+                <label for="motivation" id="motivation" class="form-label">Lettre de motivation</label>
+                <textarea type="text" class ="form-control"  name="motivation" ><?= $candidaturesPostule['motivation']?></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="cv" class="form-label">CV (PDF, DOCX) </label>
+                <input id="cv" name="cv" type="file" class="form-control" accept=".pdf,.doc,.docx">
+            </div>
+            <div class="text-center mt-4">
+                <form action="candidatureDelete.php" method="post" style="display:inline;">
+                    <input type="hidden" name="id_offre" value="<?= $_GET['id'] ?> ">
+                    <input type="hidden" name="delete_candidature" value="1">
+                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                            title="Supprimer" onclick="return confirm('Supprimer cette offre ?')">
+                       Supprimer la candidature
+                    </button>
+                </form>
+                <form action="" method="post" style="display:inline;">
+                    <input type="hidden" name="update_candidature" value="1">
+                    <input type="hidden" name="id_offre" value="<?php $_GET['id'] ?>">
+                    <button type="submit" class="btn btn-sm btn-outline-success" >
+                        Modifier la candidature
+                    </button>
+                </form>
+            </div>
+        </form>
+
+
+
+    </div>
+</div>
+
+</body>
+</html>
+<script>
+    function autoResize(textarea) {
+        textarea.style.height = 'auto'; // Reset height
+        textarea.style.height = textarea.scrollHeight + 'px'; // Set to content height
+    }
+
+    // Get the textarea
+    const ta = document.getElementById('motivation');
+
+    // Adjust height on input
+    ta.addEventListener('input', () => autoResize(ta));
+
+    // Adjust height on page load for prefilled content
+    window.addEventListener('load', () => autoResize(ta));
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+

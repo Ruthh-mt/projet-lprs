@@ -1,18 +1,12 @@
 <?php
-
-
-
+session_start();
 require_once ('../src/bdd/config.php');
 $pdo  = (new Config())->connexion();
-
 $sql =$pdo->prepare("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
 $sql -> execute();
 $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
 
-
 ?>
-
-
 
 <!doctype html>
 <head>
@@ -68,15 +62,25 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
     </div>
 </header>
 
-
-
 <section class="creation-offre">
     <div class="card">
         <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
             <h2 class="m-0">Offres d'emploi</h2>
-            <a href="crudOffre/offreCreate.php" class="btn btn-success btn-sm">
-                <i class="bi bi-plus-circle"></i> Créer une offre
-            </a>
+            <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Partenaire'): ?>
+
+                <form action="" method="post" style="display:inline;">
+                    <a href="profil.php" class="btn btn-dark">Voir mes offres </a>
+                </form>
+                <form action="" method="post" style="display:inline;">
+                    <a href="crudOffre/offreCreate.php" class="btn btn-dark">Créer une offre </a>
+                </form>
+
+
+            <?php elseif (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
+                <a href="profil.php" class="btn btn-success btn-sm">
+                    <i class="bi bi-plus-circle"></i> Mes candidatures
+                </a>
+            <?php endif; ?>
         </div>
     <div class="table-wrap">
             <table class="table" id="offre-table">
@@ -99,7 +103,7 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
                             <i class="bi bi-pencil"></i>
                         </a>
 
-                        <form action="../view/crudOffre/deleteOffre.php" method="post" style="display:inline;">
+                        <form action="crudOffre/offreDelete.php" method="post" style="display:inline;">
                             <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                             <input type="hidden" name="delete_offre" value="1">
                             <button type="submit" class="btn btn-sm btn-outline-danger"

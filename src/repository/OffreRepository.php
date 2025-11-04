@@ -1,4 +1,5 @@
 <?php
+require_once ('../../src/bdd/config.php');
 
 class OffreRepository
 {
@@ -26,6 +27,12 @@ class OffreRepository
         ]);
         return $this->db->connexion()->lastInsertId();
     }
+    public function deleteOffre($id)
+    {
+        $sql = "DELETE FROM offre WHERE id_offre = :id_offre";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute(['id_offre' => $id]) ;
+    }
 
     public function getAllOffre()
     {
@@ -39,10 +46,10 @@ class OffreRepository
 
     public function getOffreById($user)
     {
-        $sql = "SELECT * FROM offre o inner join crudPostuler p inner join utilisateur u
+        $sql = "SELECT * FROM offre o inner join postuler p inner join utilisateur u
          on o.id_offre = p.ref_offre 
          on p.ref_user = u.id_user
-         WHERE id_user =?";
+         WHERE id_user =:id";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute(['id' => $user->getIdUser()]);
         $req = $stmt->fetchAll();
@@ -50,21 +57,4 @@ class OffreRepository
         return $req[0];
     }
 
-    public function updateEvenement(ModeleEvenement $evenement)
-    {
-        $sql = "UPDATE evenement SET titre_eve=:titre, type_eve:type, desc_eve=:desc, lieu_eve=:lieu, element_eve=:element,
-         nb_place=:nbplace WHERE id_evenement=:id ";
-        $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute([
-            'id' => $evenement->getIdEvenement(),
-            'titre' => $evenement->getTitreEvenement(),
-            'type' => $evenement->getTypeEvenement(),
-            'desc' => $evenement->getDescEvenement(),
-            'lieu' => $evenement->getLieuEvenement(),
-            'element' => $evenement->getElementEvenement(),
-            'nbPlace' => $evenement->getNbPlace()
-        ]);
-
-        return $this->db->connexion()->lastInsertId();
-    }
 }

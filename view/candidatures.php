@@ -1,7 +1,4 @@
 <?php
-
-require_once "../view/../src/bdd/config.php";
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

@@ -57,7 +57,7 @@ require_once __DIR__ . '/traitementFormationUpdate.php';
             <a href="../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
             <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-danger">Candidature</a>
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
-            <a href="../crudEtudiant/etudiantRead.php" class="btn btn-outline-info">Étudiant</a>
+            <a href="../crudPostuler/afficheCandidatures.php" class="btn btn-outline-info">Étudiant</a>
             <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger">Évènement</a>
             <a href="p" class="btn btn-outline-info active">Formation</a>
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>

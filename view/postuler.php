@@ -143,7 +143,6 @@ if (!$ref_offre) {
                 <label for="cv" class="form-label">CV (PDF, DOCX) — optionnel</label>
                 <input id="cv" name="cv" type="file" class="form-control" accept=".pdf,.doc,.docx">
             </div>
-
             <div class="form-check mb-3">
                 <input class="form-check-input" type="checkbox" id="consentement" name="consentement" required>
                 <label class="form-check-label" for="consentement">

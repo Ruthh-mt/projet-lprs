@@ -2,7 +2,6 @@
 require_once '../src/modele/ModeleEvenement.php';
 require_once '../src/repository/evenementRepository.php';
 require_once "../src/bdd/config.php";
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

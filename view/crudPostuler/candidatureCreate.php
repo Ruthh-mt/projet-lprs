@@ -56,7 +56,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="../../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
             <a href=".php" class="btn btn-outline-danger active">Candidature</a>
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
-            <a href="../crudEtudiant/etudiantRead.php" class="btn btn-outline-info">Étudiant</a>
+            <a href="afficheCandidatures.php" class="btn btn-outline-info">Étudiant</a>
             <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger">Évènement</a>
             <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>

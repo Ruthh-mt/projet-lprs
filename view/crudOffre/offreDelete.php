@@ -1,29 +1,15 @@
 <?php
 use bdd\Bdd;
 require '../../src/bdd/config.php';
+require_once "../../src/repository/OffreRepository.php";
+
 $bdd = new Config() ;
 $pdo = $bdd ->connexion() ;
-
+$offreRepository = new OffreRepository();
+$id_offre = (int) $_POST['id_offre'];
 if (isset($_POST['delete_offre'])) {
-    $idOffre = intval($_POST['id_offre'] ?? 0);
-
-    if ($idOffre > 0) {
-        try {
-            // Suppression de l’offre
-            $stmt = $pdo->prepare("DELETE FROM offre WHERE id_offre = ?");
-            $stmt->execute([$idOffre]);
-
-        } catch (Exception $e) {
-
-            echo "Erreur SQL : " . $e->getMessage();
-            exit;
-        }
-    } else {
-        echo "ID d'offre invalide.";
-        exit;
-    }
+    // Suppression de l’offre
+        $offreRepository->deleteOffre($id_offre);
 }
 
 
-header("Location: ../view/emplois.php");
-exit;

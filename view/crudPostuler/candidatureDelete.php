@@ -1,32 +1,26 @@
 <?php
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
+use bdd\Bdd;
 require '../../src/bdd/config.php';
 $bdd = new Config() ;
 $pdo = $bdd ->connexion() ;
 
 if (isset($_POST['delete_candidature'])) {
-    $ref_offre = (int)$_POST['id_offre'] ?? 0;
-    $ref_user = $_SESSION['utilisateur']['id_user'] ?? 0;
+    $idOffre = intval($_POST['id_offre']);
+    $idUser = intval($_SESSION['utilisateur']['id_user']);
 
-
-    // Suppression de l’offre
-    $stmt = $pdo->prepare("DELETE FROM postuler WHERE ref_user = ? and ref_offre = ? ;");
-    $ok = $stmt->execute([$ref_user,$ref_offre]);
-    if ($ok) {
-        echo "<script>alert('Votre candidature a été supprimé !'); window.location.href='../../candidatures.php';</script>";
-        exit;
+    if ($idOffre > 0) {
+        try {
+            // Suppression de l’offre
+            $stmt = $pdo->prepare("DELETE FROM postuler WHERE ref_offre = ? and ref_user = ?");
+            $stmt->execute([$idOffre, $idUser]);
+        } catch (Exception $e) {
+            echo "Erreur SQL : " . $e->getMessage();
+            exit;
+        }
     } else {
-        echo "<script>alert('Erreur lors de la suppression de la candidature.'); window.history.back();</script>";
+        echo "ID d'offre invalide.";
         exit;
-
     }
 }
-else {
-    echo "<script>alert('Problème candidature.'); window.history.back();</script>";
-    exit;
-}
-?>
+header("Location: ../view/profil.php.php");
+exit;

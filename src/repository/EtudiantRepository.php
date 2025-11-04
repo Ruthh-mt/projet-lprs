@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . "/../bdd/config.php";
+require_once __DIR__ . "/../modele/ModeleEtudient.php";
 class etudiantRepository
 {
      private $db;
@@ -7,11 +9,11 @@ class etudiantRepository
           $this->db=NEW Config();
      }
 
-     public function findByUserId(int $ref_user): ?array
+     public function findByUserId(int $id_user): ?array
      {
-          $sql = "SELECT * FROM etudiant WHERE ref_user = :ref_user";
+          $sql = "SELECT * FROM utilsateur WHERE id_user = :ref_user";
           $stmt = $this->db->connexion()->prepare($sql);
-          $stmt->execute(['ref_user' => $ref_user]);
+          $stmt->execute(['id_user' => $id_user]);
           $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
           return $result ?: null;
@@ -55,4 +57,5 @@ class etudiantRepository
 
           return $stmt->execute(['ref_user' => $ref_user]);
      }
+
 }

@@ -1,9 +1,13 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-
     $page = 'Offre';
 }
+require_once "../../src/repository/OffreRepository.php";
+$offreRepository = new OffreRepository();
+$offresPartenaire = $offreRepository ->getOffreById($_SESSION['utilisateur']['id_user']);
+
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -50,25 +54,49 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </div>
 </header>
-<nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
-    <div class="nav col mb-2 justify-content-center mb-md-0">
-        <div class="btn-group mx-1" role="group" aria-label="Basic example">
-            <a href="../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
-            <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-danger">Candidature</a>
-            <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
-            <a href="../crudEtudiant/etudiantRead.php" class="btn btn-outline-info">Étudiant</a>
-            <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger">Évènement</a>
-            <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
-            <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
-            <a href="p" class="btn btn-outline-info active">Offre</a>
-            <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
-            <a href="../../crudPost/postRead.php" class="btn btn-outline-danger">Post</a>
-            <a href="../crudProfesseur/professeurRead.php" class="btn btn-outline-info">Professeur</a>
-            <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
-            <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
-        </div>
-    </div>
-</nav>
+
 <section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
+    <h1>Mes offres</h1>
+    <section class="container my-4">
+        <?php
+        if(!(isset($_SESSION['utilisateur']))){
+            echo'<h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>';
+        }
+        elseif (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Etudiant'){
+            echo'<div class="d-flex flex-wrap justify-content-start gap-4">';
+            $postulerRepository = new PostulerRepository();
+            $candidaturesEtudiant = $postulerRepository -> findCandidatures($_SESSION['utilisateur']['id_user']);
+
+            if(!empty($candidaturesEtudiant)) {
+                foreach ($candidaturesEtudiant as $candidature) {
+                    echo '<div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
+                    <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
+                         class="card-img-top"
+                         alt="Image événement"
+                         style="height: 180px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">' . htmlspecialchars($candidature['titre']) . '</h5>
+                        <p class="card-text flex-grow-1 text-muted">
+                            ' . htmlspecialchars(substr($candidature['description'], 0, 100)) . '...
+                        </p>
+                        <a href="crudPostuler/afficheCandidatures.php?id=' . $candidature['id_offre']. '"
+                           class="btn btn-primary mt-auto">
+                            En savoir plus
+                        </a>
+                    </div>
+                    <div class="card-footer text-muted small">
+                        Dernière mise à jour : ' . date("d/m/Y H:i") . '
+                    </div>
+                </div>';
+                }
+            }else{
+                echo"<h5> Il semblerait qu'il n'y a pas d'offres'</h5>
+                        <br>
+                    <p>Soyez le/la premier/e à postuler </p>";
+            }
+            echo'</div>';
+
+
+        }?>
+    </section>
 </section>
