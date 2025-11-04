@@ -148,8 +148,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $refFormation = getOrCreateFormationIdByName($pdo, $libelleFormation);
 
                 $ins = $pdo->prepare("
-                    INSERT INTO etudiant (ref_user, cv, annee_promo, ref_formation)
-                    VALUES (:ref_user, :cv, :annee_promo, :ref_formation)
+                    INSERT INTO etudiant (ref_user, cv, annee_promo, ref_formation, ref_validateur)
+                    VALUES (:ref_user, :cv, :annee_promo, :ref_formation, :ref_validateur)
                 ");
                 $ins->execute([
                     'ref_user'      => $idUser,

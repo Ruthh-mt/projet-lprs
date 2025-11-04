@@ -2,6 +2,12 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 
+    require_once '../../src/repository/FormationRepository.php';
+
+    $formationRepo = new FormationRepository();
+    $formations = $formationRepo->findAll(null);
+    $selectedId = $selectedId ?? null;
+
     $page = 'Utilisateur';
 }
 ?>
@@ -70,37 +76,50 @@ if (session_status() === PHP_SESSION_NONE) {
     <h1>Gestion <?=$page?></h1>
 </section>*
 <section class="container">
-    <form action="../src/treatment/treatmentUserCreate.php" method="post" class="align-self-center"
-          enctype="multipart/form-data">
-        <div class="form-floating my-2">
-            <input type="text" name="prenom" class="form-control" id="floatingPrenom" placeholder="Prénom"
-                   autocomplete="given-name" required>
-            <label for="floatingPrenom">Prénom</label>
+    <div action="../../src/treatment/treatmentUserCreate.php" method="post" class="align-self-center"
+         enctype="multipart/form-data">
+        <div class="row">
+            <div class="col form-floating my-2">
+                <input type="text" name="prenom" class="form-control" id="floatingPrenom" placeholder="Prénom"
+                       autocomplete="given-name" required>
+                <label for="floatingPrenom" class="ms-4">Prénom</label>
+            </div>
+
+            <div class="col form-floating my-2">
+                <input type="text" name="nom" class="form-control" id="floatingNom" placeholder="Nom de famille"
+                       autocomplete="family-name" required>
+                <label for="floatingNom" class="ms-4">Nom de famille</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col form-floating my-2">
+                <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Adresse email"
+                       autocomplete="email" required>
+                <label for="floatingEmail" class="ms-4">Adresse email</label>
+            </div>
+
+            <select class="col form-select my-2" aria-label="" id="choix" name="role">
+                <option value="">Rôles</option>
+                <option value="Étudiant">Étudiant</option>
+                <option value="Professeur">Professeur</option>
+                <option value="Alumni">Alumni / Ancien élève</option>
+                <option value="Partenaire">Partenaire / Entreprise</option>
+            </select>
+        </div>
+        <div class="row">
+            <div class="col form-floating my-2">
+                <input type="password" name="mdp" class="form-control" id="floatingMdp" placeholder="Mot de passe"
+                       autocomplete="new-password" data-toggle-password required>
+                <label for="floatingMdp" class="ms-4">Mot de passe</label>
+            </div>
+
+            <div class="col form-floating my-2">
+                <input type="password" name="confirmation_mot_de_passe" class="form-control" id="floatingMdpConfirm"
+                       placeholder="Confirmation du mot de passe" data-toggle-password required>
+                <label for="floatingMdpConfirm" class="ms-4">Confirmation du mot de passe</label>
+            </div>
         </div>
 
-        <div class="form-floating my-2">
-            <input type="text" name="nom" class="form-control" id="floatingNom" placeholder="Nom de famille"
-                   autocomplete="family-name" required>
-            <label for="floatingNom">Nom de famille</label>
-        </div>
-
-        <div class="form-floating my-2">
-            <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Adresse email"
-                   autocomplete="email" required>
-            <label for="floatingEmail">Adresse email</label>
-        </div>
-
-        <div class="form-floating my-2">
-            <input type="password" name="mdp" class="form-control" id="floatingMdp" placeholder="Mot de passe"
-                   autocomplete="new-password" data-toggle-password required>
-            <label for="floatingMdp">Mot de passe</label>
-        </div>
-
-        <div class="form-floating my-2">
-            <input type="password" name="confirmation_mot_de_passe" class="form-control" id="floatingMdpConfirm"
-                   placeholder="Confirmation du mot de passe" data-toggle-password required>
-            <label for="floatingMdpConfirm">Confirmation du mot de passe</label>
-        </div>
 
         <div class="form-check my-2">
             <input class="form-check-input" type="checkbox" value="" id="showPasswords" aria-controls="floatingMdp floatingMdpConfirm">
@@ -109,20 +128,12 @@ if (session_status() === PHP_SESSION_NONE) {
             </label>
         </div>
 
-        <select class="form-select my-2" aria-label="Default select example" id="choix" name="role">
-            <option value="">Rôles</option>
-            <option value="Étudiant">Étudiant</option>
-            <option value="Professeur">Professeur</option>
-            <option value="Alumni">Alumni / Ancien élève</option>
-            <option value="Partenaire">Partenaire / Entreprise</option>
-        </select>
-
         <div id="extraFields"></div>
 
         <div class="d-grid gap-2 my-2 ">
             <button class="btn btn-outline-success" type="submit">AJOUTER</button>
         </div>
-    </form>
+        </form>
     </div>
     <div class="col">
     </div>
@@ -136,21 +147,19 @@ if (session_status() === PHP_SESSION_NONE) {
 
                 if (selectRole.value === "Étudiant") {
                     extraFields.innerHTML = `
-                 <div class="form-selectfloating my-2">
-                    <select class="form-select" name="classe"   id="floatingClasse">
-                        <option value="3° Pro">Troisième Pro</option>
-                        <option value="Bac TRPM">Bac Pro TRPM</option>
-                        <option value="BAC MSPC">Bac Pro MSPC</option>
-                        <option value="BAC CIEL">Bac Pro CIEL</option>
-                        <option value="Formation SST">Formation SST</option>
-                        <option value="BAC STI2D">Bac STI2D</option>
-                        <option value="BTS CPRP">BTS CPRP</option>
-                        <option value="BTS SIO SISR">BTS SIO SISR</option>
-                        <option value="BTS SIO SLAM">BTS SIO SLAM</option>
-                        <option value="BTS MS">BTS MS</option>
-                        <option value="BTS CQPM">BTS CQPM</option>
+                <div class="form-floating my-2">
+                    <select class="form-select" name="classe" id="floatingClasse" aria-label="Choix de la formation" required>
+                        <?php foreach ($formations as $f):
+                    $id = $f->id_formation;
+                    $nom = $f->nom;
+                    $sel = ($selectedId !== null && (int)$selectedId === (int)$id) ? ' selected' : '';
+                    ?>
+                    <option value="<?= htmlspecialchars($id) ?>"<?= $sel ?>><?= htmlspecialchars($nom) ?></option>
+                    <?php endforeach; ?>
                     </select>
+                    <label for="floatingClasse">Formation / Classe</label>
                 </div>
+
                 <div class="form-floating my-2">
                     <input type="number" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion" min="1900" max="2100" step="1">
                     <label for="floatingAnnee">Année de promotion</label>
