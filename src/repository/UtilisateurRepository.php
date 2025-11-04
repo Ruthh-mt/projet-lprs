@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 use PDO;
 class utilisateurRepository
 {
@@ -14,7 +13,7 @@ class utilisateurRepository
           }
      }
 
-     public function getUserById(int $id_user): ?array
+         public function getUserById(int $id_user): ?array
      {
           $sql = "SELECT * FROM utilisateur WHERE id_user = :id_user";
           $stmt = $this->db->prepare($sql);
@@ -34,7 +33,7 @@ class utilisateurRepository
 
      public function findAll(): array
      {
-          $sql = "SELECT id_user, nom, prenom, email, role FROM utilisateur";
+          $sql = "SELECT * FROM utilisateur";
           $stmt = $this->db->query($sql);
           return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
      }

@@ -78,7 +78,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <section class="container">
     <?php if (isset($_SESSION['utilisateur'])): ?>
      <div class="d-grid gap-2">
-        <a class="btn btn-outline-success text-uppercase my-3" href="admin/crudEvenement/evenementCreate.php" role="button">Créer un évènement</a>
+        <a class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php" role="button">Créer un évènement</a>
      </div>
     <?php endif; ?>
     <section class="container my-4">

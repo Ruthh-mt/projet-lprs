@@ -73,26 +73,39 @@ if (session_status() === PHP_SESSION_NONE) {
                        autocomplete="given-name" required>
                 <label for="floatingPrenom">Prénom</label>
             </div>
+
             <div class="form-floating my-2">
                 <input type="text" name="nom" class="form-control" id="floatingNom" placeholder="Nom de famille"
                        autocomplete="family-name" required>
                 <label for="floatingNom">Nom de famille</label>
             </div>
+
             <div class="form-floating my-2">
                 <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Adresse email"
                        autocomplete="email" required>
                 <label for="floatingEmail">Adresse email</label>
             </div>
+
             <div class="form-floating my-2">
+                <!-- data-toggle-password pour cibler facilement les champs à afficher/masquer -->
                 <input type="password" name="mdp" class="form-control" id="floatingMdp" placeholder="Mot de passe"
-                       autocomplete="new-password" required>
+                       autocomplete="new-password" data-toggle-password required>
                 <label for="floatingMdp">Mot de passe</label>
             </div>
+
             <div class="form-floating my-2">
                 <input type="password" name="confirmation_mot_de_passe" class="form-control" id="floatingMdpConfirm"
-                       placeholder="Confirmation du mot de passe" required>
+                       placeholder="Confirmation du mot de passe" data-toggle-password required>
                 <label for="floatingMdpConfirm">Confirmation du mot de passe</label>
             </div>
+
+            <div class="form-check my-2">
+                <input class="form-check-input" type="checkbox" value="" id="showPasswords" aria-controls="floatingMdp floatingMdpConfirm">
+                <label class="form-check-label" for="showPasswords">
+                    Afficher les mots de passe
+                </label>
+            </div>
+
             <select class="form-select my-2" aria-label="Default select example" id="choix" name="role">
                 <option value="">Rôles</option>
                 <option value="Étudiant">Étudiant</option>
@@ -105,7 +118,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <div class="d-grid gap-2 my-2 ">
                 <button class="btn btn-outline-success" type="submit">S'INSCRIRE</button>
-                <a class="btn btn-outline-primary" href="connexion.php" type="button">SE CONNECTER</a>
+                <a class="btn btn-outline-primary" href="connexion.php" role="button">SE CONNECTER</a>
             </div>
         </form>
     </div>
@@ -151,7 +164,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <input type="number" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion" min="1900" max="2100" step="1" required>
                     <label for="floatingAnnee">Année de promotion</label>
                </div>
-<div class="form-floating my-2">
+                <div class="form-floating my-2">
                     <input type="text" name="poste" class="form-control" id="floatingPoste" placeholder="Poste actuel">
                     <label for="floatingPoste">Poste actuel</label>
                </div>
@@ -179,6 +192,24 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
             `;
                 }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkbox = document.getElementById('showPasswords');
+            const pwdFields = document.querySelectorAll('input[data-toggle-password]');
+
+            checkbox.addEventListener('change', function () {
+                const show = checkbox.checked;
+                pwdFields.forEach(function (f) {
+                    try {
+                        f.type = show ? 'text' : 'password';
+                    } catch (e) {
+                        const newInput = f.cloneNode(true);
+                        newInput.type = show ? 'text' : 'password';
+                        f.parentNode.replaceChild(newInput, f);
+                    }
+                });
             });
         });
     </script>
