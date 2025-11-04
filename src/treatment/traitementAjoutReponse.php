@@ -1,5 +1,5 @@
 <?php
-require_once "../modele/Reponse.php";
+require_once "../modele/ModeleReponse.php";
 require_once "../bdd/config.php";
 require_once "../repository/ReponseRepository.php";
 session_start();
@@ -18,7 +18,7 @@ if($refPost==="" || $contenuReponse==='' || $refUser===''){
     header('Location: ../../view/crudPost/afficherPost'.$refPost.'.php');
 }
 try {
-    $reponse = new Reponse(array(
+    $reponse = new ModeleReponse(array(
         "refUser" => $refUser,
         "contenuReponse" => $contenuReponse,
         "dateHeureReponse" => $dateHeureReponse,

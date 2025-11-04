@@ -47,6 +47,9 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </div>
 </header>
+<section class="container banner bg-dark text-white text-center py-1 rounded">
+    <h1>Annuaire</h1>
+</section>
 <section class="container">
      <form class="container-fluid">
           <div class="input-group">

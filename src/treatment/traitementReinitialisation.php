@@ -1,7 +1,7 @@
 <?php
 require_once "../bdd/config.php";
-require_once "../modele/UserModel.php";
-require_once "../repository/utilisateurRepository.php";
+require_once "../modele/ModeleUtilisateur.php";
+require_once "../repository/UtilisateurRepository.php";
 
 $mdpnew=htmlspecialchars($_POST['mdp']);
 $mdpConfirm=htmlspecialchars($_POST['confirmation']);

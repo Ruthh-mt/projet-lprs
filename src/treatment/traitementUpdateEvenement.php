@@ -1,5 +1,5 @@
 <?php
-require_once "../modele/Evenement.php";
+require_once "../modele/ModeleEvenement.php";
 require_once "../bdd/config.php";
 require_once "../repository/EvenementRepository.php";
 
@@ -14,6 +14,7 @@ function redirectWith(string $type, string $message, string $target): void {
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirectWith('error', "Méthode invalide.", '../../view/crudEvenement/evenementUpdate.php');
 }
+
 $titreEve=$_POST["titre_eve"];
 $typeEve=$_POST["type_eve"];
 $descEve=$_POST["desc_eve"];
@@ -27,7 +28,7 @@ if($titreEve==='' || $typeEve==='' || $descEve==='' || $lieuEve===''
     redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementUpdate.php');
 }
 try {
-    $evenement = new Evenement(array(
+    $evenement = new ModeleEvenement(array(
         "idEvenement" => $idEve,
         "titreEvenement" => $titreEve,
         "typeEvenement" => $typeEve,

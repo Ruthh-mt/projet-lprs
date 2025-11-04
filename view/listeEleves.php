@@ -47,3 +47,6 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
     </div>
 </header>
+<section class="container banner bg-dark text-white text-center py-1 rounded">
+    <h1>Liste des élèves actuels</h1>
+</section>
