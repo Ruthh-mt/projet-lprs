@@ -53,19 +53,16 @@ if (session_status() === PHP_SESSION_NONE) {
 <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
-            <a href="../../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
             <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-danger">Candidature</a>
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
-            <a href="../crudPostuler/afficheCandidatures.php" class="btn btn-outline-info">Étudiant</a>
             <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger">Évènement</a>
             <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
             <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
             <a href="../crudPost/postRead.php" class="btn btn-outline-danger">Post</a>
-            <a href="../crudProfesseur/professeurRead.php" class="btn btn-outline-info">Professeur</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
-            <a href="p" class="btn btn-outline-info active">Utilisateur</a>
+            <a href="utilisateurRead.php" class="btn btn-outline-info active">Utilisateur</a>
         </div>
     </div>
 </nav>

@@ -1,9 +1,16 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-
-    $page = 'Utilisateur';
 }
+
+require_once '../../src/modele/ModeleUtilisateur.php';
+require_once '../../src/bdd/config.php';
+require_once '../../src/repository/UtilisateurRepository.php';
+
+$repo = new UtilisateurRepository();
+$utilisateurs = $repo->findAll();
+
+$page = 'Utilisateur';
 ?>
 <!doctype html>
 <html lang="fr">
@@ -12,9 +19,11 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ACCUEIL • LPRS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 </head>
 <body>
 <header
@@ -53,22 +62,83 @@ if (session_status() === PHP_SESSION_NONE) {
 <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
-            <a href="../../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
             <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-danger">Candidature</a>
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
-            <a href="../crudPostuler/afficheCandidatures.php" class="btn btn-outline-info">Étudiant</a>
             <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger">Évènement</a>
             <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
             <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
             <a href="../crudPost/postRead.php" class="btn btn-outline-danger">Post</a>
-            <a href="../crudProfesseur/professeurRead.php" class="btn btn-outline-info">Professeur</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
-            <a href="p" class="btn btn-outline-info active">Utilisateur</a>
+            <a href="utilisateurRead.php" class="btn btn-outline-info active">Utilisateur</a>
         </div>
     </div>
 </nav>
-<section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
+
+<section class="container bg-info text-white text-center py-1 rounded border">
+    <h1>Gestion <?= htmlspecialchars($page) ?></h1>
 </section>
+
+<section class="container text-center">
+    <a href="utilisateurCreate.php" class="btn btn-outline-success my-3 d-grid">Ajouter un utilisateur</a>
+</section>
+
+<section class="container">
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Validateur</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($utilisateurs) && is_array($utilisateurs)): ?>
+            <?php foreach ($utilisateurs as $utilisateur): ?>
+                <tr>
+                    <td><?= htmlspecialchars($utilisateur['id_user']) ?></td>
+                    <td><?= htmlspecialchars($utilisateur['prenom']) ?></td>
+                    <td><?= htmlspecialchars($utilisateur['nom']) ?></td>
+                    <td><?= htmlspecialchars($utilisateur['email']) ?></td>
+                    <td><?= htmlspecialchars($utilisateur['role']) ?></td>
+                    <td><?= htmlspecialchars($utilisateur['ref_validateur'] ?? '') ?></td>
+                    <td class="text-center">
+                        <?php
+                        $id = isset($utilisateur['id_user']) ? (int)$utilisateur['id_user'] : (isset($utilisateur['id']) ? (int)$utilisateur['id'] : 0);
+                        $updateUrl = "utilisateurUpdate.php?id={$id}";
+                        $deleteUrl = "  utilisateurDelete.php?id={$id}";
+                        ?>
+                        <a href="<?= htmlspecialchars($updateUrl) ?>" class="btn btn-sm btn-warning me-1">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+
+                        <a href="<?= htmlspecialchars($deleteUrl) ?>" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        </tbody>
+    </table>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
+            },
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 25, 50, 100]
+        });
+    });
+</script>
+</body>
+</html>
