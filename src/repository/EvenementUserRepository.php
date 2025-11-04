@@ -40,14 +40,14 @@ class EvenementUserRepository{
             ));
     }
     public function addSuperviseur( $eveUser){
-        $sql="INSERT INTO user_evenement (ref_user,est_superviseur) VALUES (:refUser,:estSuperviseur) WHERE ref_evenement=:refEvenement";
+        $sql="INSERT INTO user_evenement (ref_user,ref_evenement,est_superviseur) 
+            VALUES (:user,:event,:estSuperviseur)";
         $stm=$this->db->connexion()->prepare($sql);
         $stm->execute(array(
-            "refUser"=>$eveUser->getRefUser(),
-            "estSuperviseur"=>$eveUser->getEstSuperviseur(),
-             "refEvenement"=>$eveUser->getRefEvenement()
+            "user"=>$eveUser->getRefUser(),
+            "event"=>$eveUser->getRefEvenement(),
+            "estSuperviseur"=>$eveUser->getEstSuperviseur()
         ));
-
 
     }
     public function getSuperviseur($id){
@@ -55,10 +55,7 @@ class EvenementUserRepository{
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute(["id"=>$id,
             "estSuperviseur"=>1]);
-        return New ModeleEvenementUser([
-            "refUser"=>$stmt->fetch()["ref_user"]
-            ]
-        );
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
 
     }
     public function getAllInscritsByEvenement($eveuser){
@@ -68,12 +65,12 @@ class EvenementUserRepository{
             "evenement"=>$eveuser->getRefEvenement()]);
     }
 
-    public function countAllInscritsByEvenement($eveuser){
+    public function countAllInscritsByEvenement($id){
         $sql="SELECT count(ref_user) FROM user_evenement WHERE est_superviseur =:estSuperviseur AND ref_evenement =:evenement";
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute(["estSuperviseur"=>null,
-            "evenement"=>$eveuser->getRefEvenement()]);
-
+            "evenement"=>$id]);
+        return $stmt->fetchColumn();
     }
     public function desinscription($evenementUser){
         $req="DELETE FROM user_evenement WHERE ref_evenement=:evenement AND  ref_user=:user";
@@ -85,5 +82,13 @@ class EvenementUserRepository{
         $req="DELETE FROM user_evenement WHERE ref_evenement=:evenement";
         $stm=$this->db->connexion()->prepare($req);
         $stm->execute(["evenement"=>$evenementUser->getRefEvenement()]);
+    }
+    public function getRoleSuperviseur($evenementUser){
+        $sql="SELECT utilisateur.role FROM user_evenement INNER JOIN  utilisateur ON post.ref_user = utilisateur.id_user WHERE ref_user=:user AND ref_evenement=:evenement AND est_superviseur =:estSuperviseur ";
+        $stmt=$this->db->connexion()->prepare($sql);
+        $stmt->execute(["user"=>$evenementUser->getRefUser(),
+            "evenement"=>$evenementUser->getRefEvenement(),
+            "estSuperviseur"=>$evenementUser->getEstSuperviseur()]);
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 }

@@ -53,6 +53,8 @@ class EvenementRepository{
         $evenement->setLieuEvenement($req['lieu_eve']);
         $evenement->setElementEvenement($req['element_eve']);
         $evenement->setNbPlace($req['nb_place']);
+        $evenement->setEstValide($req['est_valide']);
+        $evenement->setStatus($req['status']);
         return $evenement;
     }
     public function updateEvenement(ModeleEvenement $evenement){
@@ -70,6 +72,15 @@ class EvenementRepository{
         ]);
         return $evenement->getIdEvenement();
 
+    }
+    public function validateEvenement(ModeleEvenement $evenement){
+        $sql="Update evenement SET status=:status, est_valide=:estValide WHERE id_evenement=:id";
+        $stmt=$this->db->connexion()->prepare($sql);
+        $stmt->execute([
+            'id' => $evenement->getIdEvenement(),
+            'status'=>$evenement->getStatus(),
+            'estValide'=>$evenement->getEstValide()
+        ]);
     }
 
     public function deleteEvenement($evenement)

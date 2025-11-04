@@ -23,9 +23,10 @@ function redirectWith(string $type, string $message, string $target): void {
     $lieuEve=$_POST["lieu_eve"];
     $elementEve=$_POST["element_eve"];
     $nbPlace=$_POST["nb_plc"];
+    $status=$_POST["status"];
 
     if($titreEve==='' || $typeEve==='' || $descEve==='' || $lieuEve===''
-        || $elementEve==='' || $nbPlace==='' ||$refUser==='' || $role==='' ){
+        || $elementEve==='' || $nbPlace==='' ||$refUser==='' || $role===''|| $status==='' ){
        redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementCreate.php');
     }
     try {

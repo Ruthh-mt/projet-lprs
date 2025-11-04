@@ -16,7 +16,10 @@ if (!$id) {
 }
 
 $evenementRepo = new EvenementRepository();
+$evenementUserRepository = new EvenementUserRepository();
 $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" => $id]));
+$nbInscrits=$evenementUserRepository->countAllInscritsByEvenement($id);
+var_dump($nbInscrits);
 ?>
 <!doctype html>
 <html lang="fr">
@@ -82,7 +85,11 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
         <a href="../evenements.php" class="btn btn-outline-light">Retour aux évènements</a>
     </div>
 </header>
+<?php
+if(isset($_SESSION["utilisateur"])){
 
+}
+?>
 <!-- SECTION DETAIL -->
 <div class="container mb-5">
     <div class="section-offre">
@@ -92,7 +99,19 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
                 <i class="bi bi-arrow-left-circle"></i> Retour
             </button>
         </div>
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
 
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
         <form class="mt-4" action="../../src/treatment/traitementInscriptionEvenement.php" method="post">
             <input type="hidden" name="ref_eve" value="<?= htmlspecialchars($evenement->getIdEvenement()) ?>">
             <input type="hidden" name="refUser" value="<?= htmlspecialchars($_SESSION['utilisateur']['id_user']) ?>">
@@ -102,7 +121,11 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
                 <input type="text" readonly class="form-control" id="type_eve"
                        value="<?= htmlspecialchars($evenement->getTypeEvenement()) ?>">
             </div>
-
+            <div class="mb-3">
+                <label for="status">Status de l'evenement</label>
+                <input type="text" readonly class="form-control" id="status"
+                       value="<?= htmlspecialchars($evenement->getStatus()) ?>">
+            </div>
             <div class="mb-3">
                 <label for="lieu_eve">Lieu</label>
                 <input type="text" readonly class="form-control" id="lieu_eve"
@@ -127,14 +150,17 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
             </div>
 
             <?php
-            $evenementUserRepository = new EvenementUserRepository();
-            $superviseur = $evenementUserRepository->getSuperviseur($evenement->getIdEvenement());
+
+            $superviseurs = $evenementUserRepository->getSuperviseur($evenement->getIdEvenement());
             $eveUser = new ModeleEvenementUser(["refUser" => $_SESSION['utilisateur']['id_user']]);
             $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
             ?>
 
             <div class="text-center mt-4">
-                <?php if ($_SESSION['utilisateur']['id_user'] != $superviseur->getRefUser()): ?>
+
+
+                <?php
+                if (!in_array($_SESSION['utilisateur']['id_user'],$superviseurs,true)) : ?>
                     <?php if ($estInscrit): ?>
                         <button class="btn btn-primary" type="submit">
                             <i class="bi bi-person-plus"></i> Participer
@@ -145,10 +171,16 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
                         </button>
                     <?php endif; ?>
                 <?php endif; ?>
+                <?php if ($_SESSION["utilisateur"]["role"]=="Professeur" && $evenement->getEstValide()==0 ): // ajouter le fait que l'evenement doit etre crée par un etudient pour afficher le btn?>
+
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#confirmEvenementModal">
+                        <i class="bi bi-person-check"></i> Valider l'evenement
+                    </button>
+                <?php endif; ?>
             </div>
         </form>
-
-        <?php if ($_SESSION['utilisateur']['id_user'] == $superviseur->getRefUser()): ?>
+        <?php if (in_array($_SESSION['utilisateur']['id_user'],$superviseurs,true)): ?>
             <div class="text-center mt-3">
                 <a href="evenementUpdate.php?id=<?= $evenement->getIdEvenement() ?>" class="btn btn-warning">
                     <i class="bi bi-pencil-square"></i> Modifier l’évènement
@@ -175,6 +207,30 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
                     <input type="hidden" name="refuser" value="<?= htmlspecialchars($eveUser->getRefUser()) ?>">
                     <button type="submit" class="btn btn-danger">
                         <i class="bi bi-exclamation-octagon"></i> Se Desinscrire
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODALE DE CONFIRMATION POUR VALIDER LES EVENEMENTS -->
+<div class="modal fade" id="confirmEvenementModal" tabindex="-1" aria-labelledby="confirmEvenementModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="confirmEvenementModalLabel">Confirmer la validation de l'evenement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir valider l'evenement ? Vous allez devenir superviseur de cette evenement et vous ne pourrez plus le quitter.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <form method="post" action="../../src/treatment/traitementValidationEvenement.php">
+                    <input type="hidden" name="idEvenement" value="<?= htmlspecialchars($evenement->getIdEvenement()) ?>">
+                    <input type="hidden" name="refUser" value="<?= htmlspecialchars($eveUser->getRefUser()) ?>">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-person-fill-check"></i> Valider
                     </button>
                 </form>
             </div>

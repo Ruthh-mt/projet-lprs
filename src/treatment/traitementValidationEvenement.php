@@ -1,7 +1,9 @@
 <?php
 require_once "../bdd/config.php";
 require_once "../modele/ModeleEvenementUser.php";
+require_once "../modele/ModeleEvenement.php";
 require_once "../repository/EvenementUserRepository.php";
+require_once "../repository/EvenementRepository.php";
 session_start();
 
 function redirectWith(string $type, string $message, string $target): void
@@ -13,7 +15,7 @@ function redirectWith(string $type, string $message, string $target): void
 }
 
 $refUser = $_POST["refUser"];
-$refEvenement = $_POST["ref_eve"];
+$refEvenement = $_POST["idEvenement"];
 
 if ($refUser===''||$refEvenement==='') {
     redirectWith('error', "Vous n'avez pas l'air connecté ", '../../view/evenements.php');
@@ -24,12 +26,19 @@ try {
         "refEvenement" => $refEvenement,
         "estSuperviseur" => 1
     ));
-
+    $evenementrepo=new EvenementRepository();
+    $evenement=new ModeleEvenement([
+        "idEvenement"=>$refEvenement,
+        "status"=>"actif",
+        "estValide"=>1]);
+    $evenementrepo->validateEvenement($evenement);
     $evenementUserRepository= new EvenementUserRepository();
+    $evenementUserRepository->addSuperviseur($evenementUser);
     redirectWith('success', "L'evenement a bien été validé, N'oubliez c'est pour la vie", '../../view/crudEvenement/evenementRead?id='.$refEvenement.'.php');
 
     session_write_close();
 } catch (PDOException $e) {
-    redirectWith('error', "Erreur de l'inscription à l'evenement : " . $e->getMessage(), '../../view/evenements.php');
+    var_dump($e->getMessage());
+    redirectWith('error', "Erreur de la validation de l'evenement : " . $e->getMessage(), '../../view/evenements.php');
 }
 
