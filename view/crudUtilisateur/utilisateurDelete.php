@@ -2,6 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 
+    require_once '../../src/repository/UtilisateurRepository.php';
+
     $page = 'Utilisateur';
 }
 ?>
@@ -42,11 +44,11 @@ if (session_status() === PHP_SESSION_NONE) {
     </ul>
     <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
         <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="../../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
-            <a href="../../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
+            <a href="../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
+            <a href="../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
         <?php else: ?>
-            <a href="../../connexion.php" class="btn btn-outline-success">Connexion</a>
-            <a href="../../inscription.php" class="btn btn-outline-primary">Inscription</a>
+            <a href="../connexion.php" class="btn btn-outline-success">Connexion</a>
+            <a href="../inscription.php" class="btn btn-outline-primary">Inscription</a>
         <?php endif; ?>
     </div>
 </header>
@@ -68,4 +70,19 @@ if (session_status() === PHP_SESSION_NONE) {
 </nav>
 <section class="container banner bg-info text-white text-center py-1 rounded border">
     <h1>Gestion <?=$page?></h1>
+</section>
+<section class="container my-3">
+    <div class="card text-center border border-danger">
+        <div class="card-header bg-danger text-white">
+            Suppression d'utilisateur
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Confirmation</h5>
+            <p class="card-text">Souhaitez-vous supprimer l'utilisateur ?</p>
+            <a href="#" class="btn btn-warning">Confirmer la suppression</a>
+        </div>
+        <div class="card-footer">
+            Cette action est irréversible !
+        </div>
+    </div>
 </section>
