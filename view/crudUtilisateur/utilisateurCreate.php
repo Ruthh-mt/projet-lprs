@@ -1,4 +1,4 @@
-    <?php
+<?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 
@@ -18,7 +18,7 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 <body>
 <header
-    class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
+        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
             <img src="https://media.tenor.com/ifEkV-aGn3EAAAAi/fat-cat.gif"
@@ -53,23 +53,166 @@ if (session_status() === PHP_SESSION_NONE) {
 <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
-            <a href="../../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
             <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-danger">Candidature</a>
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
-            <a href="../crudEtudiant/etudiantRead.php" class="btn btn-outline-info">Étudiant</a>
             <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger">Évènement</a>
             <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
             <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
             <a href="../crudPost/postRead.php" class="btn btn-outline-danger">Post</a>
-            <a href="../crudProfesseur/professeurRead.php" class="btn btn-outline-info">Professeur</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
-            <a href="p" class="btn btn-outline-info active">Utilisateur</a>
+            <a href="utilisateurRead.php" class="btn btn-outline-info active">Utilisateur</a>
         </div>
     </div>
 </nav>
-<section class="container banner bg-info text-white text-center py-1 rounded border">
+<section class="container bg-info text-white text-center py-1 rounded border">
     <h1>Gestion <?=$page?></h1>
-    <?php header('../inscription.php') ?>
+</section>*
+<section class="container">
+    <form action="../src/treatment/treatmentUserCreate.php" method="post" class="align-self-center"
+          enctype="multipart/form-data">
+        <div class="form-floating my-2">
+            <input type="text" name="prenom" class="form-control" id="floatingPrenom" placeholder="Prénom"
+                   autocomplete="given-name" required>
+            <label for="floatingPrenom">Prénom</label>
+        </div>
+
+        <div class="form-floating my-2">
+            <input type="text" name="nom" class="form-control" id="floatingNom" placeholder="Nom de famille"
+                   autocomplete="family-name" required>
+            <label for="floatingNom">Nom de famille</label>
+        </div>
+
+        <div class="form-floating my-2">
+            <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Adresse email"
+                   autocomplete="email" required>
+            <label for="floatingEmail">Adresse email</label>
+        </div>
+
+        <div class="form-floating my-2">
+            <input type="password" name="mdp" class="form-control" id="floatingMdp" placeholder="Mot de passe"
+                   autocomplete="new-password" data-toggle-password required>
+            <label for="floatingMdp">Mot de passe</label>
+        </div>
+
+        <div class="form-floating my-2">
+            <input type="password" name="confirmation_mot_de_passe" class="form-control" id="floatingMdpConfirm"
+                   placeholder="Confirmation du mot de passe" data-toggle-password required>
+            <label for="floatingMdpConfirm">Confirmation du mot de passe</label>
+        </div>
+
+        <div class="form-check my-2">
+            <input class="form-check-input" type="checkbox" value="" id="showPasswords" aria-controls="floatingMdp floatingMdpConfirm">
+            <label class="form-check-label" for="showPasswords">
+                Afficher les mots de passe
+            </label>
+        </div>
+
+        <select class="form-select my-2" aria-label="Default select example" id="choix" name="role">
+            <option value="">Rôles</option>
+            <option value="Étudiant">Étudiant</option>
+            <option value="Professeur">Professeur</option>
+            <option value="Alumni">Alumni / Ancien élève</option>
+            <option value="Partenaire">Partenaire / Entreprise</option>
+        </select>
+
+        <div id="extraFields"></div>
+
+        <div class="d-grid gap-2 my-2 ">
+            <button class="btn btn-outline-success" type="submit">AJOUTER</button>
+        </div>
+    </form>
+    </div>
+    <div class="col">
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const extraFields = document.getElementById("extraFields");
+            const selectRole = document.getElementById("choix");
+
+            selectRole.addEventListener("change", () => {
+                extraFields.innerHTML = "";
+
+                if (selectRole.value === "Étudiant") {
+                    extraFields.innerHTML = `
+                 <div class="form-selectfloating my-2">
+                    <select class="form-select" name="classe"   id="floatingClasse">
+                        <option value="3° Pro">Troisième Pro</option>
+                        <option value="Bac TRPM">Bac Pro TRPM</option>
+                        <option value="BAC MSPC">Bac Pro MSPC</option>
+                        <option value="BAC CIEL">Bac Pro CIEL</option>
+                        <option value="Formation SST">Formation SST</option>
+                        <option value="BAC STI2D">Bac STI2D</option>
+                        <option value="BTS CPRP">BTS CPRP</option>
+                        <option value="BTS SIO SISR">BTS SIO SISR</option>
+                        <option value="BTS SIO SLAM">BTS SIO SLAM</option>
+                        <option value="BTS MS">BTS MS</option>
+                        <option value="BTS CQPM">BTS CQPM</option>
+                    </select>
+                </div>
+                <div class="form-floating my-2">
+                    <input type="number" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion" min="1900" max="2100" step="1">
+                    <label for="floatingAnnee">Année de promotion</label>
+               </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Curriculum Vitae</label>
+                    <input class="form-control" type="file" id="formFile" name="cv" accept="application/pdf">
+               </div>
+            `;
+                } else if (selectRole.value === "Alumni") {
+                    extraFields.innerHTML = `
+                <div class="form-floating my-2">
+                    <input type="number" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion" min="1900" max="2100" step="1" required>
+                    <label for="floatingAnnee">Année de promotion</label>
+               </div>
+                <div class="form-floating my-2">
+                    <input type="text" name="poste" class="form-control" id="floatingPoste" placeholder="Poste actuel">
+                    <label for="floatingPoste">Poste actuel</label>
+               </div>
+               <div class="mb-3">
+                    <label for="formFile" class="form-label">Curriculum Vitae</label>
+                    <input class="form-control" type="file" id="formFile" name="cv" accept="application/pdf">
+               </div>
+            `;
+                } else if (selectRole.value === "Professeur") {
+                    extraFields.innerHTML = `
+                <div class="form-floating my-2">
+                    <input type="text" name="specialite" class="form-control" id="floatingSpe" placeholder="Matière enseignée" required>
+                    <label for="floatingSpe">Matière enseignée</label>
+                </div>
+            `;
+                } else if (selectRole.value === "Partenaire") {
+                    extraFields.innerHTML = `
+                <div class="form-floating my-2">
+                    <input type="text" name="poste" class="form-control" id="floatingPoste" placeholder="Poste occupé" required>
+                    <label for="floatingPoste">Poste occupé</label>
+                </div>
+                <div class="form-floating my-2">
+                    <input type="text" name="raison" class="form-control" id="floatingRaison" placeholder="Raison de l'inscription" required>
+                    <label for="floatingRaison">Raison de l'inscription</label>
+                </div>
+            `;
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkbox = document.getElementById('showPasswords');
+            const pwdFields = document.querySelectorAll('input[data-toggle-password]');
+
+            checkbox.addEventListener('change', function () {
+                const show = checkbox.checked;
+                pwdFields.forEach(function (f) {
+                    try {
+                        f.type = show ? 'text' : 'password';
+                    } catch (e) {
+                        const newInput = f.cloneNode(true);
+                        newInput.type = show ? 'text' : 'password';
+                        f.parentNode.replaceChild(newInput, f);
+                    }
+                });
+            });
+        });
+    </script>
 </section>
