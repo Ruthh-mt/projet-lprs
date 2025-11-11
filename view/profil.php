@@ -93,7 +93,7 @@ require_once "../src/repository/OffreRepository.php";
         elseif (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Partenaire'){
             echo'<div class="d-flex flex-wrap justify-content-start gap-4">';
             $offresPartenaire = new OffreRepository() ;
-            $offresPartenaire = $offresPartenaire ->getOffreById($_SESSION['utilisateur']['id_user']);
+            $offresPartenaire = $offresPartenaire ->getOffresParenaire($_SESSION['utilisateur']['id_user']);
 
             if(!empty($offresPartenaire)) {
                 foreach ($offresPartenaire as $offre) {
@@ -118,7 +118,7 @@ require_once "../src/repository/OffreRepository.php";
                 </div>';
                 }
             }else{
-                echo"<h5> Il semblerait qu'il n'y a pas de candidatures</h5>
+                echo"<h5> Il semblerait qu'il n'y a pas d'offres'</h5>
                         <br>
                     <p>Soyez le/la premier/e à postuler </p>";
             }

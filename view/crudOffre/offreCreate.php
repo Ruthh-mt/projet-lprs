@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once("../../src/bdd/config.php");
 $pdo  = (new Config())->connexion();
 $sql =$pdo->prepare("SELECT * FROM  fiche_entreprise f  ");

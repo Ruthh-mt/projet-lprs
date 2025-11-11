@@ -1,5 +1,5 @@
 <?php
-require_once ('../../src/bdd/config.php');
+require_once(__DIR__ . '/../../src/bdd/config.php');
 
 class OffreRepository
 {
@@ -36,8 +36,7 @@ class OffreRepository
 
     public function getAllOffre()
     {
-        $sql = "SELECT * FROM offre o inner join fiche_entreprise f
-    on o.ref_fiche = f.id_fiche_entreprise";
+        $sql = "SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute();
         $offres = $stmt->fetchAll();
@@ -56,5 +55,32 @@ class OffreRepository
 
         return $req[0];
     }
+    public function getOffresParenaire($user)
+    {
+        $sql = "
+        SELECT 
+            o.id_offre,
+            o.titre,
+            o.description,
+            o.mission,
+            o.salaire,
+            o.type,
+            o.etat,
+            f.nom_entreprise,
+            f.adresse_entreprise,
+            f.adresse_web
+        FROM partenaire p
+        INNER JOIN fiche_entreprise f ON p.ref_fiche_entreprise = f.id_fiche_entreprise
+        INNER JOIN offre o ON o.ref_fiche = f.id_fiche_entreprise
+        WHERE p.ref_user = :id_user
+    ";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute(['id_user' => $user]);
+
+        $req = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $req;
+    }
+
 
 }
