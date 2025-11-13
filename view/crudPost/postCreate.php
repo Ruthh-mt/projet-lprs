@@ -53,7 +53,6 @@ $idUser=$_SESSION['utilisateur']["id_user"];
         </div>
     </header>
 
-
     <section class="container banner bg-danger text-warning text-center py-1 rounded border">
         <h1>Cette page est censé être pour le gestionnaire</h1>
     </section>
