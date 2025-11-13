@@ -2,10 +2,26 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-$page = 'Formation';
-require_once __DIR__ . '/traitementFormationUpdate.php';
-?>
 
+require_once '../../src/repository/FormationRepository.php';
+
+$page = 'Formation';
+
+$repo = new FormationRepository();
+
+// ID en GET
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($id <= 0) {
+    header('Location: formationRead.php');
+    exit;
+}
+
+$formation = $repo->getById($id);
+if (!$formation) {
+    header('Location: formationRead.php');
+    exit;
+}
+?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -29,28 +45,29 @@ require_once __DIR__ . '/traitementFormationUpdate.php';
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
-        <li class="nav-item"><a href="../accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
-        <li class="nav-item"><a href="../evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
-        <li class="nav-item"><a href="../annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
-        <li class="nav-item"><a href="../listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
-        <li class="nav-item"><a href="../emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
-        <li class="nav-item"><a href="../forum.php" class="btn btn-outline-light me-2">Forum</a></li>
+        <li class="nav-item"><a href="../../accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
+        <li class="nav-item"><a href="../../evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
+        <li class="nav-item"><a href="../../annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
+        <li class="nav-item"><a href="../../listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
+        <li class="nav-item"><a href="../../emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="../../forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
-                <a href="../administration.php" class="btn btn-outline-warning active me-2">Administration</a>
+                <a href="../../administration.php" class="btn btn-outline-warning active me-2">Administration</a>
             </li>
         <?php endif; ?>
     </ul>
     <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
         <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
+            <a href="../../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
             <a href="../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
         <?php else: ?>
-            <a href="../connexion.php" class="btn btn-outline-success">Connexion</a>
-            <a href="../inscription.php" class="btn btn-outline-primary">Inscription</a>
+            <a href="../../connexion.php" class="btn btn-outline-success">Connexion</a>
+            <a href="../../inscription.php" class="btn btn-outline-primary">Inscription</a>
         <?php endif; ?>
     </div>
 </header>
+
 <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
@@ -60,39 +77,53 @@ require_once __DIR__ . '/traitementFormationUpdate.php';
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
             <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
-            <a href="../crudPost/postRead.php" class="btn btn-outline-danger disabled">Post</a>
+            <a href="../crudPost/postRead.php" class="btn btn-outline-danger ">Post</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
             <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
         </div>
     </div>
 </nav>
+
 <section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
+    <h1>Gestion <?= htmlspecialchars($page, ENT_QUOTES, 'UTF-8') ?></h1>
 </section>
-<h1>Modifier une formation</h1>
 
-<?php if (!empty($errors)): ?>
-    <ul style="color:red;">
-        <?php foreach ($errors as $k => $v): ?>
-            <li><?= htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8') ?></li>
-        <?php endforeach; ?>
-    </ul>
-<?php endif; ?>
+<section class="container my-3">
+    <div class="row">
+        <div class="col"></div>
 
-<?php if (isset($formation) && $formation instanceof ModeleFormation): ?>
-    <form method="post" action="">
-        <input type="hidden" name="id_formation" value="<?= htmlspecialchars((string)$formation->id_formation, ENT_QUOTES, 'UTF-8') ?>">
-        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
-        <label>Nom (max 50) :
-            <input type="text" name="nom" maxlength="50" required value="<?= htmlspecialchars($old['nom'] ?? $formation->nom, ENT_QUOTES, 'UTF-8') ?>">
-        </label>
-        <br><br>
-        <button type="submit">Enregistrer</button>
-        <a href="FormationRead.php">Annuler</a>
-    </form>
-<?php else: ?>
-    <p>Formation introuvable ou erreur.</p>
-    <p><a href="FormationRead.php">Retour</a></p>
-<?php endif; ?>
+        <div class="col-6 border border-3 border-dark rounded p-3">
+            <h2 class="text-center mb-3">Modifier une formation</h2>
+
+            <form action="../../src/treatment/traitementFormation.php?action=update&id=<?= (int)$formation['id_formation'] ?>"
+                  method="post"
+                  class="align-self-center">
+
+                <input type="hidden" name="id_formation" value="<?= (int)$formation['id_formation'] ?>">
+
+                <div class="form-floating my-2">
+                    <input type="text"
+                           name="nom"
+                           class="form-control"
+                           id="floatingNomFormation"
+                           placeholder="Nom de la formation"
+                           value="<?= htmlspecialchars($formation['nom'], ENT_QUOTES, 'UTF-8') ?>"
+                           required>
+                    <label for="floatingNomFormation" class="ms-4">Nom de la formation</label>
+                </div>
+
+                <div class="d-grid gap-2 my-2">
+                    <button class="btn btn-outline-warning" type="submit">METTRE À JOUR</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col"></div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 </html>

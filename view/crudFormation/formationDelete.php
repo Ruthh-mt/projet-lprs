@@ -2,9 +2,19 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/traitementFormationDelete.php';
+
+require_once '../../src/repository/FormationRepository.php';
 
 $page = 'Formation';
+
+$repo = new FormationRepository();
+
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$formation = null;
+
+if ($id > 0) {
+    $formation = $repo->getById($id);
+}
 ?>
 <!doctype html>
 <html lang="fr">
@@ -29,28 +39,29 @@ $page = 'Formation';
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
-        <li class="nav-item"><a href="../accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
-        <li class="nav-item"><a href="../evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
-        <li class="nav-item"><a href="../annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
-        <li class="nav-item"><a href="../listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
-        <li class="nav-item"><a href="../emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
-        <li class="nav-item"><a href="../forum.php" class="btn btn-outline-light me-2">Forum</a></li>
+        <li class="nav-item"><a href="../../accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
+        <li class="nav-item"><a href="../../evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
+        <li class="nav-item"><a href="../../annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
+        <li class="nav-item"><a href="../../listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
+        <li class="nav-item"><a href="../../emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="../../forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
-                <a href="../administration.php" class="btn btn-outline-warning active me-2">Administration</a>
+                <a href="../../administration.php" class="btn btn-outline-warning active me-2">Administration</a>
             </li>
         <?php endif; ?>
     </ul>
     <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
         <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
+            <a href="../../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
             <a href="../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
         <?php else: ?>
-            <a href="../connexion.php" class="btn btn-outline-success">Connexion</a>
-            <a href="../inscription.php" class="btn btn-outline-primary">Inscription</a>
+            <a href="../../connexion.php" class="btn btn-outline-success">Connexion</a>
+            <a href="../../inscription.php" class="btn btn-outline-primary">Inscription</a>
         <?php endif; ?>
     </div>
 </header>
+
 <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
@@ -60,36 +71,53 @@ $page = 'Formation';
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
             <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
-            <a href="../crudPost/postRead.php" class="btn btn-outline-danger disabled">Post</a>
+            <a href="../crudPost/postRead.php" class="btn btn-outline-danger">Post</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
             <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
         </div>
     </div>
 </nav>
+
 <section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
+    <h1>Gestion <?= htmlspecialchars($page, ENT_QUOTES, 'UTF-8') ?></h1>
 </section>
-<h1>Supprimer une formation</h1>
 
-<?php if (!empty($errors)): ?>
-    <ul style="color:red;">
-        <?php foreach ($errors as $k => $v): ?>
-            <li><?= htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8') ?></li>
-        <?php endforeach; ?>
-    </ul>
-<?php endif; ?>
+<section class="container my-3">
+    <div class="card text-center border border-danger">
+        <div class="card-header bg-danger text-white">
+            Suppression de formation
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Confirmation</h5>
 
-<?php if (isset($formation) && $formation instanceof ModeleFormation): ?>
-    <p>Voulez-vous vraiment supprimer la formation : <strong><?= htmlspecialchars($formation->nom, ENT_QUOTES, 'UTF-8') ?></strong> ?</p>
-    <form method="post" action="">
-        <input type="hidden" name="id_formation" value="<?= htmlspecialchars((string)$formation->id_formation, ENT_QUOTES, 'UTF-8') ?>">
-        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') ?>">
-        <button type="submit">Oui, supprimer</button>
-        <a href="FormationRead.php">Annuler</a>
-    </form>
-<?php else: ?>
-    <p>Formation introuvable.</p>
-    <p><a href="FormationRead.php">Retour</a></p>
-<?php endif; ?>
+            <?php if ($id <= 0 || !$formation): ?>
+                <p class="card-text">Formation introuvable ou identifiant invalide.</p>
+                <a href="formationRead.php" class="btn btn-secondary">Retour</a>
+            <?php else: ?>
+                <p class="card-text">
+                    Souhaitez-vous supprimer la formation
+                    <strong><?= htmlspecialchars($formation['nom'], ENT_QUOTES, 'UTF-8') ?></strong> ?
+                </p>
+
+                <form method="post" action="../../src/treatment/traitementFormation.php?action=delete" class="d-inline">
+                    <input type="hidden" name="id_formation" value="<?= (int) $id ?>">
+                    <button type="submit" class="btn btn-warning me-2">
+                        Confirmer la suppression
+                    </button>
+                    <a href="formationRead.php" class="btn btn-secondary">
+                        Annuler
+                    </a>
+                </form>
+            <?php endif; ?>
+        </div>
+        <div class="card-footer">
+            Cette action est irréversible !
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 </html>

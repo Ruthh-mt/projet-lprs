@@ -1,77 +1,84 @@
 <?php
+
+use PDO;
+
 require_once __DIR__ . '/../bdd/config.php';
 require_once __DIR__ . '/../modele/ModeleFormation.php';
 
 class FormationRepository
 {
-    private PDO $pdo;
-    private string $table = 'formation';
+    private PDO $db;
 
-    public function __construct()
+    public function __construct(?PDO $pdo = null)
     {
-        $config = new Config();
-        $this->pdo = $config->connexion();
-    }
-
-    public function create(ModeleFormation $m): int
-    {
-        $sql = "INSERT INTO {$this->table} (nom) VALUES (:nom)";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':nom' => $m->nom]);
-        return (int)$this->pdo->lastInsertId();
-    }
-
-    public function update(ModeleFormation $m): bool
-    {
-        if ($m->id_formation === null) {
-            throw new InvalidArgumentException('ID requis pour update.');
-        }
-        $sql = "UPDATE {$this->table} SET nom = :nom WHERE id_formation = :id";
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([':nom' => $m->nom, ':id' => $m->id_formation]);
-    }
-
-    public function delete(int $id): bool
-    {
-        $sql = "DELETE FROM {$this->table} WHERE id_formation = :id";
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([':id' => $id]);
-    }
-
-    public function find(int $id): ?ModeleFormation
-    {
-        $sql = "SELECT * FROM {$this->table} WHERE id_formation = :id LIMIT 1";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $id]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? ModeleFormation::fromArray($row) : null;
-    }
-
-    public function findAll(?int $limit = 100, int $offset = 0): array
-    {
-        if ($limit === null) {
-            $sql = "SELECT * FROM {$this->table} ORDER BY nom ASC";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute();
+        if ($pdo instanceof PDO) {
+            $this->db = $pdo;
         } else {
-            $sql = "SELECT * FROM {$this->table} ORDER BY nom ASC LIMIT :limit OFFSET :offset";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-            $stmt->execute();
+            $this->db = (new Config())->connexion();
         }
-
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $out = [];
-        foreach ($rows as $r) {
-            $out[] = ModeleFormation::fromArray($r);
-        }
-        return $out;
     }
 
-    public function count(): int
+    public function getById(int $id_formation): ?array
     {
-        $stmt = $this->pdo->query("SELECT COUNT(*) FROM {$this->table}");
-        return (int)$stmt->fetchColumn();
+        $sql = "SELECT * FROM formation WHERE id_formation = :id_formation";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id_formation' => $id_formation]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+
+    public function findAll(?string $orderBy = null): array
+    {
+        $sql = "SELECT * FROM formation";
+
+        $allowedOrder = ['id_formation', 'nom'];
+        if ($orderBy !== null && in_array($orderBy, $allowedOrder, true)) {
+            $sql .= " ORDER BY " . $orderBy;
+        }
+
+        $stmt = $this->db->query($sql);
+
+        return $stmt->fetchAll(PDO::FETCH_OBJ) ?: [];
+    }
+
+    public function create(ModeleFormation $formation): bool
+    {
+        $sql = "INSERT INTO formation (nom) VALUES (:nom)";
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            'nom' => $formation->getNom(),
+        ]);
+    }
+
+    public function update(int $id_formation, array $data): bool
+    {
+        $set    = [];
+        $params = ['id_formation' => $id_formation];
+
+        if (array_key_exists('nom', $data)) {
+            $set[]        = "nom = :nom";
+            $params['nom'] = $data['nom'];
+        }
+
+        if (!$set) {
+            return false;
+        }
+
+        $sql  = "UPDATE formation SET " . implode(', ', $set) . " WHERE id_formation = :id_formation";
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute($params);
+    }
+
+    public function delete(int $id_formation): bool
+    {
+        $sql = "DELETE FROM formation WHERE id_formation = :id_formation";
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue(':id_formation', $id_formation, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
     }
 }

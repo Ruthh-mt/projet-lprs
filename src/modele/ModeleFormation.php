@@ -2,28 +2,48 @@
 
 class ModeleFormation
 {
-    public ?int $id_formation;
-    public string $nom;
+    private $idFormation;
+    private $nom;
 
-    public function __construct(?int $id_formation = null, string $nom = '')
+    public function __construct(array $donnees = [])
     {
-        $this->id_formation = $id_formation;
+        if (!empty($donnees)) {
+            $this->hydrate($donnees);
+        }
+    }
+
+    public function hydrate(array $donnees): void
+    {
+        foreach ($donnees as $key => $value) {
+            switch ($key) {
+                case 'id_formation':
+                case 'idFormation':
+                    $this->setIdFormation($value);
+                    break;
+
+                case 'nom':
+                    $this->setNom($value);
+                    break;
+            }
+        }
+    }
+    public function getIdFormation()
+    {
+        return $this->idFormation;
+    }
+
+    public function setIdFormation($idFormation): void
+    {
+        $this->idFormation = (int) $idFormation;
+    }
+
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    public function setNom($nom): void
+    {
         $this->nom = $nom;
-    }
-
-    public static function fromArray(array $data): self
-    {
-        return new self(
-            isset($data['id_formation']) && $data['id_formation'] !== null ? (int)$data['id_formation'] : null,
-            (string)($data['nom'] ?? '')
-        );
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'id_formation' => $this->id_formation,
-            'nom' => $this->nom,
-        ];
     }
 }
