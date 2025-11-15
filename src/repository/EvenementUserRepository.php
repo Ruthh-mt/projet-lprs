@@ -17,9 +17,10 @@ class EvenementUserRepository{
         ]);
     }
     public function verifDejaInscritEvenement(ModeleEvenementUser $eveUser){
-        $req="SELECT * FROM user_evenement where ref_user=:user";
+        $req="SELECT * FROM user_evenement where ref_user=:user AND ref_evenement=:event";
         $stm=$this->db->connexion()->prepare($req);
-        $stm->execute(["user"=>$eveUser->getRefUser()]);
+        $stm->execute(["user"=>$eveUser->getRefUser(),
+            "event"=>$eveUser->getRefEvenement()]);
         $resultat=$stm->fetchAll();
         if(count($resultat)==0){
             return true;

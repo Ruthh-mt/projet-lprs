@@ -21,7 +21,7 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
 $nbInscrits=$evenementUserRepository->countAllInscritsByEvenement($id);
 
 $superviseurs = $evenementUserRepository->getSuperviseur($evenement->id_evenement);
-$eveUser = new ModeleEvenementUser(["refUser" => $_SESSION['utilisateur']['id_user']]);
+$eveUser = new ModeleEvenementUser(["refUser" => $_SESSION['utilisateur']['id_user'],"refEvenement"=>$evenement->id_evenement]);
 $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
 ?>
 <!doctype html>
