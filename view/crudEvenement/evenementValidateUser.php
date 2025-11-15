@@ -15,11 +15,9 @@ if (!$id) {
 $evenementRepo = new EvenementRepository();
 $evenementUserRepository = new EvenementUserRepository();
 $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" => $id]));
-$nbInscrits=$evenementUserRepository->countAllInscritsByEvenement($id);
-
-$superviseurs = $evenementUserRepository->getSuperviseur($evenement->getIdEvenement());
-$eveUser = new ModeleEvenementUser(["refUser" => $_SESSION['utilisateur']['id_user']]);
-$estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
+$eveUser = new ModeleEvenementUser(["refEvenement"=>$evenement->id_evenement, "estSuperviseur"=>0]);
+$allUser=$evenementUserRepository->getAllInscritsByEvenement($eveUser);
+var_dump($allUser);
 ?>
 <!doctype html>
 <html lang="fr">
@@ -39,7 +37,7 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
-        <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
+        <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
             <img src="https://gifdb.com/images/high/yellow-lively-blob-dancing-emoji-cwouznave21jqjlk.gif"
                  class="rounded-circle mx-3"
                  style="max-width: 15%; height: auto;">
@@ -47,37 +45,35 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
-        <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
-        <li class="nav-item"><a href="evenements.php" class="btn btn-outline-light active me-2">Évènements</a></li>
-        <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
-        <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
-        <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
-        <li class="nav-item"><a href="forum.php" class="btn btn-outline-light me-2">Forum</a></li>
+        <li class="nav-item"><a href="../accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
+        <li class="nav-item"><a href="../evenements.php" class="btn btn-outline-light active me-2">Évènements</a></li>
+        <li class="nav-item"><a href="../annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
+        <li class="nav-item"><a href="../listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
+        <li class="nav-item"><a href="../emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="../forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
-                <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>
+                <a href="../administration.php" class="btn btn-outline-warning me-2">Administration</a>
             </li>
         <?php endif; ?>
     </ul>
     <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
         <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
-            <a href="../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
+            <a href="../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
+            <a href="../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
         <?php else: ?>
-            <a href="connexion.php" class="btn btn-outline-success">Connexion</a>
-            <a href="inscription.php" class="btn btn-outline-primary">Inscription</a>
+            <a href="../connexion.php" class="btn btn-outline-success">Connexion</a>
+            <a href="../inscription.php" class="btn btn-outline-primary">Inscription</a>
         <?php endif; ?>
     </div>
 </header>
 <section class=" bg-dark text-white text-center py-1 rounded">
-    <h1>Liste des inscrit a l'evenement suivant<?=$evenement->titre_eve?></h1>
+    <h1>Liste des inscrit a l'evenement : <?=$evenement->titre_eve?></h1>
     <?php
     if(!isset($_SESSION['utilisateur'])) {
         echo'<br>';
-    } elseif ($_SESSION["utilisateur"]["role"] === "Professeur") {
-        echo '<a  class="btn btn-outline-light" href="crudEvenement/evenementValidate.php" role="button">Voir les evenement a valider</a>';
-    }
-    ?>
+    }     ?>
+    <a  class="btn btn-outline-light" href="evenementRead.php?id=<?=$evenement->id_evenement?>" role="button">Retour à l'evenement </a>
 </section>
 <main>
     <?php if(!empty($_SESSION["toastr"])){
@@ -109,52 +105,60 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
     }
     ?>
     <section class="container">
-        <?php if (isset($_SESSION['utilisateur'])): ?>
-            <div class="d-grid gap-2">
-                <a class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php" role="button">Créer un évènement</a>
-            </div>
-        <?php endif; ?>
+        <br>
         <section class="container my-4">
-            <?php
-            if(!isset($_SESSION['utilisateur'])){
-                echo'<h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>';
-            }
-            else {
-                echo'<div class="d-flex flex-wrap justify-content-start gap-4">';
-                $evenementRepository = new EvenementRepository();
-                $allEvenement = $evenementRepository->getAllEvenement();
+            <?php if(!isset($_SESSION['utilisateur'])):?>
+                <h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>
 
-                if(!empty($allEvenement)) {
-                    foreach ($allEvenement as $evenement) {
-                        echo '<div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
-                    <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
-                         class="card-img-top"
-                         alt="Image événement"
-                         style="height: 180px; object-fit: cover;">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold">' . htmlspecialchars($evenement->titre_eve) . '</h5>
-                        <p class="card-text flex-grow-1 text-muted">
-                            ' . htmlspecialchars(substr($evenement->desc_eve, 0, 100)) . '...
-                        </p>
-                        <a href="../view/crudEvenement/evenementRead.php?id=' . $evenement->id_evenement. '"
-                           class="btn btn-primary mt-auto">
-                            En savoir plus
-                        </a>
-                    </div>
-                    <div class="card-footer text-muted small">
-                        Dernière mise à jour : ' . date("d/m/Y H:i") . '
-                    </div>
-                </div>';
-                    }
-                }else{
-                    echo"<h5> Il semblerait qu'il n'y a pas d'evenements</h5>
+            <?php else :?>
+                <?php if(!empty($allUser)) :?>
+                    <?php foreach ($allUser as $user) :?>
+                        <div class="card bg-base-100 w-96 shadow-sm">
+                            <div class="card-body">
+                                <h2 class="card-title"><?=htmlspecialchars(strtoupper($user->nom))." ".htmlspecialchars($user->prenom) ?></h2>
+                                <p><?=htmlspecialchars($user->role)?></p>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"  data-bs-target="#confirmModal"
+                                        data-ref-user="<?= htmlspecialchars($user->ref_user) ?>"
+                                        data-nom="<?= htmlspecialchars($user->nom) ?>"
+                                        data-prenom="<?= htmlspecialchars($user->prenom) ?>">
+                                    <i class="bi bi-trash"></i> Supprimer
+                                </button>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach;
+                    else :?>
+                    <h5> Il semblerait qu'il n'y est pas de participant a cet evenement</h5>
                         <br>
-                    <p>Soyez le/la premier/e a lancer le pas et crée votre evenement</p>";
-                }
-                echo'</div>';
-            } ?>
+                    <p>Allez faire votre promotion de votre evenement </p>";
 
+            <?php endif;
+            endif;?>
         </section>
+        <!-- MODALE DE CONFIRMATION -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="confirmModalLabel">Confirmer la desinscription</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        Êtes-vous sûr de vouloir desinscrire <span id="modalUserNom"></span>  <span id="modalUserPrenom"></span> ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <form method="post" action="../../src/treatment/traitementValidationUserEvenement.php">
+                            <input type="hidden" name="idevenement" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
+                            <input type="hidden" name="refuser" id="refUser" value="">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-exclamation-octagon"></i> Confirmer la desinscription
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </section>
     <nav aria-label="Page navigation example">
@@ -177,5 +181,27 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+        var confirmModal = document.getElementById('confirmModal');
+            if (!confirmModal) return;
+
+        confirmModal.addEventListener('show.bs.modal', function (event) {
+        // bouton qui a déclenché l'ouverture
+        var button = event.relatedTarget;
+
+        // récupérer les data-*
+        var refUser = button.getAttribute('data-ref-user') || '';
+        var nom = button.getAttribute('data-nom') || '';
+        var prenom = button.getAttribute('data-prenom') || '';
+
+        // injecter dans le modal
+        document.getElementById('modalUserNom').textContent = nom;
+        document.getElementById('modalUserPrenom').textContent = prenom;
+        document.getElementById('refUser').value = refUser;
+    });
+    });
+
+</script>
 </body>
 </html>

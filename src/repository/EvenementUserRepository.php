@@ -59,10 +59,11 @@ class EvenementUserRepository{
 
     }
     public function getAllInscritsByEvenement($eveuser){
-        $sql="SELECT utilisateur.nom,utilisateur.prenom FROM user_evenement inner join utilisateur on user_evenement.ref_userwhere=utilisateur.id_user WHERE est_superviseur =:estSuperviseur AND ref_evenement =:evenement";
+        $sql="SELECT user_evenement.ref_user, utilisateur.nom,utilisateur.prenom, utilisateur.role FROM user_evenement inner join utilisateur on user_evenement.ref_user =utilisateur.id_user WHERE est_superviseur =:estSuperviseur AND ref_evenement =:evenement";
         $stmt=$this->db->connexion()->prepare($sql);
-        $stmt->execute(["estSuperviseur"=>null,
+        $stmt->execute(["estSuperviseur"=>$eveuser->getEstSuperviseur(),
             "evenement"=>$eveuser->getRefEvenement()]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function countAllInscritsByEvenement($id){
