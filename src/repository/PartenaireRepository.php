@@ -65,4 +65,50 @@ class partenaireRepository
 
          return $result ?: null;
      }
+    public function getFicheByPartenaire(int $ref_user): ?array
+    {
+        $sql = "
+        SELECT 
+            p.ref_user,
+            p.poste,
+            p.ref_fiche_entreprise,
+            f.id_fiche_entreprise,
+            f.nom_entreprise,
+            f.adresse_entreprise,
+            f.adresse_web
+        FROM partenaire p
+        LEFT JOIN fiche_entreprise f 
+            ON p.ref_fiche_entreprise = f.id_fiche_entreprise
+        WHERE p.ref_user = :ref_user
+    ";
+
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute(['ref_user' => $ref_user]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+    public function affecterFiche(int $idUser, int $idFiche): bool
+    {
+        $pdo = $this->db->connexion();
+
+        // Vérifier si le partenaire existe
+        $checkSql = "SELECT ref_user FROM partenaire WHERE ref_user = :refUser";
+        $checkStmt = $pdo->prepare($checkSql);
+        $checkStmt->execute([':refUser' => $idUser]);
+        $exists = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($exists) {
+            // Mise à jour si existe
+            $sql = "UPDATE partenaire SET ref_fiche_entreprise = :idFiche WHERE ref_user = :idUser";
+            $stmt = $pdo->prepare($sql);
+            return $stmt->execute([':idFiche' => $idFiche, ':idUser' => $idUser]);
+        } else {
+            // Insertion si existe pas
+            $sql = "INSERT INTO partenaire (ref_user, ref_fiche_entreprise) VALUES (:idUser, :idFiche)";
+            $stmt = $pdo->prepare($sql);
+            return $stmt->execute([':idUser' => $idUser, ':idFiche' => $idFiche]);
+        }
+    }
+
 }

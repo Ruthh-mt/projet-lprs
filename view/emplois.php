@@ -1,11 +1,15 @@
 <?php
 session_start();
 require_once ('../src/bdd/config.php');
+require_once ('../src/repository/OffreRepository.php');
+require_once ('../src/repository/PartenaireRepository.php');
 $pdo  = (new Config())->connexion();
 $sql =$pdo->prepare("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
 $sql -> execute();
-$offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
-
+$offreRep = new OffreRepository();
+$lesOffres = $offreRep->getAllOffre();
+$partenaireRep = new PartenaireRepository();
+$partenaire_a_une_fiche = $partenaireRep->getFicheByPartenaire($_SESSION['utilisateur']['id_user']);
 ?>
 
 <!doctype html>
@@ -61,34 +65,44 @@ $offres = $sql -> fetchAll(PDO::FETCH_ASSOC);
         <?php endif; ?>
     </div>
 </header>
-
 <section class="creation-offre">
     <div class="card">
         <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
             <h2 class="m-0">Offres d'emploi</h2>
-            <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Partenaire'): ?>
 
-                <form action="" method="post" style="display:inline;">
-                    <a href="profil.php" class="btn btn-dark">Voir mes offres </a>
-                </form>
-                <form action="" method="post" style="display:inline;">
-                    <a href="crudOffre/offreCreate.php" class="btn btn-dark">Créer une offre </a>
-                </form>
+            <?php if (isset($_SESSION['utilisateur'])): ?>
+                <?php if ($_SESSION['utilisateur']['role'] === 'Partenaire'): ?>
+                    <div>
+                        <!-- Bouton : voir mes offres -->
+                        <a href="profil.php" class="btn btn-dark">Voir mes offres</a>
 
+                        <!-- Si le partenaire a une fiche entreprise -->
+                        <?php if ($partenaire_a_une_fiche && !empty($partenaire_a_une_fiche['ref_fiche_entreprise'])): ?>
+                            <a href="crudOffre/offreCreate.php" class="btn btn-dark">Créer une offre</a>
 
-            <?php elseif (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
-                <a href="profil.php" class="btn btn-success btn-sm">
-                    <i class="bi bi-plus-circle"></i> Mes candidatures
-                </a>
+                            <!-- Si le partenaire n’a pas encore de fiche -->
+                        <?php else: ?>
+                            <a href="crudEntreprise/creerFiche.php" class="btn btn-dark">Créer une fiche</a>
+                        <?php endif; ?>
+                    </div>
+
+                <?php elseif ($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
+                    <a href="profil.php" class="btn btn-success btn-sm">
+                        <i class="bi bi-plus-circle"></i> Mes candidatures
+                    </a>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
+    </div>
+</section>
+
     <div class="table-wrap">
             <table class="table" id="offre-table">
                 <thead>
                 <tr><th>Titre</th><th>Description</th><th>Mission</th><th>Salaire</th><th>Entreprise</th><th>Type d'offre</th><th>Etat</th><th>Actions</th></tr>
                 </thead>
                 <tbody>
-                <?php foreach ($offres as $offre): ?>
+                <?php foreach ($lesOffres as $offre): ?>
                 <tr>
                 <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
                 <td><?= htmlspecialchars($offre['description']) ?></td>

@@ -2,16 +2,14 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (file_exists(__DIR__ . '/db.php')) require_once __DIR__ . '/db.php';
-if (file_exists(__DIR__ . '/ModeleFormation.php')) require_once __DIR__ . '/ModeleFormation.php';
-if (file_exists(__DIR__ . '/FormationRepository.php')) require_once __DIR__ . '/FormationRepository.php';
+
+require_once '../../src/modele/ModeleFormation.php';
+require_once '../../src/repository/FormationRepository.php';
+
+$repo = new FormationRepository();
+$formations = $repo->findAll(null);
+
 $page = 'Formation';
-$formations = [];
-if (isset($pdo) && $pdo instanceof PDO) {
-    $repo = new FormationRepository($pdo);
-    $formations = $repo->findAll(100, 0);
-    $total = $repo->count();
-}
 ?>
 <!doctype html>
 <html lang="fr">
@@ -20,9 +18,11 @@ if (isset($pdo) && $pdo instanceof PDO) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ACCUEIL • LPRS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 </head>
 <body>
 <header
@@ -51,61 +51,85 @@ if (isset($pdo) && $pdo instanceof PDO) {
     <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
         <?php if (isset($_SESSION['utilisateur'])): ?>
             <a href="../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
-            <a href="../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
+            <a href="../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
         <?php else: ?>
             <a href="../connexion.php" class="btn btn-outline-success">Connexion</a>
             <a href="../inscription.php" class="btn btn-outline-primary">Inscription</a>
         <?php endif; ?>
     </div>
 </header>
+
 <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
-            <a href="../crudAlumni/alumniRead.php" class="btn btn-outline-info">Alumni</a>
-            <a href="../crudPostuler/candidatureRead.php" class="btn btn-outline-danger">Candidature</a>
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
-            <a href="../crudPostuler/afficheCandidatures.php" class="btn btn-outline-info">Étudiant</a>
-            <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger">Évènement</a>
-            <a href="p" class="btn btn-outline-info active">Formation</a>
+            <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger disabled">Évènement</a>
+            <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
             <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
-            <a href="../../crudPost/postRead.php" class="btn btn-outline-danger">Post</a>
-            <a href="../crudProfesseur/professeurRead.php" class="btn btn-outline-info">Professeur</a>
+            <a href="../crudPost/postRead.php" class="btn btn-outline-danger ">Post</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
             <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
         </div>
     </div>
 </nav>
-<section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
+
+<section class="container bg-info text-white text-center py-1 rounded border">
+    <h1>Gestion <?= htmlspecialchars($page) ?></h1>
 </section>
-<h1>Formations</h1>
 
-<?php if (isset($_GET['created'])): ?><p style="color:green">Formation créée.</p><?php endif; ?>
-<?php if (isset($_GET['updated'])): ?><p style="color:green">Formation mise à jour.</p><?php endif; ?>
-<?php if (isset($_GET['deleted'])): ?><p style="color:green">Formation supprimée.</p><?php endif; ?>
+<section class="container text-center">
+    <a href="formationCreate.php" class="btn btn-outline-success my-3 d-grid">Ajouter une formation</a>
+</section>
 
-<p><a href="formationCreate.php">Créer une nouvelle formation</a></p>
+<section class="container">
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom de la formation</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($formations) && is_array($formations)): ?>
+            <?php foreach ($formations as $formation): ?>
+                <tr>
+                    <td><?= htmlspecialchars($formation->id_formation) ?></td>
+                    <td><?= htmlspecialchars($formation->nom) ?></td>
+                    <td class="text-center">
+                        <?php
+                        $id = isset($formation->id_formation) ? (int)$formation->id_formation : 0;
+                        $updateUrl = "formationUpdate.php?id={$id}";
+                        $deleteUrl = "formationDelete.php?id={$id}";
+                        ?>
+                        <a href="<?= htmlspecialchars($updateUrl) ?>" class="btn btn-sm btn-warning me-1">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
 
-<table border="1" cellpadding="6" cellspacing="0">
-    <thead><tr><th>#</th><th>Nom</th><th>Actions</th></tr></thead>
-    <tbody>
-    <?php if (empty($formations)): ?>
-        <tr><td colspan="3">Aucune formation.</td></tr>
-    <?php else: ?>
-        <?php foreach ($formations as $f): ?>
-            <tr>
-                <td><?= htmlspecialchars((string)$f->id_formation, ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= htmlspecialchars($f->nom, ENT_QUOTES, 'UTF-8') ?></td>
-                <td>
-                    <a href="FormationUpdate.php?id=<?= urlencode((string)$f->id_formation) ?>">Modifier</a> |
-                    <a href="FormationDelete.php?id=<?= urlencode((string)$f->id_formation) ?>">Supprimer</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    <?php endif; ?>
-    </tbody>
-</table>
+                        <a href="<?= htmlspecialchars($deleteUrl) ?>" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        </tbody>
+    </table>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
+            },
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 25, 50, 100]
+        });
+    });
+</script>
 </body>
 </html>
