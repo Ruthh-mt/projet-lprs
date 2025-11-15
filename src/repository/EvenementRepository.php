@@ -31,13 +31,13 @@ class EvenementRepository{
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-    public function getAllEvenementNonValidated()
+    public function getAllEvenementNonValide($evenement)
     {
         $sql="SELECT * FROM evenement WHERE est_valide=:estValide AND status=:status ";
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute([
-            'estValide'=>0,
-            'status'=>"en attente"
+            'estValide'=>$evenement->getEstValide(),
+            'status'=>$evenement->getStatus()
         ]);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
@@ -45,17 +45,7 @@ class EvenementRepository{
         $sql="SELECT * FROM evenement WHERE id_evenement=:id";
         $stmt=$this->db->connexion()->prepare($sql);
         $stmt->execute(['id'=>$evenement->getIdEvenement()]);
-        $req=$stmt->fetch();
-        $evenement->setIdEvenement($req['id_evenement']);
-        $evenement->setTitreEvenement($req['titre_eve']);
-        $evenement->setTypeEvenement($req['type_eve']);
-        $evenement->setDescEvenement($req['desc_eve']);
-        $evenement->setLieuEvenement($req['lieu_eve']);
-        $evenement->setElementEvenement($req['element_eve']);
-        $evenement->setNbPlace($req['nb_place']);
-        $evenement->setEstValide($req['est_valide']);
-        $evenement->setStatus($req['status']);
-        return $evenement;
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
     public function updateEvenement(ModeleEvenement $evenement){
         $sql="UPDATE evenement SET titre_eve=:titre, type_eve=:type, desc_eve=:desc, lieu_eve=:lieu, element_eve=:element,

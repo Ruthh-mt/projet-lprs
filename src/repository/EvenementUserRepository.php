@@ -66,9 +66,9 @@ class EvenementUserRepository{
     }
 
     public function countAllInscritsByEvenement($id){
-        $sql="SELECT count(ref_user) FROM user_evenement WHERE est_superviseur =:estSuperviseur AND ref_evenement =:evenement";
+        $sql="SELECT COUNT(ref_user) FROM user_evenement WHERE est_superviseur =:estSuperviseur AND ref_evenement =:evenement";
         $stmt=$this->db->connexion()->prepare($sql);
-        $stmt->execute(["estSuperviseur"=>null,
+        $stmt->execute(["estSuperviseur"=>0,
             "evenement"=>$id]);
         return $stmt->fetchColumn();
     }
