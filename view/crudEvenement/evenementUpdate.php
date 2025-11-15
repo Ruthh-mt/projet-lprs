@@ -111,49 +111,58 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
 
         <form class="mt-4" action="../../src/treatment/traitementUpdateEvenement.php" method="post">
 
-            <input type="hidden" name="ref_eve" value="<?= htmlspecialchars($evenement->getIdEvenement()) ?>">
+            <input type="hidden" name="ref_eve" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
             <input type="hidden" name="refUser" value="<?= htmlspecialchars($_SESSION['utilisateur']['id_user']) ?>">
 
             <div class="mb-3">
                 <label for="titre_eve">Titre de l’évènement</label>
                 <input class="form-control" type="text" id="titre_eve" name="titre_eve"
-                       value="<?= htmlspecialchars($evenement->getTitreEvenement()) ?>" required>
+                       value="<?= htmlspecialchars($evenement->titre_eve) ?>" required>
             </div>
 
             <div class="mb-3">
                 <label for="type_eve">Type</label>
                 <input class="form-control" type="text" id="type_eve" name="type_eve"
-                       value="<?= htmlspecialchars($evenement->getTypeEvenement()) ?>" required>
+                       value="<?= htmlspecialchars($evenement->type_eve) ?>" required>
             </div>
-            <option selected>Choisissez le status</option>
-            <option value="en attente">En attente de validation par un prof</option>
-            <?php
-            if($_SESSION["utilisateur"]['role']!="Étudiant" ){
-                echo'<option value="actif">Actif</option>
-                    <option value="inactif">Inactif</option>';
-            }
-            ?>
+            <div class="mb-3">
+                <label for="status">Status</label>
+                <select class="form-select" id="status" name="status">
+
+            <?php //if($_SESSION["utilisateur"]['role']!="Étudiant"|| $evenement->est_valide===1 ):?>
+            <?php $options=["en attente", "actif", "inactif"];
+                for($i=0; $i<count($options); $i++){
+                    if($evenement->status==$options[$i]){
+                        echo'<option selected value="'.$options[$i].'">'.$options[$i].'</option>';
+                    } else {
+                        echo'<option value="'.$options[$i].'">'.$options[$i].'</option>';
+                    }
+                }
+                ?>
+
+                </select>
+            </div>
             <div class="mb-3">
                 <label for="lieu_eve">Lieu</label>
                 <input class="form-control" type="text" id="lieu_eve" name="lieu_eve"
-                       value="<?= htmlspecialchars($evenement->getLieuEvenement()) ?>" required>
+                       value="<?= htmlspecialchars($evenement->lieu_eve) ?>" required>
             </div>
 
             <div class="mb-3">
                 <label for="desc_eve">Description</label>
-                <textarea class="form-control" id="desc_eve" name="desc_eve" rows="5"><?= htmlspecialchars($evenement->getDescEvenement()) ?></textarea>
+                <textarea class="form-control" id="desc_eve" name="desc_eve" rows="5"><?= htmlspecialchars($evenement->desc_eve) ?></textarea>
             </div>
 
             <div class="mb-3">
                 <label for="element_eve">Éléments nécessaires</label>
                 <input class="form-control" type="text" id="element_eve" name="element_eve"
-                       value="<?= htmlspecialchars($evenement->getElementEvenement()) ?>">
+                       value="<?= htmlspecialchars($evenement->element_eve) ?>">
             </div>
 
             <div class="mb-3">
                 <label for="nb_place">Nombre de places disponibles</label>
                 <input class="form-control" type="number" id="nb_place" name="nb_place"
-                       value="<?= htmlspecialchars($evenement->getNbPlace()) ?>" required>
+                       value="<?= htmlspecialchars($evenement->nb_place) ?>" required>
             </div>
 
             <div class="d-flex justify-content-between mt-4">
@@ -187,7 +196,7 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 <form method="post" action="../../src/treatment/traitementDeleteEvenement.php">
-                    <input type="hidden" name="idevenement" value="<?= htmlspecialchars($evenement->getIdEvenement()) ?>">
+                    <input type="hidden" name="idevenement" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
                     <button type="submit" class="btn btn-danger">
                         <i class="bi bi-exclamation-octagon"></i> Supprimer définitivement
                     </button>
