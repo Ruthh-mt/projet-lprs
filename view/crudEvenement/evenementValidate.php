@@ -28,25 +28,25 @@ if (session_status() === PHP_SESSION_NONE) {
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
-        <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
-        <li class="nav-item"><a href="evenements.php" class="btn btn-outline-light active me-2">Évènements</a></li>
-        <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
-        <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
-        <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
-        <li class="nav-item"><a href="forum.php" class="btn btn-outline-light me-2">Forum</a></li>
+        <li class="nav-item"><a href="../accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
+        <li class="nav-item"><a href="../evenements.php" class="btn btn-outline-light active me-2">Évènements</a></li>
+        <li class="nav-item"><a href="../annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
+        <li class="nav-item"><a href="../listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
+        <li class="nav-item"><a href="../emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="../forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
-                <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>
+                <a href="../administration.php" class="btn btn-outline-warning me-2">Administration</a>
             </li>
         <?php endif; ?>
     </ul>
     <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
         <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
-            <a href="../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
+            <a href="../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
+            <a href="../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
         <?php else: ?>
-            <a href="connexion.php" class="btn btn-outline-success">Connexion</a>
-            <a href="inscription.php" class="btn btn-outline-primary">Inscription</a>
+            <a href="../connexion.php" class="btn btn-outline-success">Connexion</a>
+            <a href="../inscription.php" class="btn btn-outline-primary">Inscription</a>
         <?php endif; ?>
     </div>
 </header>

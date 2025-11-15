@@ -7,11 +7,13 @@ require_once "../modele/ModeleEvenementUser.php";
 require_once "../repository/EvenementUserRepository.php";
 session_start();
 
-function redirectWith(string $type, string $message, string $target): void
-{
-    $_SESSION[$type] = $message;
+function redirectWith(string $type, string $message, string $target): void {
+    $_SESSION['toastr']=[
+        "type"=>$type,
+        "message"=>$message,
+    ];
     session_write_close();
-    header("Location: $target");
+    header("Location: $target",$_SESSION["toastr"]["type"]);
     exit();
 }
 
@@ -25,7 +27,7 @@ try {
     $evenementUser = new ModeleEvenementUser(array(
         "refUser" => $refUser,
         "refEvenement" => $refEvenement,
-        "estSuperviseur" => null
+        "estSuperviseur" => 0
     ));
 
     $evenementUserRepository= new EvenementUserRepository();

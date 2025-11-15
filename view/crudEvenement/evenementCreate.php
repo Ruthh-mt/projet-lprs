@@ -14,6 +14,10 @@ $role = $_SESSION['utilisateur']["role"];
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <style>
         body {
@@ -97,19 +101,34 @@ $role = $_SESSION['utilisateur']["role"];
 
         <!-- Formulaire -->
         <form class="mt-4" action="../../src/treatment/traitementAjoutEvenement.php" method="post">
-            <?php if (isset($_SESSION['error'])): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            <?php endif; ?>
+            <?php if(!empty($_SESSION["toastr"])){
+                $type=$_SESSION["toastr"]["type"];
+                $message=$_SESSION["toastr"]["message"];
+                echo'<script>
+            // Set the options that I want
+            toastr.options = {
+                "closeButton": true,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-full-width",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "slideDown",
+                "hideMethod": "slideUp"
+            }
+            toastr.'.$type.'("'.$message.'");
 
-            <?php if (isset($_SESSION['success'])): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            <?php endif; ?>
+
+        </script>';
+                unset($_SESSION['toastr']);
+            }
+            ?>
 
             <input type="hidden" name="id_user" value="<?= htmlspecialchars($idUser) ?>">
             <input type="hidden" name="role" value="<?= htmlspecialchars($role) ?>">
@@ -167,7 +186,21 @@ $role = $_SESSION['utilisateur']["role"];
         </form>
     </div>
 </div>
+<script>
+    function autoResize(textarea) {
+        textarea.style.height = 'auto'; // Reset height
+        textarea.style.height = textarea.scrollHeight + 'px'; // Set to content height
+    }
 
+    // Get the textarea
+    const ta = document.getElementById('desc_eve');
+
+    // Adjust height on input
+    ta.addEventListener('input', () => autoResize(ta));
+
+    // Adjust height on page load for prefilled content
+    window.addEventListener('load', () => autoResize(ta));
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

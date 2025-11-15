@@ -19,7 +19,10 @@ $evenementRepo = new EvenementRepository();
 $evenementUserRepository = new EvenementUserRepository();
 $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" => $id]));
 $nbInscrits=$evenementUserRepository->countAllInscritsByEvenement($id);
-var_dump($nbInscrits);
+
+$superviseurs = $evenementUserRepository->getSuperviseur($evenement->id_evenement);
+$eveUser = new ModeleEvenementUser(["refUser" => $_SESSION['utilisateur']['id_user']]);
+$estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
 ?>
 <!doctype html>
 <html lang="fr">
@@ -30,6 +33,10 @@ var_dump($nbInscrits);
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <style>
         body {
@@ -94,75 +101,96 @@ if(isset($_SESSION["utilisateur"])){
 <div class="container mb-5">
     <div class="section-offre">
         <div class="offre-header d-flex justify-content-between align-items-center">
-            <h2 class="fw-bold"><?= htmlspecialchars($evenement->getTitreEvenement()) ?></h2>
+            <h2 class="fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h2>
+            <?php if(in_array($_SESSION['utilisateur']['id_user'],$superviseurs,true)):?>
+            <button type="button" class="btn btn-outline-light" onclick="window.location.href='evenementValidateUser.php?id=<?=$id?>'">
+                <i class="bi bi-person-gear"></i>Voir la liste des inscrits
+            </button>
+            <?php endif; ?>
             <button type="button" class="btn btn-outline-light" onclick="window.location.href='../evenements.php'">
                 <i class="bi bi-arrow-left-circle"></i> Retour
             </button>
         </div>
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
+        <?php if(!empty($_SESSION["toastr"])){
+        $type=$_SESSION["toastr"]["type"];
+        $message=$_SESSION["toastr"]["message"];
+        echo'<script>
+            // Set the options that I want
+            toastr.options = {
+                "closeButton": true,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-full-width",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "slideDown",
+                "hideMethod": "slideUp"
+            }
+            toastr.'.$type.'("'.$message.'");
 
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
+
+        </script>';
+        unset($_SESSION['toastr']);
+        }
+        ?>
         <form class="mt-4" action="../../src/treatment/traitementInscriptionEvenement.php" method="post">
-            <input type="hidden" name="ref_eve" value="<?= htmlspecialchars($evenement->getIdEvenement()) ?>">
+            <input type="hidden" name="ref_eve" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
             <input type="hidden" name="refUser" value="<?= htmlspecialchars($_SESSION['utilisateur']['id_user']) ?>">
 
             <div class="mb-3">
                 <label for="type_eve">Type d’évènement</label>
                 <input type="text" readonly class="form-control" id="type_eve"
-                       value="<?= htmlspecialchars($evenement->getTypeEvenement()) ?>">
+                       value="<?= htmlspecialchars($evenement->type_eve) ?>">
             </div>
             <div class="mb-3">
                 <label for="status">Status de l'evenement</label>
                 <input type="text" readonly class="form-control" id="status"
-                       value="<?= htmlspecialchars($evenement->getStatus()) ?>">
+                       value="<?= htmlspecialchars($evenement->status) ?>">
             </div>
             <div class="mb-3">
                 <label for="lieu_eve">Lieu</label>
                 <input type="text" readonly class="form-control" id="lieu_eve"
-                       value="<?= htmlspecialchars($evenement->getLieuEvenement()) ?>">
+                       value="<?= htmlspecialchars($evenement->lieu_eve) ?>">
             </div>
 
             <div class="mb-3">
                 <label for="desc_eve">Description</label>
-                <textarea readonly class="form-control" id="desc_eve"><?= htmlspecialchars($evenement->getDescEvenement()) ?></textarea>
+                <textarea readonly class="form-control" id="desc_eve"><?= htmlspecialchars($evenement->desc_eve) ?></textarea>
             </div>
 
             <div class="mb-3">
                 <label for="element_eve">Éléments nécessaires</label>
                 <input type="text" readonly class="form-control" id="element_eve"
-                       value="<?= htmlspecialchars($evenement->getElementEvenement()) ?>">
+                       value="<?= htmlspecialchars($evenement->element_eve) ?>">
             </div>
 
             <div class="mb-3">
                 <label for="nb_place">Places disponibles</label>
+                <?php if($evenement->nb_place-$nbInscrits===0):?>
+                    <input type="text" readonly class="form-control" id="nb_place"
+                           value="Evenement complet">
+                <?php else: ?>
                 <input type="number" readonly class="form-control" id="nb_place"
-                       value="<?= htmlspecialchars($evenement->getNbPlace()) ?>">
+                       value="<?= htmlspecialchars($evenement->nb_place-$nbInscrits) ?>">
+                <?php endif; ?>
             </div>
-
-            <?php
-
-            $superviseurs = $evenementUserRepository->getSuperviseur($evenement->getIdEvenement());
-            $eveUser = new ModeleEvenementUser(["refUser" => $_SESSION['utilisateur']['id_user']]);
-            $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
-            ?>
 
             <div class="text-center mt-4">
 
 
-                <?php
-                if (!in_array($_SESSION['utilisateur']['id_user'],$superviseurs,true)) : ?>
+                <?php if (!in_array($_SESSION['utilisateur']['id_user'],$superviseurs,true)) : ?>
                     <?php if ($estInscrit): ?>
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn btn-primary" <?php if ($evenement->nb_place-$nbInscrits==0) {
+                         echo'id="liveAlertBtn"';
+                        }else {
+                            echo'type="submit"';
+                        }?>>
                             <i class="bi bi-person-plus"></i> Participer
                         </button>
                     <?php else: ?>
@@ -171,7 +199,7 @@ if(isset($_SESSION["utilisateur"])){
                         </button>
                     <?php endif; ?>
                 <?php endif; ?>
-                <?php if ($_SESSION["utilisateur"]["role"]=="Professeur" && $evenement->getEstValide()==0 ): // ajouter le fait que l'evenement doit etre crée par un etudient pour afficher le btn?>
+                <?php if ($_SESSION["utilisateur"]["role"]=="Professeur" && $evenement->est_valide==0 ): // ajouter le fait que l'evenement doit etre crée par un etudient pour afficher le btn?>
 
                     <button type="button" class="btn btn-success" data-bs-toggle="modal"
                             data-bs-target="#confirmEvenementModal">
@@ -182,7 +210,7 @@ if(isset($_SESSION["utilisateur"])){
         </form>
         <?php if (in_array($_SESSION['utilisateur']['id_user'],$superviseurs,true)): ?>
             <div class="text-center mt-3">
-                <a href="evenementUpdate.php?id=<?= $evenement->getIdEvenement() ?>" class="btn btn-warning">
+                <a href="evenementUpdate.php?id=<?= $evenement->id_evenement?>" class="btn btn-warning">
                     <i class="bi bi-pencil-square"></i> Modifier l’évènement
                 </a>
             </div>
@@ -191,7 +219,7 @@ if(isset($_SESSION["utilisateur"])){
 </div>
 <!-- MODALE DE CONFIRMATION -->
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title" id="confirmModalLabel">Confirmer la desinscription</h5>
@@ -203,7 +231,7 @@ if(isset($_SESSION["utilisateur"])){
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 <form method="post" action="../../src/treatment/traitementDesinscriptionEvenement.php">
-                    <input type="hidden" name="idevenement" value="<?= htmlspecialchars($evenement->getIdEvenement()) ?>">
+                    <input type="hidden" name="idevenement" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
                     <input type="hidden" name="refuser" value="<?= htmlspecialchars($eveUser->getRefUser()) ?>">
                     <button type="submit" class="btn btn-danger">
                         <i class="bi bi-exclamation-octagon"></i> Se Desinscrire
@@ -215,7 +243,7 @@ if(isset($_SESSION["utilisateur"])){
 </div>
 <!-- MODALE DE CONFIRMATION POUR VALIDER LES EVENEMENTS -->
 <div class="modal fade" id="confirmEvenementModal" tabindex="-1" aria-labelledby="confirmEvenementModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="confirmEvenementModalLabel">Confirmer la validation de l'evenement</h5>
@@ -227,7 +255,7 @@ if(isset($_SESSION["utilisateur"])){
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 <form method="post" action="../../src/treatment/traitementValidationEvenement.php">
-                    <input type="hidden" name="idEvenement" value="<?= htmlspecialchars($evenement->getIdEvenement()) ?>">
+                    <input type="hidden" name="idEvenement" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
                     <input type="hidden" name="refUser" value="<?= htmlspecialchars($eveUser->getRefUser()) ?>">
                     <button type="submit" class="btn btn-success">
                         <i class="bi bi-person-fill-check"></i> Valider
@@ -251,7 +279,27 @@ if(isset($_SESSION["utilisateur"])){
 
     // Adjust height on page load for prefilled content
     window.addEventListener('load', () => autoResize(ta));
+
+    const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+    const appendAlert = (message, type) => {
+        const wrapper = document.createElement('div')
+        wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>'
+        ].join('')
+
+        alertPlaceholder.append(wrapper)
+    }
+
+    const alertTrigger = document.getElementById('liveAlertBtn')
+    if (alertTrigger) {
+        alertTrigger.addEventListener('click', () => {
+            appendAlert("l'evenement est complet, soudoyez quelqu'un si vous voulez vous inscrire", 'danger')
+        })
+    }
+
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

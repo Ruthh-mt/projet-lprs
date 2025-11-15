@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $id = $_GET['id'] ?? null;
 if (!$id) {
-    echo "<script>alert('Aucun événement sélectionné'); window.location.href='evenementRead.php';</script>";
+    echo "<script>alert('Aucun événement sélectionné'); window.location.href='../evenements.php';</script>";
     exit;
 }
 $evenementRepo = new EvenementRepository();
@@ -31,6 +31,10 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
@@ -76,19 +80,34 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
     ?>
 </section>
 <main>
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+    <?php if(!empty($_SESSION["toastr"])){
+        $type=$_SESSION["toastr"]["type"];
+        $message=$_SESSION["toastr"]["message"];
+        echo'<script>
+            // Set the options that I want
+            toastr.options = {
+                "closeButton": true,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-full-width",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "slideDown",
+                "hideMethod": "slideUp"
+            }
+            toastr.'.$type.'("'.$message.'");
 
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+
+        </script>';
+        unset($_SESSION['toastr']);
+    }
+    ?>
     <section class="container">
         <?php if (isset($_SESSION['utilisateur'])): ?>
             <div class="d-grid gap-2">

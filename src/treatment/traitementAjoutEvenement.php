@@ -1,15 +1,18 @@
 <?php
-require_once "../modele/Evenement.php";
+require_once "../modele/ModeleEvenement.php";
 require_once "../bdd/config.php";
 require_once "../repository/EvenementRepository.php";
-require_once "../modele/EvenementUser.php";
+require_once "../modele/ModeleEvenementUser.php";
 require_once "../repository/EvenementUserRepository.php";
 
 session_start();
 function redirectWith(string $type, string $message, string $target): void {
-    $_SESSION[$type] = $message;
+    $_SESSION['toastr']=[
+        "type"=>$type,
+        "message"=>$message,
+    ];
     session_write_close();
-    header("Location: $target",$_SESSION[$type]);
+    header("Location: $target",$_SESSION["toastr"]["type"]);
     exit();
 }
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

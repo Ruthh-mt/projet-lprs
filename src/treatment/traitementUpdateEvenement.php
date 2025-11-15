@@ -6,9 +6,12 @@ require_once "../repository/EvenementRepository.php";
 session_start();
 
 function redirectWith(string $type, string $message, string $target): void {
-    $_SESSION[$type] = $message;
+    $_SESSION['toastr']=[
+        "type"=>$type,
+        "message"=>$message,
+    ];
     session_write_close();
-    header("Location: $target",$_SESSION[$type]);
+    header("Location: $target",$_SESSION["toastr"]["type"]);
     exit();
 }
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

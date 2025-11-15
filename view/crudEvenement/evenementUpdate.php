@@ -25,6 +25,10 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <style>
         body {
@@ -84,27 +88,41 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
     </div>
 </header>
 
-<?php if (isset($_SESSION['error'])): ?>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
+<?php if(!empty($_SESSION["toastr"])){
+    $type=$_SESSION["toastr"]["type"];
+    $message=$_SESSION["toastr"]["message"];
+    echo'<script>
+            // Set the options that I want
+            toastr.options = {
+                "closeButton": true,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-full-width",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "slideDown",
+                "hideMethod": "slideUp"
+            }
+            toastr.'.$type.'("'.$message.'");
 
-<?php if (isset($_SESSION['success'])): ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
 
+        </script>';
+    unset($_SESSION['toastr']);
+}
+?>
 <!-- SECTION FORMULAIRE -->
 <div class="container mb-5">
     <div class="section-offre">
 
         <div class="offre-header d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">Modifier un évènement</h2>
-            <button type="button" class="btn btn-outline-light" onclick="window.location.href='../evenements.php'">
+            <button type="button" class="btn btn-outline-light" onclick="window.location.href='evenementRead.php?id=<?=$evenement->id_evenement?>'">
                 <i class="bi bi-arrow-left-circle"></i> Retour
             </button>
         </div>
