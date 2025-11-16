@@ -155,7 +155,6 @@ $role = $_SESSION['utilisateur']["role"];
                     }
                     ?>
                 </select>
-
             </div>
 
             <div class="mb-3">

@@ -17,6 +17,12 @@ if (session_status() === PHP_SESSION_NONE) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
@@ -53,46 +59,66 @@ if (session_status() === PHP_SESSION_NONE) {
 </header>
 <section class="container banner bg-dark text-white text-center py-1 rounded">
     <h1>Forum</h1>
+    <!--- rajouter un system de filtre et un bouton pour afficher les post de l'user connecter--->
 </section>
 <main>
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
     <section class="container">
+        <?php if(!empty($_SESSION["toastr"])){
+            $type=$_SESSION["toastr"]["type"];
+            $message=$_SESSION["toastr"]["message"];
+            echo'<script>
+            // Set the options that I want
+            toastr.options = {
+                "closeButton": true,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-full-width",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "slideDown",
+                "hideMethod": "slideUp"
+            }
+            toastr.'.$type.'("'.$message.'");
+
+
+        </script>';
+            unset($_SESSION['toastr']);
+        }
+        ?>
         <div class="d-grid gap-2">
             <a  class="btn btn-outline-success text-uppercase my-3" href="crudPost/postCreate.php" role="button">Créer un post</a>
         </div>
-        <?php
-if(!isset($_SESSION['utilisateur'])){
-    echo'<h5> Vous etes pas connecté. Veuillez vous connecter</h5>
+        <?php if(!isset($_SESSION['utilisateur'])):?>
+    <h5> Vous etes pas connecté. Veuillez vous connecter</h5>
 <a  class="btn btn-secondary" href="connexion.php" role="button">Se connecter</a>
-<p>Erreur : Identify yourself who are you</p>';
-}
+<p>Erreur : Identify yourself who are you</p>
+        <?php else :
 $postRepository=new PostRepository();
 $allpost=$postRepository->getAllPost();
-        foreach($allpost as $post){
-            $username=$postRepository->findUsername($post->id_post);
-            echo'<div class="card">
-            <div class="card-header"><i class="bi bi-person-circle">'." ".'</i>'.
-                $username["prenom"].' '.$username["nom"] .'</i></div>
+        if(empty($allpost)) :?>
+        <h5>Il senblerait qu'il n'y ai aucun post. Soyer le premier a en poster</h5>
+        <?php else :?>
+        <?php foreach($allpost as $post):
+            $username=$postRepository->findUsername($post->id_post);?>
+        <div class="card">
+            <div class="card-header"><i class="bi bi-person-circle"><?=" "?></i>
+                <?=$username["prenom"].' '.$username["nom"]?></i></div>
             <div class="card-body">
-                <h5 class="card-title">'.$post->titre_post.'</h5>
-                <p class="col-20 text-truncate" id="contenu">'.$post->contenu_post.'</p>
-                <a href="crudPost/postRead.php?id='.$post->id_post.'" class="btn btn-primary">Voir plus</a>
+                <h5 class="card-title"><?=$post->titre_post?> | <div class="badge badge-neutral"><?= $post->canal?></div>
+                </h5>
+                <p class="col-20 text-truncate" id="contenu"><?=$post->contenu_post?></p>
+                <a href="crudPost/postRead.php?id=<?=$post->id_post?>" class="btn btn-primary">Voir plus</a>
             </div>
-        </div> <br>';
-        }
-?>
+        </div> <br>
+        <?php endforeach;
+        endif;
+        endif; ?>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li class="page-item">

@@ -3,9 +3,17 @@ require_once "../modele/ModeleReponse.php";
 require_once "../bdd/config.php";
 require_once "../repository/ReponseRepository.php";
 session_start();
+function redirectWith(string $type, string $message, string $target): void {
+    $_SESSION['toastr']=[
+        "type"=>$type,
+        "message"=>$message,
+    ];
+    session_write_close();
+    header("Location: $target",$_SESSION["toastr"]["type"]);
+    exit();
+}
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    $_SESSION['error'] = "Méthode invalide.";
-    header('Location: ../../view/crudPost/postCreate.php');
+    redirectWith("error","Methode invalide",'Location: ../../view/crudPost/postCreate.php');
 }
 $refUser = $_POST["refUser"];
 $contenuReponse = $_POST["contenu_reponse"];
@@ -14,8 +22,7 @@ $refPost=$_POST["refPost"];
 
 
 if($refPost==="" || $contenuReponse==='' || $refUser===''){
-    $_SESSION['error'] = "Veuillez remplir tous les champs";
-    header('Location: ../../view/crudPost/afficherPost'.$refPost.'.php');
+    redirectWith("error","Veuillez remplir tous les champs",'../../view/crudPost/afficherPost'.$refPost.'.php');
 }
 try {
     $reponse = new ModeleReponse(array(
@@ -27,12 +34,10 @@ try {
 
     $ReponseRepository = new ReponseRepository();
     $ReponseRepository->createReponse($reponse);
-    $_SESSION['success']= "Le commentaire a bien été publier";
-    header('Location:../../view/crudPost/afficherPost?id='.$refPost.'.php');
+    redirectWith("sucess","Le commentaire a bien été publié",'../../view/crudPost/afficherPost?id='.$refPost.'.php');
     session_write_close();
 } catch (PDOException $e) {
-    $_SESSION['error']="Erreur lors de la creation du Commentaire : ". $e->getMessage();
-    header('Location:../../view/crudPost/PostCreate.php');
+    redirectWith("error","Erreur lors de la creation du Commentaire : ". $e->getMessage(),'../../view/crudPost/PostCreate.php');
 }
 
 
