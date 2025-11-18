@@ -92,11 +92,10 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
         <a href="../evenements.php" class="btn btn-outline-light">Retour aux évènements</a>
     </div>
 </header>
-<?php
-if(isset($_SESSION["utilisateur"])){
 
-}
-?>
+<!--- si l'utilisateur n'est pas connecter on peut lui afficher la page mais il faut rajouter un modal pous si il veut s'inscrire il
+//faudrat se connecter --->
+
 <!-- SECTION DETAIL -->
 <div class="container mb-5">
     <div class="section-offre">
@@ -120,7 +119,7 @@ if(isset($_SESSION["utilisateur"])){
                 "closeButton": true,
                 "newestOnTop": false,
                 "progressBar": false,
-                "positionClass": "toast-top-full-width",
+                "positionClass": "toast-bottom-full-width",
                 "preventDuplicates": true,
                 "onclick": null,
                 "showDuration": "300",

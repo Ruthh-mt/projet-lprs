@@ -16,11 +16,15 @@ if (session_status() === PHP_SESSION_NONE) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
-        <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
+        <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
             <img src="https://gifdb.com/images/high/yellow-lively-blob-dancing-emoji-cwouznave21jqjlk.gif"
                  class="rounded-circle mx-3"
                  style="max-width: 15%; height: auto;">
@@ -55,58 +59,74 @@ if (session_status() === PHP_SESSION_NONE) {
 <a  class="btn btn-outline-light" href="../evenements.php" role="button">Retour au evenements</a>'
 </section>
 <main>
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+    <?php if(!empty($_SESSION["toastr"])):
+        $type=$_SESSION["toastr"]["type"];
+        $message=$_SESSION["toastr"]["message"];
+        ?>
+        <script>
+            // Set the options that I want
+            toastr.options = {
+                "closeButton": true,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-full-width",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "slideDown",
+                "hideMethod": "slideUp"
+            }
+            toastr.<?=$type?>("<?=$message?>")
 
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+
+        </script>';
+
+
+    <?php unset($_SESSION['toastr']);
+    endif;?>
     <section class="container">
         <section class="container my-4">
-            <?php
-            if(!isset($_SESSION['utilisateur'])){
-                echo'<h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>';
-            }
-            else {
-                echo'<div class="d-flex flex-wrap justify-content-start gap-4">';
-                $evenementRepository = new EvenementRepository();
+            <?php if(!isset($_SESSION['utilisateur'])):?>
+                <h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>'
+
+            <?php else :?>
+                <div class="d-flex flex-wrap justify-content-start gap-4">';
+                <?php $evenementRepository = new EvenementRepository();
                 $allEvenement = $evenementRepository->getAllEvenementNonValide(New ModeleEvenement(["status"=>"en attente","estValide"=>0]));
 
-                if(!empty($allEvenement)) {
-                    foreach ($allEvenement as $evenement) {
-                        echo '<div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
+                if(!empty($allEvenement)) :
+                    foreach ($allEvenement as $evenement) :?>
+                       <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
                     <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
                          class="card-img-top"
                          alt="Image événement"
                          style="height: 180px; object-fit: cover;">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold">' . htmlspecialchars($evenement->titre_eve) . '</h5>
+                        <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve)?></h5>
                         <p class="card-text flex-grow-1 text-muted">
-                            ' . htmlspecialchars(substr($evenement->desc_eve, 0, 100)) . '...
+                            <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
                         </p>
-                        <a href="../view/crudEvenement/evenementRead.php?id=' . $evenement->id_evenement. '"
+                        <a href="evenementRead.php?id=<?=$evenement->id_evenement?>"
                            class="btn btn-primary mt-auto">
                             En savoir plus
                         </a>
                     </div>
                     <div class="card-footer text-muted small">
-                        Dernière mise à jour : ' . date("d/m/Y H:i") . '
+                        Dernière mise à jour : <?= date("d/m/Y H:i")?>
                     </div>
-                </div>';
-                    }
-                }else{
-                    echo"<h5> Il semblerait qu'il n'y a pas d'evenements a valider</h5>
-                        ";
-                }
-                echo'</div>';
-            } ?>
+                </div>
+                 <?php endforeach;?>
+                <?php else :?>
+                    <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait qu'il n'y a pas d'evenements a valider</h5>
+                    </div>
+            <?php endif;
+            endif;?>
+
 
         </section>
 
