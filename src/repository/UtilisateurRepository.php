@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../bdd/config.php';
+
 class utilisateurRepository
 {
      private PDO $db;
@@ -81,5 +83,16 @@ class utilisateurRepository
 
      public function changerMdp($mdp, $email)
      {
+     }
+
+     /**
+      * Récupère tous les utilisateurs avec le rôle 'Étudiant' triés par nom et prénom
+      * @return array
+      */
+     public function findAllEtudiants(): array
+     {
+          $sql = "SELECT * FROM utilisateur WHERE role = 'Étudiant' ORDER BY nom, prenom";
+          $stmt = $this->db->query($sql);
+          return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
      }
 }

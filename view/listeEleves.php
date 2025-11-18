@@ -66,9 +66,52 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </header>
-<section class="container banner bg-dark text-white text-center py-1 rounded">
+<section class="container banner bg-dark text-white text-center py-1 rounded mb-4">
     <h1>Liste des élèves actuels</h1>
 </section>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Liste des étudiants</h4>
+                </div>
+                <div class="card-body">
+                    <?php
+                    require_once __DIR__ . '/../src/repository/UtilisateurRepository.php';
+                    $utilisateurRepo = new utilisateurRepository();
+                    $etudiants = $utilisateurRepo->findAllEtudiants();
+                    
+                    if (empty($etudiants)): ?>
+                        <div class="alert alert-info">Aucun étudiant trouvé.</div>
+                    <?php else: ?>
+                        <div class="list-group">
+                            <?php foreach ($etudiants as $etudiant): ?>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-1">
+                                            <?= htmlspecialchars($etudiant['prenom'] . ' ' . $etudiant['nom'], ENT_QUOTES, 'UTF-8') ?>
+                                        </h5>
+                                        <small class="text-muted">
+                                            <i class="bi bi-envelope"></i> <?= htmlspecialchars($etudiant['email'], ENT_QUOTES, 'UTF-8') ?>
+                                            <?php if (!empty($etudiant['telephone'])): ?>
+                                                | <i class="bi bi-telephone"></i> <?= htmlspecialchars($etudiant['telephone'], ENT_QUOTES, 'UTF-8') ?>
+                                            <?php endif; ?>
+                                        </small>
+                                    </div>
+                                    <a href="profil.php?id=<?= $etudiant['id_user'] ?>" class="btn btn-sm btn-outline-primary">
+                                        Voir le profil
+                                    </a>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
