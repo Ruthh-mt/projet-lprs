@@ -25,10 +25,12 @@ if (session_status() === PHP_SESSION_NONE) {
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
-        <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
+        <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light active dropdown me-2">Accueil</a></li>
         <li class="nav-item"><a href="evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
         <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
         <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
+        <li class="nav-item"><a href="emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
                 <a href="administration.php" class="btn btn-outline-warning me-2">Administration</a>

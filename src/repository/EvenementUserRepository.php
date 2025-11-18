@@ -1,5 +1,4 @@
 <?php
-
 class EvenementUserRepository{
     private $db;
     public function __construct(){

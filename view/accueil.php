@@ -53,6 +53,7 @@ $offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <a href="connexion.php" class="btn btn-outline-success">Connexion</a>
             <a href="inscription.php" class="btn btn-outline-primary">Inscription</a>
         <?php endif; ?>
+
     </div>
 </header>
 <?php if (isset($_SESSION['success'])): ?>
