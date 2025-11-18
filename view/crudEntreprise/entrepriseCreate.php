@@ -68,3 +68,6 @@ if (session_status() === PHP_SESSION_NONE) {
 <section class="container banner bg-info text-white text-center py-1 rounded border">
     <h1>Gestion <?=$page?></h1>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

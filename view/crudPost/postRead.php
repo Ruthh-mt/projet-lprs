@@ -29,9 +29,12 @@ $reponses=$reponseRepo->getAllReponsebyPostId($id)
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
     <style>
         body {
             background-color: #f8f9fa;
@@ -86,13 +89,6 @@ $reponses=$reponseRepo->getAllReponsebyPostId($id)
         <a href="../forum.php" class="btn btn-outline-light">Retour aux posts</a>
     </div>
 </header>
-
-
-<section class="container banner bg-danger text-warning text-center py-1 rounded border">
-    <h1>Cette page est censé être pour le gestionnaire</h1>
-</section>
-
-
 <!-- SECTION DETAIL -->
 <div class="container mb-5">
     <div class="section-offre">
@@ -109,7 +105,7 @@ $reponses=$reponseRepo->getAllReponsebyPostId($id)
             </div>
             <?php
             $createur = $post->getRefUser();
-            if($createur==$_SESSION['utilisateur']['id_user']){
+            if(!empty($_SESSION["utilisateur"])&& $createur==$_SESSION['utilisateur']['id_user']){
                 echo'<div class="text-center mt-3">
                 <a href="postUpdate.php?id='. $post->getIdPost().'" class="btn btn-warning">
                     <i class="bi bi-pencil-square"></i> Modifier le post
@@ -117,31 +113,81 @@ $reponses=$reponseRepo->getAllReponsebyPostId($id)
             </div>';
             }
             ?>
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#showCommentForm" aria-expanded="false" aria-controls="showCommentForm">Commenter</button>
-            <div class="collapse collapse-horizontal" id="showCommentForm">
+            <button class="btn btn-primary" type="button" <?php if(empty($_SESSION["utilisateur"])) :?>
+                data-bs-toggle="modal" data-bs-target="#connectezVousModal"
+            <?php else:?>
+                data-bs-toggle="collapse" data-bs-target="#showCommentCreateForm" aria-expanded="false" aria-controls="showCommentCreateForm"
+             <?php endif;?>
+            >Commenter</button>
+            <div class="collapse collapse-horizontal" id="showCommentCreateForm">
                 <form method="post" action="../../src/treatment/traitementAjoutReponse">
                     <input type="hidden" name="refPost" value="<?= htmlspecialchars($post->getidPost()); ?>">
                     <input type="hidden" name="refUser" value="<?= htmlspecialchars($_SESSION['utilisateur']['id_user']) ?>">
                     <label for="contenu" > Entrer un commentaire</label>
                     <textarea class="form-control" id="contenu" name="contenu_reponse" ></textarea>
                     <input type="submit" class="btn btn-primary" name="submit" value="Publier" />
+                </form>
             </div>
         <br>
         <h5>Commentaire</h5>
         <?php
-        foreach ($reponses as $reponse) {
-            $userpost = $reponseRepo->findUsernamePost(New ModeleReponse(["idReponse"=>$reponse["id_reponse"],
-                "refPost"=>$reponse["ref_post"]]));
-            echo'<div class="chat chat-start">
-            <div class="chat-header"><div class="card-header">'.$userpost["prenom"]." ".$userpost["nom"].'
-        </div>
-        <div class="chat-bubble">
-        <p>'.$reponse["contenu_reponse"].'</p></div>
-        <time class="text-xs opacity-50">'.$reponse["date_heure_reponse"].'</time>
-</div>';
-        }
-        ?>
+        foreach ($reponses as $reponse) :
+            $userpost = $reponseRepo->findUsernameReponse(New ModeleReponse(["idReponse"=>$reponse->id_reponse,
+                "refPost"=>$reponse->ref_post]));
+        $count=true;?>
+        <div class="chat chat-start"> <!--- boucle et condition pour metre les chat des deux coter a faire-->
+            <div class="chat-header">
+                <?=$userpost["prenom"]." ".$userpost["nom"]?>
+                <?php if($reponse->ref_user==$_SESSION['utilisateur']['id_user'])  :?>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><button class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#showCommentUpdateForm" aria-expanded="false" aria-controls="showCommentUpdateForm" ><i class="bi bi-pencil-square"></i></button></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-trash"></i></a></li>
+                        </ul>
+                    </div>
+                <?php endif;?>
 
+                <time class="text-xs opacity-50"></time>
+            </div>
+            <div class="chat-bubble"><?=$reponse->contenu_reponse?></div>
+            <div class="chat-footer opacity-50"><?=$reponse->date_heure_reponse?>
+                <br>
+            <?php if($reponse->ref_user==$_SESSION['utilisateur']['id_user'])  :?>
+                <button data-bs-toggle="collapse" data-bs-target="#showCommentUpdateForm" aria-expanded="false" aria-controls="showCommentUpdateForm" ><i class="bi bi-pencil-square"></i></button>
+            <?php endif;?>
+            </div>
+            <div class="collapse collapse-horizontal" id="showCommentUpdateForm">
+                <form method="post" action="../../src/treatment/traitementUpdateReponse.php">
+                    <input type="hidden" name="refPost" value="<?= htmlspecialchars($post->getidPost()); ?>">
+                    <input type="hidden" name="idReponse" value="<?= htmlspecialchars($reponse->id_reponse); ?>">
+                    <input type="hidden" name="refUser" value="<?= htmlspecialchars($_SESSION['utilisateur']['id_user']) ?>">
+                    <label for="contenu" > Entrer un commentaire</label>
+                    <textarea class="form-control" id="contenu" name="contenu_reponse" ></textarea>
+                    <input type="submit" class="btn btn-primary" name="submit" value="Modifier" />
+                </form>
+            </div>
+            <?php endforeach;?>
+        </div>
+        </div>
+    </div>
+<div class="modal fade" id="connectezVousModal" tabindex="-1" aria-labelledby="connectezVousModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="connectezVousModalLabel">PTDR t'es qui ? </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Veuillez vous connectez
+            </div>
+            <div class="modal-footer">
+                <button href="../inscription.php" type="button" class="btn btn-primary" data-bs-dismiss="modal">Se connecter</button>
+                <button href="../inscription.php" type="button" class="btn btn-secondary" data-bs-dismiss="modal">S'inscrire</button>
+            </div>
+        </div>
     </div>
 </div>
 <script>
@@ -159,6 +205,5 @@ $reponses=$reponseRepo->getAllReponsebyPostId($id)
     // Adjust height on page load for prefilled content
     window.addEventListener('load', () => autoResize(ta));
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 <?php
+$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -23,7 +24,7 @@ $offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img src="https://giffiles.alphacoders.com/208/208817.gif" class="rounded-circle mx-3" style="max-width: 15%; height: auto;">
+            <img src="https://giffiles.alphacoders.com/208/208817.gif" class="rounded-circle mx-3" style="max-width: 48px;">
             <div class="fs-4 text-light text-uppercase">LPRS</div>
         </a>
     </div>
@@ -47,15 +48,15 @@ $offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <?php if ($avatar): ?>
-                        <img src="<?= htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" alt="Photo de profil" class="rounded-circle" style="width:40px;height:40px;object-fit:cover;">
+                        <img src="<?= $prefix.htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" alt="Photo de profil" class="rounded-circle" style="max-width: 48px;object-fit:cover;">
                     <?php else: ?>
                         <i class="bi bi-person-circle fs-3 text-light"></i>
                     <?php endif; ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small">
-                    <li><a class="dropdown-item" href="account/accountRead.php">Mon compte</a></li>
+                    <li><a class="dropdown-item text-primary" href="account/accountRead.php"><i class="bi bi-person"></i> Mon compte</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="../src/treatment/traitementDeconnexion.php">Déconnexion</a></li>
+                    <li><a class="dropdown-item text-danger" href="../src/treatment/traitementDeconnexion.php"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
                 </ul>
             <?php else: ?>
                 <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
@@ -63,8 +64,8 @@ $offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <i class="bi bi-person-circle fs-3 text-light"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small">
-                    <li><a class="dropdown-item" href="connexion.php">Connexion</a></li>
-                    <li><a class="dropdown-item" href="inscription.php">Inscription</a></li>
+                    <li><a class="dropdown-item text-primary" href="connexion.php"><i class="bi bi-box-arrow-in-right"></i> Connexion</a></li>
+                    <li><a class="dropdown-item text-success" href="inscription.php"><i class="bi bi-person-plus"></i> Inscription</a></li>
                 </ul>
             <?php endif; ?>
         </div>

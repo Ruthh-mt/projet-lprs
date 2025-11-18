@@ -6,7 +6,7 @@ class ModeleReponse
     private $contenuReponse;
     private $dateHeureReponse;
     private $refUser;
-    private $ref_post;
+    private $refPost;
 
     public function __construct(array $donnees){
         $this->hydrate($donnees);
@@ -90,15 +90,15 @@ class ModeleReponse
      */
     public function getRefPost()
     {
-        return $this->ref_post;
+        return $this->refPost;
     }
 
     /**
      * @param mixed $ref_post
      */
-    public function setRefPost($ref_post): void
+    public function setRefPost($refPost): void
     {
-        $this->ref_post = $ref_post;
+        $this->refPost = $refPost;
     }
 
 }
