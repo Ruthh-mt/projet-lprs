@@ -84,7 +84,7 @@ $utilisateurs = $utilisateurRepo->findNonGestionnaires();
                         <div class="mb-3">
                             <label for="utilisateur_id" class="form-label">Utilisateur à promouvoir</label>
                             <select class="form-select" id="utilisateur_id" name="utilisateur_id">
-                                <option value="">-- Sélectionnez un utilisateur --</option>
+                                <option value=""selected disabled>-- Sélectionnez un utilisateur --</option>
                                 <?php foreach ($utilisateurs as $utilisateur): ?>
                                     <option value="<?= htmlspecialchars($utilisateur['id_user']) ?>">
                                         <?= htmlspecialchars($utilisateur['prenom'] . ' ' . $utilisateur['nom'] . ' (' . $utilisateur['email'] . ')') ?>

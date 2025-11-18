@@ -9,7 +9,11 @@ class ModeleUtilisateur
     private $role;
     private $refValidateur;
     private $avatar;
-
+    private $promotion;
+    private $matiere;
+    private $entreprise;
+    private $poste;
+    private $formation;
 
     public function __construct(array $donnees)
     {
@@ -149,5 +153,85 @@ class ModeleUtilisateur
     public function setAvatar($avatar): void
     {
         $this->avatar = $avatar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPromotion()
+    {
+        return $this->promotion;
+    }
+
+    /**
+     * @param mixed $promotion
+     */
+    public function setPromotion($promotion): void
+    {
+        $this->promotion = $promotion;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMatiere()
+    {
+        return $this->matiere;
+    }
+
+    /**
+     * @param mixed $matiere
+     */
+    public function setMatiere($matiere): void
+    {
+        $this->matiere = $matiere;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEntreprise()
+    {
+        return $this->entreprise;
+    }
+
+    /**
+     * @param mixed $entreprise
+     */
+    public function setEntreprise($entreprise): void
+    {
+        $this->entreprise = $entreprise;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPoste()
+    {
+        return $this->poste;
+    }
+
+    /**
+     * @param mixed $poste
+     */
+    public function setPoste($poste): void
+    {
+        $this->poste = $poste;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFormation()
+    {
+        return $this->formation;
+    }
+
+    /**
+     * @param mixed $formation
+     */
+    public function setFormation($formation): void
+    {
+        $this->formation = $formation;
     }
 }
