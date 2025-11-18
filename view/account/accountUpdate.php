@@ -30,9 +30,7 @@ function e(?string $v): string
         class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img src="https://media.tenor.com/ax43-bYnblUAAAAj/beebobble.gif"
-                 class="rounded-circle mx-3"
-                 style="max-width: 15%; height: auto;">
+            <img src="https://i.pinimg.com/originals/a0/50/1e/a0501e0c5659dcfde397299e4234e75a.gif" class="mx-3" style="max-width: 48px; height: auto;">
             <div class="fs-4 text-light text-uppercase">LPRS</div>
         </a>
     </div>
@@ -56,19 +54,15 @@ function e(?string $v): string
                 <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <?php if ($avatar): ?>
-                        <img src="<?= $prefix.htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>"
-                             alt="Photo de profil"
-                             class="rounded-circle"
-                             style="width:40px;height:40px;object-fit:cover;">
+                        <img src="<?= $prefix.htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" alt="Photo de profil" class="rounded-circle" style="max-width: 48px;object-fit:cover;">
                     <?php else: ?>
                         <i class="bi bi-person-circle fs-3 text-light"></i>
                     <?php endif; ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small">
-                    <li><a class="dropdown-item" href="../account/accountRead.php">Mon compte</a></li>
+                    <li><a class="dropdown-item text-primary" href="../account/accountRead.php"><i class="bi bi-person"></i> Mon compte</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger"
-                           href="../../src/treatment/traitementDeconnexion.php">Déconnexion</a></li>
+                    <li><a class="dropdown-item text-danger" href="../../src/treatment/traitementDeconnexion.php"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
                 </ul>
             <?php else: ?>
                 <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
@@ -76,8 +70,8 @@ function e(?string $v): string
                     <i class="bi bi-person-circle fs-3 text-light"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small">
-                    <li><a class="dropdown-item" href="../connexion.php">Connexion</a></li>
-                    <li><a class="dropdown-item" href="../inscription.php">Inscription</a></li>
+                    <li><a class="dropdown-item text-primary" href="../connexion.php"><i class="bi bi-box-arrow-in-right"></i> Connexion</a></li>
+                    <li><a class="dropdown-item text-success" href="../inscription.php"><i class="bi bi-person-plus"></i> Inscription</a></li>
                 </ul>
             <?php endif; ?>
         </div>
