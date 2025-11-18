@@ -78,7 +78,7 @@ $utilisateur = $_SESSION['utilisateur'];
         <div class="d-grid gap-2">
             <a href="AccountUpdate.php" class="btn btn-outline-secondary">Modifier</a>
         </div>
-        <div class="row">/
+        <div class="row">
             <div class="col card m-3 pt-3">
                 <div class="card mb-3" style="max-width: 540px;">
                     <div class="row g-0">

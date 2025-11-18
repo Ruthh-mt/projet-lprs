@@ -107,18 +107,15 @@ $page = 'Utilisateur';
                     <td><?= htmlspecialchars($utilisateur['role']) ?></td>
                     <td><?= htmlspecialchars($utilisateur['ref_validateur'] ?? '') ?></td>
                     <td class="text-center">
-                        <?php
-                        $id = isset($utilisateur['id_user']) ? (int)$utilisateur['id_user'] : (isset($utilisateur['id']) ? (int)$utilisateur['id'] : 0);
-                        $updateUrl = "utilisateurUpdate.php?id={$id}";
-                        $deleteUrl = "  utilisateurDelete.php?id={$id}";
-                        ?>
-                        <a href="<?= htmlspecialchars($updateUrl) ?>" class="btn btn-sm btn-warning me-1">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
-
-                        <a href="<?= htmlspecialchars($deleteUrl) ?>" class="btn btn-sm btn-danger">
-                            <i class="bi bi-trash"></i>
-                        </a>
+                        <div class="btn-group" role="group">
+                            <?php
+                            $id = isset($utilisateur['id_user']) ? (int)$utilisateur['id_user'] : (isset($utilisateur['id']) ? (int)$utilisateur['id'] : 0);
+                            $updateUrl = "utilisateurUpdate.php?id={$id}";
+                            $deleteUrl = "  utilisateurDelete.php?id={$id}";
+                            ?>
+                            <a href="<?= htmlspecialchars($updateUrl) ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
+                            <a href="<?= htmlspecialchars($deleteUrl) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce gestionnaire ?')"><i class="bi bi-trash"></i></a>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach; ?>

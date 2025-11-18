@@ -1,26 +1,45 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-
-    $page = 'Gestionnaire';
 }
+
+require_once '../../src/modele/ModeleGestionnaire.php';
+require_once '../../src/bdd/config.php';
+require_once '../../src/repository/GestionnaireRepository.php';
+
+// Vérifier si un ID est fourni dans l'URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header('Location: gestionnaireRead.php');
+    exit();
+}
+
+$id = (int)$_GET['id'];
+$repo = new GestionnaireRepository();
+$gestionnaire = $repo->findById($id);
+
+// Vérifier si le gestionnaire existe
+if (!$gestionnaire) {
+    header('Location: gestionnaireRead.php');
+    exit();
+}
+
+$page = 'Gestionnaire';
 ?>
 <!doctype html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ACCUEIL • LPRS</title>
+    <title>Supprimer un gestionnaire • LPRS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
 </head>
 <body>
-<header
-    class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
-        <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
+        <a href="../../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
             <img src="https://media.tenor.com/ifEkV-aGn3EAAAAi/fat-cat.gif"
                  class="rounded-circle mx-3"
                  style="max-width: 15%; height: auto;">
@@ -28,25 +47,25 @@ if (session_status() === PHP_SESSION_NONE) {
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
-        <li class="nav-item"><a href="../accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
-        <li class="nav-item"><a href="../evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
-        <li class="nav-item"><a href="../annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
-        <li class="nav-item"><a href="../listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
-        <li class="nav-item"><a href="../emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
-        <li class="nav-item"><a href="../forum.php" class="btn btn-outline-light me-2">Forum</a></li>
+        <li class="nav-item"><a href="../../accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
+        <li class="nav-item"><a href="../../evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
+        <li class="nav-item"><a href="../../annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
+        <li class="nav-item"><a href="../../listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
+        <li class="nav-item"><a href="../../emplois.php" class="btn btn-outline-light me-2">Emplois</a></li>
+        <li class="nav-item"><a href="../../forum.php" class="btn btn-outline-light me-2">Forum</a></li>
         <?php if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Gestionnaire'): ?>
             <li class="nav-item">
-                <a href="../administration.php" class="btn btn-outline-warning active me-2">Administration</a>
+                <a href="../../administration.php" class="btn btn-outline-warning active me-2">Administration</a>
             </li>
         <?php endif; ?>
     </ul>
     <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
         <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
+            <a href="../../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
             <a href="../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
         <?php else: ?>
-            <a href="../connexion.php" class="btn btn-outline-success">Connexion</a>
-            <a href="../inscription.php" class="btn btn-outline-primary">Inscription</a>
+            <a href="../../connexion.php" class="btn btn-outline-success">Connexion</a>
+            <a href="../../inscription.php" class="btn btn-outline-primary">Inscription</a>
         <?php endif; ?>
     </div>
 </header>
@@ -66,5 +85,50 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
 </nav>
 <section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
+    <h1>Suppression d'un gestionnaire</h1>
 </section>
+
+<section class="container my-5">
+    <div class="card mx-auto" style="max-width: 30rem;">
+        <div class="card-header bg-danger text-white">
+            <h5 class="card-title mb-0">Confirmation de suppression</h5>
+        </div>
+        <div class="card-body text-center">
+            <p class="card-text">
+                Êtes-vous sûr de vouloir rétrograder ce gestionnaire au rôle d'étudiant ?
+            </p>
+            <p class="text-warning">
+                <i class="bi bi-exclamation-triangle-fill"></i> Cette action ne peut pas être annulée.
+            </p>
+            <h5 class="mb-3">
+                <?= htmlspecialchars($gestionnaire->getPrenom() . ' ' . $gestionnaire->getNom()) ?>
+            </h5>
+            <p class="text-muted">
+                <i class="bi bi-envelope me-2"></i><?= htmlspecialchars($gestionnaire->getEmail()) ?><br>
+                <i class="bi bi-briefcase me-2"></i><?= htmlspecialchars($gestionnaire->getPoste()) ?>
+            </p>
+            
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <form action="../../src/treatment/treatmentGestionnaireDelete.php" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="<?= $gestionnaire->getId() ?>">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Confirmer la suppression
+                    </button>
+                </form>
+                <a href="gestionnaireRead.php" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle me-2"></i>Annuler
+                </a>
+            </div>
+        </div>
+        <div class="card-footer text-muted text-center">
+            <small>Cette action est irréversible !</small>
+        </div>
+    </div>
+</section>
+
+<!-- Scripts Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+</html>
