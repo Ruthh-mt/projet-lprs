@@ -146,7 +146,7 @@ function e(?string $v): string
                         <?php if (!empty($u['avatar'])): ?>
                             <div class="form-text">
                                 Photo actuelle :
-                                <img src="<?= e($u['avatar']) ?>"
+                                <img src="<?= $prefix.htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>"
                                      alt="Avatar actuel"
                                      class="rounded-circle"
                                      style="width:48px;height:48px;object-fit:cover;">
@@ -154,7 +154,6 @@ function e(?string $v): string
                         <?php endif; ?>
                     </div>
                 </div>
-
                 <hr class="my-4">
                 <?php $role = $u['role'] ?? ''; ?>
                 <h5 class="card-title text-center mb-4">Informations additionnelles</h5>

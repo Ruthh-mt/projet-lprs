@@ -1,4 +1,5 @@
 <?php
+$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) session_start();
 if (!isset($_SESSION['utilisateur'])) {
     header('Location: ../Connexion.php');
@@ -48,7 +49,10 @@ $utilisateur = $_SESSION['utilisateur'];
                 <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <?php if ($avatar): ?>
-                        <img src="<?= htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" alt="Photo de profil" class="rounded-circle" style="width:40px;height:40px;object-fit:cover;">
+                        <img src="<?= $prefix.htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>"
+                             alt="Photo de profil"
+                             class="rounded-circle"
+                             style="width:40px;height:40px;object-fit:cover;">
                     <?php else: ?>
                         <i class="bi bi-person-circle fs-3 text-light"></i>
                     <?php endif; ?>
@@ -56,7 +60,8 @@ $utilisateur = $_SESSION['utilisateur'];
                 <ul class="dropdown-menu dropdown-menu-end text-small">
                     <li><a class="dropdown-item" href="../account/accountRead.php">Mon compte</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="../../src/treatment/traitementDeconnexion.php">Déconnexion</a></li>
+                    <li><a class="dropdown-item text-danger"
+                           href="../../src/treatment/traitementDeconnexion.php">Déconnexion</a></li>
                 </ul>
             <?php else: ?>
                 <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
@@ -81,18 +86,27 @@ $utilisateur = $_SESSION['utilisateur'];
         </div>
         <div class="row">
             <div class="col card m-3">
-                <div class="card-body">
-                    <h5 class="card-title text-center mb-4">Informations personnelles</h5>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><strong>Prénom :</strong> <?= htmlspecialchars($utilisateur['prenom']) ?></li>
-                        <li class="list-group-item"><strong>Nom : </strong><?= htmlspecialchars($utilisateur['nom'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false) ?>
-                        </li>
-                        <li class="list-group-item"><strong>Email
-                                :</strong> <?= htmlspecialchars($utilisateur['email']) ?></li>
-                        <li class="list-group-item"><strong>Rôle
-                                :</strong> <?= isset($utilisateur['role']) ? htmlspecialchars($utilisateur['role']) : 'Non renseigné' ?>
-                        </li>
-                    </ul>
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="<?= $prefix.htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" class="img-fluid rounded-start" alt="Photo de profil">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Informations personnelles</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>Prénom :</strong> <?= htmlspecialchars($utilisateur['prenom']) ?></li>
+                                    <li class="list-group-item"><strong>Nom : </strong><?= htmlspecialchars($utilisateur['nom'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false) ?>
+                                    </li>
+                                    <li class="list-group-item"><strong>Email
+                                            :</strong> <?= htmlspecialchars($utilisateur['email']) ?></li>
+                                    <li class="list-group-item"><strong>Rôle
+                                            :</strong> <?= isset($utilisateur['role']) ? htmlspecialchars($utilisateur['role']) : 'Non renseigné' ?>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col card m-3">
