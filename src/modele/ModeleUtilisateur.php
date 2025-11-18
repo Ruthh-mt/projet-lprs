@@ -8,6 +8,8 @@ class ModeleUtilisateur
     private $mdp;
     private $role;
     private $refValidateur;
+    private $avatar;
+
 
     public function __construct(array $donnees)
     {
@@ -133,8 +135,19 @@ class ModeleUtilisateur
     {
         $this->refValidateur = $refValidateur;
     }
+    /**
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
 
-
-
-
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar): void
+    {
+        $this->avatar = $avatar;
+    }
 }

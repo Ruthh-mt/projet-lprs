@@ -56,7 +56,7 @@ class utilisateurRepository
      {
           $allowed = [
                'nom','prenom','email','mdp','role','ref_validateur',
-               'telephone','date_naissance','ville_residence'
+               'telephone','date_naissance','ville_residence','avatar',
           ];
           $set = [];
           $params = ['id_user' => $id_user];

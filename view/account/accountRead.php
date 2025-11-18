@@ -14,9 +14,8 @@ $utilisateur = $_SESSION['utilisateur'];
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>LPRS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
 <header
@@ -42,14 +41,34 @@ $utilisateur = $_SESSION['utilisateur'];
             </li>
         <?php endif; ?>
     </ul>
-    <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
-        <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="accountRead.php" class="btn btn-outline-primary active">Mon compte</a>
-            <a href="../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
-        <?php else: ?>
-            <a href="../connexion.php" class="btn btn-outline-success">Connexion</a>
-            <a href="../inscription.php" class="btn btn-outline-primary">Inscription</a>
-        <?php endif; ?>
+    <div class="col-2 text-end me-3">
+        <div class="dropdown">
+            <?php if (isset($_SESSION['utilisateur'])): ?>
+                <?php $avatar = $_SESSION['utilisateur']['avatar'] ?? null; ?>
+                <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <?php if ($avatar): ?>
+                        <img src="<?= htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" alt="Photo de profil" class="rounded-circle" style="width:40px;height:40px;object-fit:cover;">
+                    <?php else: ?>
+                        <i class="bi bi-person-circle fs-3 text-light"></i>
+                    <?php endif; ?>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end text-small">
+                    <li><a class="dropdown-item" href="../account/accountRead.php">Mon compte</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="../../src/treatment/traitementDeconnexion.php">Déconnexion</a></li>
+                </ul>
+            <?php else: ?>
+                <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle fs-3 text-light"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end text-small">
+                    <li><a class="dropdown-item" href="../connexion.php">Connexion</a></li>
+                    <li><a class="dropdown-item" href="../inscription.php">Inscription</a></li>
+                </ul>
+            <?php endif; ?>
+        </div>
     </div>
 </header>
 <section class="container banner text-center bg-dark text-white text-center py-3 rounded">
@@ -123,12 +142,7 @@ $utilisateur = $_SESSION['utilisateur'];
         </div>
     </div>
 </section>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoIIfJcLyjU29tka7Sk3YSA8l7IgGKmFckcImFV8Qbsw3"
-        crossorigin="anonymous"></script>
-</body>
-</html>
-
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoIIfJcLyjU29tka7Sk3YSA8l7IgGKmFckcImFV8Qbsw3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

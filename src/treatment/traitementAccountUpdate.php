@@ -70,29 +70,66 @@ try {
 }
 
 $cvPublicPath = null;
-if (!empty($_FILES['cv']['name'])) {
-     $err = $_FILES['cv']['error'] ?? UPLOAD_ERR_OK;
-     if ($err !== UPLOAD_ERR_OK) {
-          redirectWith('error', "Échec de l'upload du CV (code $err).", '../../view/account/accountUpdate.php');
-     }
-     $ext = strtolower(pathinfo($_FILES['cv']['name'], PATHINFO_EXTENSION));
-     if ($ext !== 'pdf') {
-          redirectWith('error', "Le CV doit être un fichier PDF.", '../../view/account/accountUpdate.php');
-     }
+$avatarPublicPath = null;
 
-     $publicDir = realpath(__DIR__ . '/../../public');
-     if ($publicDir === false) { $publicDir = __DIR__ . '/../../public'; }
-     $cvDir = rtrim($publicDir, DIRECTORY_SEPARATOR) . '/uploads/cv';
-     if (!is_dir($cvDir) && !mkdir($cvDir, 0775, true)) {
-          redirectWith('error', "Impossible de créer le dossier d'upload CV.", '../../view/account/accountUpdate.php');
-     }
-     $filename = 'user' . $id_user . '.pdf';
-     $destFs   = $cvDir . DIRECTORY_SEPARATOR . $filename;
-     if (!move_uploaded_file($_FILES['cv']['tmp_name'], $destFs)) {
-          redirectWith('error', "Impossible d'enregistrer le CV sur le serveur.", '../../view/account/accountUpdate.php');
-     }
-     $cvPublicPath = '/uploads/cv/' . $filename;
+// Upload du CV (inchangé)
+if (!empty($_FILES['cv']['name'])) {
+    $err = $_FILES['cv']['error'] ?? UPLOAD_ERR_OK;
+    if ($err !== UPLOAD_ERR_OK) {
+        redirectWith('error', "Échec de l'upload du CV (code $err).", '../../view/account/accountUpdate.php');
+    }
+    $ext = strtolower(pathinfo($_FILES['cv']['name'], PATHINFO_EXTENSION));
+    if ($ext !== 'pdf') {
+        redirectWith('error', "Le CV doit être un fichier PDF.", '../../view/account/accountUpdate.php');
+    }
+
+    $publicDir = realpath(__DIR__ . '/../../public');
+    if ($publicDir === false) { $publicDir = __DIR__ . '/../../public'; }
+
+    $cvDir = rtrim($publicDir, DIRECTORY_SEPARATOR) . '/uploads/cv';
+    if (!is_dir($cvDir) && !mkdir($cvDir, 0775, true)) {
+        redirectWith('error', "Impossible de créer le dossier d'upload CV.", '../../view/account/accountUpdate.php');
+    }
+
+    $filename = 'user' . $id_user . '.pdf';
+    $destFs   = $cvDir . DIRECTORY_SEPARATOR . $filename;
+    if (!move_uploaded_file($_FILES['cv']['tmp_name'], $destFs)) {
+        redirectWith('error', "Impossible d'enregistrer le CV sur le serveur.", '../../view/account/accountUpdate.php');
+    }
+
+    $cvPublicPath = '/uploads/cv/' . $filename;
 }
+
+// Upload de la photo de profil
+if (!empty($_FILES['avatar']['name'])) {
+    $err = $_FILES['avatar']['error'] ?? UPLOAD_ERR_OK;
+    if ($err !== UPLOAD_ERR_OK) {
+        redirectWith('error', "Échec de l'upload de la photo de profil (code $err).", '../../view/account/accountUpdate.php');
+    }
+
+    $ext = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
+    $allowedImg = ['jpg','jpeg','png','gif','webp'];
+    if (!in_array($ext, $allowedImg, true)) {
+        redirectWith('error', "La photo de profil doit être une image (jpg, jpeg, png, gif, webp).", '../../view/account/accountUpdate.php');
+    }
+
+    $publicDir = realpath(__DIR__ . '/../../public');
+    if ($publicDir === false) { $publicDir = __DIR__ . '/../../public'; }
+
+    $avatarDir = rtrim($publicDir, DIRECTORY_SEPARATOR) . '/uploads/avatar';
+    if (!is_dir($avatarDir) && !mkdir($avatarDir, 0775, true)) {
+        redirectWith('error', "Impossible de créer le dossier d'upload avatar.", '../../view/account/accountUpdate.php');
+    }
+
+    $filename = 'user' . $id_user . '.' . $ext;
+    $destFs   = $avatarDir . DIRECTORY_SEPARATOR . $filename;
+    if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $destFs)) {
+        redirectWith('error', "Impossible d'enregistrer la photo de profil sur le serveur.", '../../view/account/accountUpdate.php');
+    }
+
+    $avatarPublicPath = '/uploads/avatar/' . $filename;
+}
+
 $annee_promo          = null;
 $ref_formation        = null;
 $specialite           = null;
@@ -180,16 +217,24 @@ try {
      if (!$current) {
           throw new RuntimeException("Utilisateur introuvable.");
      }
-     $sqlU = "UPDATE utilisateur 
-             SET nom = :nom, prenom = :prenom, email = :email
-             WHERE id_user = :id";
-     $upd = $pdo->prepare($sqlU);
-     $upd->execute([
-          'nom' => $nom,
-          'prenom' => $prenom,
-          'email' => $email,
-          'id' => $id_user,
-     ]);
+    $sqlU = "UPDATE utilisateur 
+              SET nom = :nom, prenom = :prenom, email = :email";
+    $paramsU = [
+        'nom'    => $nom,
+        'prenom' => $prenom,
+        'email'  => $email,
+        'id'     => $id_user,
+    ];
+
+    if ($avatarPublicPath !== null) {
+        $sqlU .= ", avatar = :avatar";
+        $paramsU['avatar'] = $avatarPublicPath;
+    }
+
+    $sqlU .= " WHERE id_user = :id";
+
+    $upd = $pdo->prepare($sqlU);
+    $upd->execute($paramsU);
      switch ($role) {
           case 'Étudiant': {
                $repo = new etudiantRepository();
@@ -253,11 +298,14 @@ try {
 
      $pdo->commit();
 
-     $_SESSION['utilisateur']['nom']    = $nom;
-     $_SESSION['utilisateur']['prenom'] = $prenom;
-     $_SESSION['utilisateur']['email']  = $email;
-     $_SESSION['utilisateur']['role']   = $role;
-     if ($cvPublicPath) { $_SESSION['utilisateur']['cv'] = $cvPublicPath; }
+    $_SESSION['utilisateur']['nom']    = $nom;
+    $_SESSION['utilisateur']['prenom'] = $prenom;
+    $_SESSION['utilisateur']['email']  = $email;
+    $_SESSION['utilisateur']['role']   = $role;
+    if ($cvPublicPath)      { $_SESSION['utilisateur']['cv']     = $cvPublicPath; }
+    if ($avatarPublicPath)  { $_SESSION['utilisateur']['avatar'] = $avatarPublicPath; }
+    $avatarPublicPath = '/uploads/avatar/' . $filename;
+    $cvPublicPath = '/uploads/cv/' . $filename;
 
      switch ($role) {
           case 'Étudiant':

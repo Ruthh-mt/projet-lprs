@@ -35,10 +35,11 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 try {
     $pdo = (new Config())->connexion();
 
-    $sql = "SELECT id_user, nom, prenom, email, mdp, role 
+    $sql = "SELECT id_user, nom, prenom, email, mdp, role, avatar
             FROM utilisateur 
             WHERE email = :email 
             LIMIT 1";
+
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -60,8 +61,10 @@ try {
         'prenom'  => $user['prenom'],
         'email'   => $user['email'],
         'role'    => $user['role'],
+        'avatar'  => $user['avatar'] ?? null,
     ];
-     switch ($user['role']) {
+
+    switch ($user['role']) {
           case 'Étudiant':
                $etudiantRepo = new etudiantRepository($pdo);
                $etudiant = $etudiantRepo->findByUserId($user['id_user']);
