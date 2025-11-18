@@ -57,4 +57,47 @@ class alumniRepository
 
           return $stmt->execute(['ref_user' => $ref_user]);
      }
+    public function getFicheByAlumni(int $ref_user): ?array
+    {
+        $sql = "
+        SELECT 
+            a.ref_user,
+            a.poste,
+            a.ref_fiche_entreprise,
+            f.id_fiche_entreprise,
+            f.nom_entreprise,
+            f.adresse_entreprise,
+            f.adresse_web
+        FROM alumni a
+        LEFT JOIN fiche_entreprise f 
+            ON a.ref_fiche_entreprise = f.id_fiche_entreprise
+        WHERE a.ref_user = :ref_user
+    ";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute(['ref_user' => $ref_user]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
+    public function affecterFicheAlumni(int $idUser, int $idFiche): bool
+    {
+        $pdo = $this->db->connexion();
+
+        // Vérifier si le partenaire existe
+        $checkSql = "SELECT ref_user FROM  alumni WHERE ref_user = :refUser";
+        $checkStmt = $pdo->prepare($checkSql);
+        $checkStmt->execute([':refUser' => $idUser]);
+        $exists = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($exists) {
+            // Mise à jour si existe
+            $sql = "UPDATE alumni SET ref_fiche_entreprise = :idFiche WHERE ref_user = :idUser";
+            $stmt = $pdo->prepare($sql);
+            return $stmt->execute([':idFiche' => $idFiche, ':idUser' => $idUser]);
+        } else {
+            // Insertion si existe pas
+            $sql = "INSERT INTO alumni (ref_user, ref_fiche_entreprise) VALUES (:idUser, :idFiche)";
+            $stmt = $pdo->prepare($sql);
+            return $stmt->execute([':idUser' => $idUser, ':idFiche' => $idFiche]);
+        }
+    }
 }

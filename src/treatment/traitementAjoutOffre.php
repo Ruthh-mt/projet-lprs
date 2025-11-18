@@ -6,9 +6,11 @@ require_once "../../src/repository/OffreRepository.php";
 $offreRepository = new OffreRepository();
 require_once("../../src/repository/PartenaireRepository.php");
 $partenaire_rep = new PartenaireRepository();
+$alumni_rep = new PartenaireRepository();
 $id_user = $_SESSION['utilisateur']['id_user'] ;
-$getFiche = $partenaire_rep ->getFicheByPartenaire($id_user);
-$ref_fiche =  $getFiche['id_fiche_entreprise'] ;
+$getFichePartenaire = $partenaire_rep ->getFicheByPartenaire($id_user);
+$getFicheAlumni= $partenaire_rep ->getFicheByPartenaire($id_user);
+$refFichePartenaire =  $getFichePartenaire['id_fiche_entreprise'] ;
 
 
     // Vérification des champs obligatoires

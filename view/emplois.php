@@ -3,13 +3,18 @@ session_start();
 require_once ('../src/bdd/config.php');
 require_once ('../src/repository/OffreRepository.php');
 require_once ('../src/repository/PartenaireRepository.php');
+require_once ('../src/repository/AlumniRepository.php');
+
 $pdo  = (new Config())->connexion();
 $sql =$pdo->prepare("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
 $sql -> execute();
+
 $offreRep = new OffreRepository();
 $lesOffres = $offreRep->getAllOffre();
 $partenaireRep = new PartenaireRepository();
 $partenaire_a_une_fiche = $partenaireRep->getFicheByPartenaire($_SESSION['utilisateur']['id_user']);
+$alumniRep = new AlumniRepository();
+$alumni_a_une_fiche = $alumniRep ->getFicheByAlumni($_SESSION['utilisateur']['id_user']);
 $id_user = $_SESSION['utilisateur']['id_user'];
 ?>
 
@@ -71,15 +76,15 @@ $id_user = $_SESSION['utilisateur']['id_user'];
         <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
             <h2 class="m-0">Offres d'emploi</h2>
 
-                <?php if($partenaire_a_une_fiche && !empty($partenaire_a_une_fiche['ref_fiche_entreprise']) && $_SESSION['utilisateur']['role'] === 'Partenaire'): ?>
-                        <!-- Si le partenaire a une fiche entreprise -->
+                <?php if($partenaire_a_une_fiche && !empty($partenaire_a_une_fiche['ref_fiche_entreprise']) && $_SESSION['utilisateur']['role'] === 'Partenaire'
+                ||$alumni_a_une_fiche && !empty($alumni_a_une_fiche['ref_fiche_entreprise']) && $_SESSION['utilisateur']['role'] === 'Alumni' ): ?>
+                        <!-- Si le partenaire/Alumni a une fiche entreprise -->
                         <div>
                             <!-- Bouton : voir mes offres -->
                             <a href="profil.php" class="btn btn-dark">Voir mes offres</a>
                             <a href="crudOffre/offreCreate.php" class="btn btn-dark">Créer une offre</a>
-
-                            <!-- Si le partenaire n’a pas encore de fiche -->
-                        <?php elseif ($_SESSION['utilisateur']['role'] === 'Partenaire' && empty($partenaire_a_une_fiche['ref_fiche_entreprise'])) : ?>
+                            <!-- Si le partenaire/Alumni n’a pas encore de fiche -->
+                        <?php else : ?>
                             <a href="crudEntreprise/creerFiche.php" class="btn btn-dark">Créer une fiche</a>
                         <?php endif; ?>
 
@@ -115,6 +120,7 @@ $id_user = $_SESSION['utilisateur']['id_user'];
                     <i class="bi bi-pencil"></i>
                 </a>
 
+
                 <form action="crudOffre/offreDelete.php" method="post" style="display:inline;">
                     <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                     <input type="hidden" name="delete_offre" value="1">
@@ -123,12 +129,14 @@ $id_user = $_SESSION['utilisateur']['id_user'];
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>
+                <?php if($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
                 <form action="../view/postuler.php?id=<?= $offre['id_offre'] ?>" method="post" style="display:inline;">
                     <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                     <button type="submit" class="btn btn-sm btn-outline-success" title="Postuler à cette offre">
                         <i class="bi bi-send-fill"></i> Postuler
                     </button>
                 </form>
+                <?php endif; ?>
             </td>
             <?php endforeach; ?>
         </tr>

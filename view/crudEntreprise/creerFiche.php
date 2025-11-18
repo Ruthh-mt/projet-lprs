@@ -3,14 +3,16 @@ session_start();
 require_once('../../src/bdd/config.php');
 require_once('../../src/repository/FicheEntrepriseRepository.php');
 require_once('../../src/repository/PartenaireRepository.php');
+require_once('../../src/repository/AlumniRepository.php');
 
-if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'Partenaire') {
+if (!isset($_SESSION['utilisateur'])){
     header('Location: ../connexion.php');
     exit();
 }
-
+$ficheRepo = new FicheEntrepriseRepository();
+$partenaireRepo = new PartenaireRepository();
+$alumniRepo = new AlumniRepository();
 $idUser = $_SESSION['utilisateur']['id_user'];
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = trim($_POST['nom_entreprise']);
     $adresse = trim($_POST['adresse_entreprise']);
@@ -21,9 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ../crudEntreprise/creer_fiche.php');
         exit();
     }
-
-    $ficheRepo = new FicheEntrepriseRepository();
-    $partenaireRepo = new PartenaireRepository();
     $check = $ficheRepo->findFicheByWeb($web);
 
     if ($check) {
@@ -37,12 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'web' => $web
     ]);
 
-    if ($idFicheCree) {
-        $partenaireRepo->affecterFiche($idUser, $idFicheCree);
+    if ($idFicheCree && $_SESSION['utilisateur']['role'] == 'Patenaire') {
+        $partenaireRepo->affecterFichePartenaire($idUser, $idFicheCree);
         $_SESSION['success'] = "Fiche entreprise créée et rattachée avec succès !";
         header("Location: ../emplois.php");
         exit();
-    } else {
+    } elseif ($idFicheCree && $_SESSION['utilisateur']['role'] == 'Alumni') {
+        $alumniRepo ->affecterFicheAlumni($idUser, $idFicheCree);
+        $_SESSION['success'] = "Fiche entreprise créée et rattachée avec succès !";
+        header("Location: ../emplois.php");
+        exit();
+    }
+    else{
+
         $_SESSION['error'] = "Erreur lors de la création de la fiche entreprise.";
         header('Location: ../crudEntreprise/creer_fiche.php');
         exit();

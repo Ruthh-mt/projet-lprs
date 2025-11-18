@@ -87,7 +87,7 @@ class partenaireRepository
 
         return $result ?: null;
     }
-    public function affecterFiche(int $idUser, int $idFiche): bool
+    public function affecterFichePartenaire(int $idUser, int $idFiche): bool
     {
         $pdo = $this->db->connexion();
 
@@ -109,5 +109,6 @@ class partenaireRepository
             return $stmt->execute([':idUser' => $idUser, ':idFiche' => $idFiche]);
         }
     }
+
 
 }

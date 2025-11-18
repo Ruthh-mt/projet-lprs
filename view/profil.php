@@ -2,8 +2,11 @@
 require_once "../src/repository/PostulerRepository.php";
 require_once "../src/repository/PartenaireRepository.php";
 require_once "../src/repository/OffreRepository.php";
+require_once "../src/repository/AlumniRepository.php";
+
 
 $partenaireRep = new PartenaireRepository();
+
 $refPartenaire = $_SESSION['utilisateur']['id_user'];  //ID DE LA SESSION DU PARTENAIRE
 $ref_fiche = $partenaireRep ->getFicheByPartenaire($refPartenaire) ;// RECUPERER L'ID DE LA FICHE ENTREPRISE AVEC L'ID DU PARTENAIRE
 
@@ -56,7 +59,20 @@ $lesOffresPartenaire = $offreRep ->getOffresParenaire($refPartenaire) //AFFICHER
     </div>
 </header>
 <section class=" bg-dark text-white text-center py-1 rounded">
-    <h1>Mes candidatures</h1>
+    <div>
+    <div>
+    <?php if(isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] == "Etudiant"): {
+        echo "<h1>Mes candidatures</h1>" ;
+    }
+    elseif(isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] == "Partenaire" || $_SESSION['utilisateur']['role'] == "Alumni") : {
+        echo "<h1>Mes offres</h1>" ;
+    }
+    endif ;
+        ?>
+        <button type="button" class="btn btn-outline-light" onclick="window.location.href='emplois.php'">
+            <i class="bi bi-arrow-left-circle"></i> Retour
+        </button>
+
     <section class="container my-4">
         <?php
         if(!(isset($_SESSION['utilisateur']))){
@@ -98,7 +114,7 @@ $lesOffresPartenaire = $offreRep ->getOffresParenaire($refPartenaire) //AFFICHER
 
 
         }
-        elseif (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['role'] === 'Partenaire'){
+        elseif ($_SESSION['utilisateur']['role'] === 'Partenaire') {
             echo'<div class="d-flex flex-wrap justify-content-start gap-4">';
             $offresPartenaire = new OffreRepository() ;
             $offresPartenaire = $offresPartenaire ->getOffresParenaire($_SESSION['utilisateur']['id_user']);
@@ -125,13 +141,49 @@ $lesOffresPartenaire = $offreRep ->getOffresParenaire($refPartenaire) //AFFICHER
                     </div>
                 </div>';
                 }
-            }else{
+            }
+            else{
                 echo"<h5> Il semblerait qu'il n'y a pas d'offres'</h5>
                         <br>
                     <p>Soyez le/la premier/e à postuler </p>";
             }
             echo'</div>';
-        }?>
+        }
+        elseif (isset($_SESSION['utilisateur'])  && $_SESSION['utilisateur']['role'] === 'Alumni') {
+            echo'<div class="d-flex flex-wrap justify-content-start gap-4">';
+            $offresAlumni = $offreRep->getOffresAlumni($_SESSION['utilisateur']['id_user']);
+
+            if(!empty($offresAlumni)) {
+                foreach ($offresAlumni as $offre) {
+                    echo '<div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
+                    <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
+                         class="card-img-top"
+                         alt="Image événement"
+                         style="height: 180px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">' . htmlspecialchars($offre['titre']) . '</h5>
+                        <p class="card-text flex-grow-1 text-muted">
+                            ' . htmlspecialchars(substr($offre['description'], 0, 100)) . '...
+                        </p>
+                        <a href="id=' . $offre['id_offre']. '"
+                           class="btn btn-primary mt-auto">
+                            En savoir plus
+                        </a>
+                    </div>
+                    <div class="card-footer text-muted small">
+                        Dernière mise à jour : ' . date("d/m/Y H:i") . '
+                    </div>
+                </div>';
+                }
+            }
+            else{
+                echo"<h5> Il semblerait qu'il n'y a pas d'offres'</h5>
+                        <br>
+                    <p>Soyez le/la premier/e à postuler </p>";
+            }
+            echo'</div>';
+        }
+        ?>
     </section>
 </section>
 <nav aria-label="Page navigation example">
