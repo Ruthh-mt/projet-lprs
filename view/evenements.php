@@ -80,7 +80,7 @@ if (session_status() === PHP_SESSION_NONE) {
             "closeButton": true,
             "newestOnTop": false,
             "progressBar": false,
-            "positionClass": "toast-top-full-width",
+            "positionClass": "toast-bottom-full-width",
             "preventDuplicates": true,
             "onclick": null,
             "showDuration": "300",
@@ -101,25 +101,25 @@ if (session_status() === PHP_SESSION_NONE) {
       ?>
     <section class="container my-4">
         <?php
-    if(!isset($_SESSION['utilisateur'])){
-    echo'<h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>';
-    }
-    else {
-        echo'<div class="d-flex flex-wrap justify-content-start gap-4">';
-            $evenementRepository = new EvenementRepository();
+    if(!isset($_SESSION['utilisateur'])):?>
+    <h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>';
+
+    <?php else :?>
+        <div class="d-flex flex-wrap justify-content-start gap-4">
+            <?php $evenementRepository = new EvenementRepository();
             $allEvenement = $evenementRepository->getAllEvenement();
 
-           if(!empty($allEvenement)) {
-               foreach ($allEvenement as $evenement) {
-                   echo '<div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
+           if(!empty($allEvenement)):
+               foreach ($allEvenement as $evenement):?>
+                   <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
                     <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
                          class="card-img-top"
                          alt="Image événement"
                          style="height: 180px; object-fit: cover;">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold">' . htmlspecialchars($evenement->titre_eve) . '</h5>
+                        <h5 class="card-title fw-bold"><?=htmlspecialchars($evenement->titre_eve)?></h5>
                         <p class="card-text flex-grow-1 text-muted">
-                            ' . htmlspecialchars(substr($evenement->desc_eve, 0, 100)) . '...
+                            <?=htmlspecialchars(substr($evenement->desc_eve, 0, 100))?>...
                         </p>
                         <a href="../view/crudEvenement/evenementRead.php?id=' . $evenement->id_evenement. '"
                            class="btn btn-primary mt-auto">
@@ -127,18 +127,18 @@ if (session_status() === PHP_SESSION_NONE) {
                         </a>
                     </div>
                     <div class="card-footer text-muted small">
-                        Dernière mise à jour : ' . date("d/m/Y H:i") . '
+                        Dernière mise à jour : <?= date("d/m/Y H:i")?>
                     </div>
-                </div>';
-               }
-           }else{
-               echo"<h5> Il semblerait qu'il n'y a pas d'evenements</h5>
-                        <br>
-                    <p>Soyez le/la premier/e a lancer le pas et crée votre evenement</p>";
-           }
-        echo'</div>';
-    } ?>
+                </div>
 
+           <?php endforeach;
+           else :?>
+              <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait qu'il n'y a pas d'evenements</h5>
+                        <br>
+                    <p class="alert alert-dark alert-dismissible fade show">Soyez le/la premier/e a lancer le pas et crée votre evenement</p>";
+           <?php endif;?>
+        </div>
+    <?php endif;?>
     </section>
 
 </section>

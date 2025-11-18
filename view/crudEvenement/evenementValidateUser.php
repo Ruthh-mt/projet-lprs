@@ -85,7 +85,7 @@ var_dump($allUser);
                 "closeButton": true,
                 "newestOnTop": false,
                 "progressBar": false,
-                "positionClass": "toast-top-full-width",
+                "positionClass": "toast-bottom-full-width",
                 "preventDuplicates": true,
                 "onclick": null,
                 "showDuration": "300",
