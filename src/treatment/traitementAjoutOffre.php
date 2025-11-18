@@ -1,12 +1,15 @@
 <?php
+session_start();
 require_once("../../src/bdd/config.php");
 require_once "../modele/ModeleOffre.php";
 require_once "../../src/repository/OffreRepository.php";
-
 $offreRepository = new OffreRepository();
+require_once("../../src/repository/PartenaireRepository.php");
+$partenaire_rep = new PartenaireRepository();
+$id_user = $_SESSION['utilisateur']['id_user'] ;
+$getFiche = $partenaire_rep ->getFicheByPartenaire($id_user);
+$ref_fiche =  $getFiche['id_fiche_entreprise'] ;
 
-try {
-    $pdo = (new Config())->connexion();
 
     // Vérification des champs obligatoires
     if (
@@ -14,8 +17,7 @@ try {
         empty($_POST['desc_contrat']) ||
         empty($_POST['mission']) ||
         empty($_POST['type_contrat']) ||
-        empty($_POST['salaire']) ||
-        empty($_POST['entreprise'])
+        empty($_POST['salaire'])
     ) {
         echo "<script>alert('Tous les champs sont obligatoires.'); window.history.back();</script>";
         exit;
@@ -26,8 +28,7 @@ try {
     $description = trim($_POST['desc_contrat']);
     $mission = trim($_POST['mission']);
     $type = trim($_POST['type_contrat']);
-    $salaire = (float) $_POST['salaire'];
-    $id_entreprise = (int) $_POST['entreprise'];
+    $salaire = $_POST['salaire'];
     $etat = "En attente"; // valeur par défaut
 
     // Vérification du salaire
@@ -37,24 +38,25 @@ try {
     }
 
     // Requête d’insertion
-  $offre = new ModeleOffre(array(
-      'titre' => $titre,
-      'description' => $description,
-      'mission' => $mission,
-      'type' => $type,
-      'etat' => $etat,
-      'salaire' => $salaire,
-      'ref_fiche' => $id_entreprise
-  )) ;
+    $offre = new ModeleOffre(array(
+        'titreOffre' => $titre,
+        'description' => $description,
+        'mission' => $mission,
+        'type' => $type,
+        'etat' => $etat,
+        'salaire' => $salaire,
+        'refFiche' => $ref_fiche
+    ));
 
-   $ok = $offreRepository ->createOffre($offre);
-   if($ok){
-       // Message de succès et redirection
-       echo "<script>alert('Offre créée avec succès !'); window.location.href='../../view/emplois.php';</script>";
-       exit;
-   }
+    $ok = $offreRepository->createOffre($offre);
+    if ($ok) {
+        // Message de succès et redirection
+        echo "<script>alert('Offre créée avec succès !'); window.location.href='../../view/emplois.php';</script>";
+        exit;
+    }
+    else {
+        echo "<script>alert('Problème !'); window.location.href='../../view/emplois.php';</script>";
 
-} catch (PDOException $e) {
-    echo "<script>alert('Erreur lors de la création de l’offre : " . addslashes($e->getMessage()) . "'); window.history.back();</script>";
-    exit;
-}
+    }
+
+

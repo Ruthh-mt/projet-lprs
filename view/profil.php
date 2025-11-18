@@ -1,6 +1,14 @@
 <?php session_start();
 require_once "../src/repository/PostulerRepository.php";
+require_once "../src/repository/PartenaireRepository.php";
 require_once "../src/repository/OffreRepository.php";
+
+$partenaireRep = new PartenaireRepository();
+$refPartenaire = $_SESSION['utilisateur']['id_user'];  //ID DE LA SESSION DU PARTENAIRE
+$ref_fiche = $partenaireRep ->getFicheByPartenaire($refPartenaire) ;// RECUPERER L'ID DE LA FICHE ENTREPRISE AVEC L'ID DU PARTENAIRE
+
+$offreRep = new OffreRepository();
+$lesOffresPartenaire = $offreRep ->getOffresParenaire($refPartenaire) //AFFICHER LES OFFRE QUI ONT L'ID D'UNE ENTREPRISE
 
 ?>
 <!doctype html>

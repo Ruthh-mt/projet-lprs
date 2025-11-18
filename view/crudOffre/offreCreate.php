@@ -1,10 +1,9 @@
 <?php
 session_start();
 require_once("../../src/bdd/config.php");
-$pdo  = (new Config())->connexion();
-$sql =$pdo->prepare("SELECT * FROM  fiche_entreprise f  ");
-$sql -> execute();
-$entreprises = $sql -> fetchAll(PDO::FETCH_ASSOC);
+require_once("../../src/repository/FicheEntrepriseRepository.php");
+
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -15,38 +14,6 @@ $entreprises = $sql -> fetchAll(PDO::FETCH_ASSOC);
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa; /* gris clair, contraste avec header sombre */
-        }
-
-        .section-offre {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-        }
-
-        .offre-header {
-            background-color: #212529;
-            color: white;
-            border-radius: .75rem .75rem 0 0;
-            padding: 1.5rem;
-            border-bottom: 2px solid #0d6efd;
-        }
-
-        .offre-header h2 {
-            margin: 0;
-        }
-
-        .offre-actions a {
-            transition: all 0.2s ease-in-out;
-        }
-
-        .offre-actions a:hover {
-            transform: scale(1.05);
-        }
-    </style>
 </head>
 
 <body>
@@ -120,7 +87,7 @@ $entreprises = $sql -> fetchAll(PDO::FETCH_ASSOC);
 
             <div class="mb-3">
                 <label for="titre_poste" class="form-label">Titre du poste</label>
-                <input class="form-control" type="text" id="titre_eve" name="titre_poste" placeholder="Entrez le titre du poste">
+                <input class="form-control" type="text"  name="titre_poste" placeholder="Entrez le titre du poste">
             </div>
 
             <div class="mb-3">
@@ -145,16 +112,10 @@ $entreprises = $sql -> fetchAll(PDO::FETCH_ASSOC);
 
             <div class="mb-3">
                 <label for="salaire" class="form-label">Salaire</label>
-                <input class="form-control" type="number" id="salaire" name="salaire" placeholder="Entrez le salaire">
+                <input class="form-control" type="number" id="salaire" name="salaire"
+                       placeholder="Entrez le salaire" step="0.01">
             </div>
-            <div class="mb-3">
-                <label for="entreprise" class="form-label">Entreprise</label>
-                <select class="form-select" name="entreprise">
-                <?php foreach ($entreprises as $entreprise) : ?>
-                    <option value="<?= $entreprise['id_fiche_entreprise']?>"><?= $entreprise['nom_entreprise']?></option>
-                <?php endforeach; ?>
-                </select>
-            </div>
+
 
             <div class="d-flex gap-2">
                 <button class="btn btn-primary" type="submit">Valider</button>

@@ -14,14 +14,14 @@ class OffreRepository
     public function createOffre(ModeleOffre $offre)
     {
         $sql = "INSERT INTO offre (titre,description, mission,salaire, type, etat, ref_fiche) 
-            VALUES (:titre, :description, :mission, :salaire, :type, :etat, :ref_fiche)";
+            VALUES (:titreOffre, :description, :mission, :salaire, :typeContrat, :etat, :refFiche)";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute([
-            'titre' => $offre->getTitreOffre(),
+            'titreOffre' => $offre->getTitreOffre(),
             'description' => $offre->getDescription(),
             'mission' => $offre->getMission(),
             'salaire' => $offre->getSalaire(),
-            'type' => $offre->getTypeContrat(),
+            'typeContrat' => $offre->getTypeContrat(),
             'etat' => $offre ->getEtat(),
             'refFiche' => $offre->getRefFiche()
         ]);
@@ -55,7 +55,7 @@ class OffreRepository
 
         return $req[0];
     }
-    public function getOffresParenaire($user)
+    public function getOffresParenaire(int $id)
     {
         $sql = "
         SELECT 
@@ -75,7 +75,7 @@ class OffreRepository
         WHERE p.ref_user = :id_user
     ";
         $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute(['id_user' => $user]);
+        $stmt->execute(['id_user' => $id]);
 
         $req = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -38,4 +38,13 @@ class FicheEntrepriseRepository
         }
         return null;
     }
+    public function getAllFicheEntreprises(): array{
+        $pdo = $this->db->connexion();
+        $sql = "SELECT * FROM fiche_entreprise";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
 }

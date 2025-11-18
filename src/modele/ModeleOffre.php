@@ -9,7 +9,7 @@ class ModeleOffre
     private $salaire;
     private $typeContrat;
     private $etat;
-    private $ref_fiche ;
+    private $refFiche ;
 
 
     public function __construct(array $donnees){
@@ -135,16 +135,22 @@ class ModeleOffre
     {
         return $this->typeContrat = $typeContrat;
     }
+
+    /**
+     * @return mixed
+     */
     public function getRefFiche()
     {
-        return $this->ref_fiche ;
+        return $this->refFiche;
     }
+
     /**
-     * @param mixed $ref_fiche
+     * @param mixed $refFiche
      */
-    public function setRefFiche($ref_fiche)
+    public function setRefFiche($refFiche): void
     {
-        return $this->ref_fiche = $ref_fiche;
+        $this->refFiche = $refFiche;
     }
+
 
 }

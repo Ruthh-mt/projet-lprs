@@ -10,6 +10,7 @@ $offreRep = new OffreRepository();
 $lesOffres = $offreRep->getAllOffre();
 $partenaireRep = new PartenaireRepository();
 $partenaire_a_une_fiche = $partenaireRep->getFicheByPartenaire($_SESSION['utilisateur']['id_user']);
+$id_user = $_SESSION['utilisateur']['id_user'];
 ?>
 
 <!doctype html>
@@ -70,74 +71,71 @@ $partenaire_a_une_fiche = $partenaireRep->getFicheByPartenaire($_SESSION['utilis
         <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
             <h2 class="m-0">Offres d'emploi</h2>
 
-            <?php if (isset($_SESSION['utilisateur'])): ?>
-                <?php if ($_SESSION['utilisateur']['role'] === 'Partenaire'): ?>
-                    <div>
-                        <!-- Bouton : voir mes offres -->
-                        <a href="profil.php" class="btn btn-dark">Voir mes offres</a>
-
+                <?php if($partenaire_a_une_fiche && !empty($partenaire_a_une_fiche['ref_fiche_entreprise']) && $_SESSION['utilisateur']['role'] === 'Partenaire'): ?>
                         <!-- Si le partenaire a une fiche entreprise -->
-                        <?php if ($partenaire_a_une_fiche && !empty($partenaire_a_une_fiche['ref_fiche_entreprise'])): ?>
+                        <div>
+                            <!-- Bouton : voir mes offres -->
+                            <a href="profil.php" class="btn btn-dark">Voir mes offres</a>
                             <a href="crudOffre/offreCreate.php" class="btn btn-dark">Créer une offre</a>
 
                             <!-- Si le partenaire n’a pas encore de fiche -->
-                        <?php else: ?>
+                        <?php elseif ($_SESSION['utilisateur']['role'] === 'Partenaire' && empty($partenaire_a_une_fiche['ref_fiche_entreprise'])) : ?>
                             <a href="crudEntreprise/creerFiche.php" class="btn btn-dark">Créer une fiche</a>
                         <?php endif; ?>
-                    </div>
 
-                <?php elseif ($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
+
+
+                            <?php if($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
                     <a href="profil.php" class="btn btn-success btn-sm">
                         <i class="bi bi-plus-circle"></i> Mes candidatures
                     </a>
                 <?php endif; ?>
-            <?php endif; ?>
         </div>
     </div>
 </section>
 
-    <div class="table-wrap">
-            <table class="table" id="offre-table">
-                <thead>
-                <tr><th>Titre</th><th>Description</th><th>Mission</th><th>Salaire</th><th>Entreprise</th><th>Type d'offre</th><th>Etat</th><th>Actions</th></tr>
-                </thead>
-                <tbody>
-                <?php foreach ($lesOffres as $offre): ?>
-                <tr>
-                <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
-                <td><?= htmlspecialchars($offre['description']) ?></td>
-                <td><?= htmlspecialchars($offre['mission']) ?></td>
-                <td><?= htmlspecialchars($offre['salaire']) ?></td>
-                <td><?= htmlspecialchars($offre['nom_entreprise']) ?></td>
-                <td><?= htmlspecialchars($offre['type']) ?></td>
-                <td><?= htmlspecialchars($offre['etat']) ?></td>
-                    <td class="row-actions">
-                        <a href="crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>"
-                           class="btn btn-sm btn-outline" title="Modifier">
-                            <i class="bi bi-pencil"></i>
-                        </a>
+<div class="table-wrap">
+    <table class="table" id="offre-table">
+        <thead>
+        <tr><th>Titre</th><th>Description</th><th>Mission</th><th>Salaire</th><th>Entreprise</th><th>Type d'offre</th><th>Etat</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        <?php foreach ($lesOffres as $offre): ?>
+        <tr>
+            <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
+            <td><?= htmlspecialchars($offre['description']) ?></td>
+            <td><?= htmlspecialchars($offre['mission']) ?></td>
+            <td><?= htmlspecialchars($offre['salaire']) ?></td>
+            <td><?= htmlspecialchars($offre['nom_entreprise']) ?></td>
+            <td><?= htmlspecialchars($offre['type']) ?></td>
+            <td><?= htmlspecialchars($offre['etat']) ?></td>
+            <td class="row-actions">
+                <a href="crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>"
+                   class="btn btn-sm btn-outline" title="Modifier">
+                    <i class="bi bi-pencil"></i>
+                </a>
 
-                        <form action="crudOffre/offreDelete.php" method="post" style="display:inline;">
-                            <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
-                            <input type="hidden" name="delete_offre" value="1">
-                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                    title="Supprimer" onclick="return confirm('Supprimer cette offre ?')">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </form>
-                        <form action="../view/postuler.php?id=<?= $offre['id_offre'] ?>" method="post" style="display:inline;">
-                            <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
-                            <button type="submit" class="btn btn-sm btn-outline-success" title="Postuler à cette offre">
-                                <i class="bi bi-send-fill"></i> Postuler
-                            </button>
-                        </form>
-                    </td>
-                 <?php endforeach; ?>
-                </tr>
+                <form action="crudOffre/offreDelete.php" method="post" style="display:inline;">
+                    <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
+                    <input type="hidden" name="delete_offre" value="1">
+                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                            title="Supprimer" onclick="return confirm('Supprimer cette offre ?')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+                <form action="../view/postuler.php?id=<?= $offre['id_offre'] ?>" method="post" style="display:inline;">
+                    <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
+                    <button type="submit" class="btn btn-sm btn-outline-success" title="Postuler à cette offre">
+                        <i class="bi bi-send-fill"></i> Postuler
+                    </button>
+                </form>
+            </td>
+            <?php endforeach; ?>
+        </tr>
         </form>
-     </tbody>
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
 </div>
 </section>
 
@@ -155,7 +153,3 @@ $partenaire_a_une_fiche = $partenaireRep->getFicheByPartenaire($_SESSION['utilis
         });
     });
 </script>
-
-
-
-
