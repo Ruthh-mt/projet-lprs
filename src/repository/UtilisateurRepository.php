@@ -1,5 +1,4 @@
 <?php
-use PDO;
 class utilisateurRepository
 {
      private PDO $db;

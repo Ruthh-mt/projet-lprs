@@ -1,6 +1,5 @@
 <?php
 
-use PDO;
 
 require_once __DIR__ . '/../bdd/config.php';
 require_once __DIR__ . '/../modele/ModeleFormation.php';
