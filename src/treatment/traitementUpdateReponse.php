@@ -13,15 +13,16 @@ function redirectWith(string $type, string $message, string $target): void {
     exit();
 }
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirectWith("error","Methode invalide",'Location: ../../view/crudPost/postCreate.php');
+    redirectWith("error","Methode invalide",'../../view/forum.php');
 }
 $refUser = $_POST["refUser"];
+$idResponse=$_POST["idResponse"];
 $contenuReponse = $_POST["contenu_reponse"];
 $dateHeureReponse = date("Y-m-d H:i:s");
 $refPost=$_POST["refPost"];
 
 
-if($refPost==="" || $contenuReponse==='' || $refUser===''){
+if($refPost==="" || $contenuReponse==='' || $refUser==='' ||$idResponse==='' ){
     redirectWith("error","Veuillez remplir tous les champs",'../../view/crudPost/postRead?id='.$refPost.'.php');
 }
 try {
@@ -29,15 +30,15 @@ try {
         "refUser" => $refUser,
         "contenuReponse" => $contenuReponse,
         "dateHeureReponse" => $dateHeureReponse,
-        "refPost" => $refPost,
+        "idReponse"=>$idResponse
     ));
 
     $ReponseRepository = new ReponseRepository();
-    $ReponseRepository->createReponse($reponse);
-    redirectWith("sucess","Le commentaire a bien été publié",'../../view/crudPost/postRead?id='.$refPost.'.php');
+    $ReponseRepository->updateReponse($reponse);
+    redirectWith("sucess","Le commentaire a bien été modifié",'../../view/crudPost/postRead?id='.$refPost.'.php');
     session_write_close();
 } catch (PDOException $e) {
-    redirectWith("error","Erreur lors de la creation du Commentaire : ". $e->getMessage(),'../../view/crudPost/PostCreate.php');
+    redirectWith("error","Erreur lors de la modification du Commentaire : ". $e->getMessage(),'../../view/crudPost/postRead?id='.$refPost.'.php');
 }
 
 

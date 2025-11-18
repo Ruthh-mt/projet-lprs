@@ -94,31 +94,31 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="d-grid gap-2">
             <a  class="btn btn-outline-success text-uppercase my-3" href="crudPost/postCreate.php" role="button">Créer un post</a>
         </div>
-        <?php if(!isset($_SESSION['utilisateur'])):?>
+       <!--- <?php //if(!isset($_SESSION['utilisateur'])):?>
     <h5> Vous etes pas connecté. Veuillez vous connecter</h5>
 <a  class="btn btn-secondary" href="connexion.php" role="button">Se connecter</a>
-<p>Erreur : Identify yourself who are you</p>
-        <?php else :
+<p>Erreur : Identify yourself who are you</p>--->
+        <?php
 $postRepository=new PostRepository();
 $allpost=$postRepository->getAllPost();
         if(empty($allpost)) :?>
-        <h5>Il senblerait qu'il n'y ai aucun post. Soyer le premier a en poster</h5>
+            <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait que la communication soit surcoter, Soyer le premier à communiquer </h5>
         <?php else :?>
         <?php foreach($allpost as $post):
-            $username=$postRepository->findUsername($post->id_post);?>
+            $username=$postRepository->findUsername($post->id_post); ?>
         <div class="card">
             <div class="card-header"><i class="bi bi-person-circle"><?=" "?></i>
                 <?=$username["prenom"].' '.$username["nom"]?></i></div>
             <div class="card-body">
-                <h5 class="card-title"><?=$post->titre_post?> | <div class="badge badge-neutral"><?= $post->canal?></div>
+                <h5 class="card-title"><?=$post->titre_post?> | <span class="badge text-bg-dark"><?= $post->canal ?></span>
                 </h5>
                 <p class="col-20 text-truncate" id="contenu"><?=$post->contenu_post?></p>
                 <a href="crudPost/postRead.php?id=<?=$post->id_post?>" class="btn btn-primary">Voir plus</a>
             </div>
         </div> <br>
         <?php endforeach;
-        endif;
         endif; ?>
+    </section>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li class="page-item">
@@ -136,6 +136,7 @@ $allpost=$postRepository->getAllPost();
                 </li>
             </ul>
         </nav>
+
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
