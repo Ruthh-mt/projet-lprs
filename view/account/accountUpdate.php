@@ -1,4 +1,6 @@
 <?php
+$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
+
 if (session_status() === PHP_SESSION_NONE) session_start();
 if (!isset($_SESSION['utilisateur'])) {
     header('Location: ../connexion.php');
@@ -54,7 +56,7 @@ function e(?string $v): string
                 <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <?php if ($avatar): ?>
-                        <img src="<?= htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>"
+                        <img src="<?= $prefix.htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>"
                              alt="Photo de profil"
                              class="rounded-circle"
                              style="width:40px;height:40px;object-fit:cover;">
