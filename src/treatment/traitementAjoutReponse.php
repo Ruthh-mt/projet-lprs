@@ -12,13 +12,14 @@ function redirectWith(string $type, string $message, string $target): void {
     header("Location: $target",$_SESSION["toastr"]["type"]);
     exit();
 }
+$refPost=$_POST["refPost"];
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirectWith("error","Methode invalide",'Location: ../../view/crudPost/postCreate.php');
+    redirectWith("error","Methode invalide", '../../view/crudPost/postRead?id='.$refPost.'.php');
 }
 $refUser = $_POST["refUser"];
 $contenuReponse = $_POST["contenu_reponse"];
 $dateHeureReponse = date("Y-m-d H:i:s");
-$refPost=$_POST["refPost"];
 
 
 if($refPost==="" || $contenuReponse==='' || $refUser===''){
