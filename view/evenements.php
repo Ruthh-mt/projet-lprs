@@ -1,5 +1,5 @@
 <?php
-$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
+$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0] . '/public';
 require_once '../src/modele/ModeleEvenement.php';
 require_once '../src/repository/evenementRepository.php';
 require_once "../src/bdd/config.php";
@@ -26,7 +26,8 @@ if (session_status() === PHP_SESSION_NONE) {
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img src="https://giffiles.alphacoders.com/208/208817.gif" class="rounded-circle mx-3" style="max-width: 48px;">
+            <img src="https://giffiles.alphacoders.com/208/208817.gif" class="rounded-circle mx-3"
+                 style="max-width: 48px;">
             <div class="fs-4 text-light text-uppercase">LPRS</div>
         </a>
     </div>
@@ -50,15 +51,20 @@ if (session_status() === PHP_SESSION_NONE) {
                 <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <?php if ($avatar): ?>
-                        <img src="<?= $prefix.htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" alt="Photo de profil" class="rounded-circle" style="max-width: 48px;object-fit:cover;">
+                        <img src="<?= $prefix . htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" alt="Photo de profil"
+                             class="rounded-circle" style="max-width: 48px;object-fit:cover;">
                     <?php else: ?>
                         <i class="bi bi-person-circle fs-3 text-light"></i>
                     <?php endif; ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small">
-                    <li><a class="dropdown-item text-primary" href="account/accountRead.php"><i class="bi bi-person"></i> Mon compte</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="../src/treatment/traitementDeconnexion.php"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
+                    <li><a class="dropdown-item text-primary" href="account/accountRead.php"><i
+                                    class="bi bi-person"></i> Mon compte</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="../src/treatment/traitementDeconnexion.php"><i
+                                    class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
                 </ul>
             <?php else: ?>
                 <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
@@ -66,8 +72,10 @@ if (session_status() === PHP_SESSION_NONE) {
                     <i class="bi bi-person-circle fs-3 text-light"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small">
-                    <li><a class="dropdown-item" href="connexion.php"><i class="bi bi-box-arrow-in-right"></i> Connexion</a></li>
-                    <li><a class="dropdown-item" href="inscription.php"><i class="bi bi-person-plus"></i> Inscription</a></li>
+                    <li><a class="dropdown-item" href="connexion.php"><i class="bi bi-box-arrow-in-right"></i> Connexion</a>
+                    </li>
+                    <li><a class="dropdown-item" href="inscription.php"><i class="bi bi-person-plus"></i>
+                            Inscription</a></li>
                 </ul>
             <?php endif; ?>
         </div>
@@ -76,24 +84,25 @@ if (session_status() === PHP_SESSION_NONE) {
 <section class=" bg-dark text-white text-center py-1 rounded">
     <h1>Évènements</h1>
     <?php
-    if(!isset($_SESSION['utilisateur'])) {
-        echo'<br>';
+    if (!isset($_SESSION['utilisateur'])) {
+        echo '<br>';
     } elseif ($_SESSION["utilisateur"]["role"] === "Professeur") {
         echo '<a  class="btn btn-outline-light" href="crudEvenement/evenementValidate.php" role="button"><i class="bi bi-calendar4-event"></i> Voir les evenement a valider</a>';
     }
     ?>
 </section>
 <main>
-<section class="container">
-    <?php if (isset($_SESSION['utilisateur'])): ?>
-     <div class="d-grid gap-2">
-        <a class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php" role="button">Créer un évènement</a>
-     </div>
-    <?php endif;
-     if(!empty($_SESSION["toastr"])){
-         $type=$_SESSION["toastr"]["type"];
-         $message=$_SESSION["toastr"]["message"];
-         echo'<script>
+    <section class="container">
+        <?php if (isset($_SESSION['utilisateur'])): ?>
+            <div class="d-grid gap-2">
+                <a class="btn btn-outline-success text-uppercase my-3" href="crudEvenement/evenementCreate.php"
+                   role="button">Créer un évènement</a>
+            </div>
+        <?php endif;
+        if (!empty($_SESSION["toastr"])) {
+            $type = $_SESSION["toastr"]["type"];
+            $message = $_SESSION["toastr"]["message"];
+            echo '<script>
         // Set the options that I want
         toastr.options = {
             "closeButton": true,
@@ -111,75 +120,80 @@ if (session_status() === PHP_SESSION_NONE) {
             "showMethod": "slideDown",
             "hideMethod": "slideUp"
         }
-        toastr.'.$type.'("'.$message.'");
+        toastr.' . $type . '("' . $message . '");
 
 
     </script>';
-         unset($_SESSION['toastr']);
-    }
-      ?>
-    <section class="container my-4">
-        <?php
-    if(!isset($_SESSION['utilisateur'])):?>
-    <h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>';
+            unset($_SESSION['toastr']);
+        }
+        ?>
+        <section class="container my-4">
+            <?php
+            if (!isset($_SESSION['utilisateur'])):?>
+                <h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous
+                    connecter</h5>';
 
-    <?php else :?>
-        <div class="d-flex flex-wrap justify-content-start gap-4">
-            <?php $evenementRepository = new EvenementRepository();
-            $allEvenement = $evenementRepository->getAllEvenement();
+            <?php else : ?>
+                <div class="d-flex flex-wrap justify-content-start gap-4">
+                    <?php $evenementRepository = new EvenementRepository();
+                    $allEvenement = $evenementRepository->getAllEvenement();
 
-           if(!empty($allEvenement)):
-               foreach ($allEvenement as $evenement):?>
-                   <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
-                    <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
-                         class="card-img-top"
-                         alt="Image événement"
-                         style="height: 180px; object-fit: cover;">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold"><?=htmlspecialchars($evenement->titre_eve)?></h5>
-                        <p class="card-text flex-grow-1 text-muted">
-                            <?=htmlspecialchars(substr($evenement->desc_eve, 0, 100))?>...
-                        </p>
-                        <a href="../view/crudEvenement/evenementRead.php?id=' . $evenement->id_evenement. '"
-                           class="btn btn-primary mt-auto">
-                            En savoir plus
-                        </a>
-                    </div>
-                    <div class="card-footer text-muted small">
-                        Dernière mise à jour : <?= date("d/m/Y H:i")?>
-                    </div>
-                </div>
+                    if (!empty($allEvenement)):
+                        foreach ($allEvenement as $evenement):?>
+                            <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
+                                <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
+                                     class="card-img-top"
+                                     alt="Image événement"
+                                     style="height: 180px; object-fit: cover;">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h5>
+                                    <p class="card-text flex-grow-1 text-muted">
+                                        <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
+                                    </p>
+                                    <a href="../view/crudEvenement/evenementRead.php?id=<?=$evenement->id_evenement?>"
+                                       class="btn btn-primary mt-auto">
+                                        En savoir plus
+                                    </a>
+                                </div>
+                                <div class="card-footer text-muted small">
+                                    Dernière mise à jour : <?= date("d/m/Y H:i") ?>
+                                </div>
+                            </div>
 
-           <?php endforeach;
-           else :?>
-              <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait qu'il n'y a pas d'evenements</h5>
+                        <?php endforeach;
+                    else :?>
+                        <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait qu'il n'y a pas
+                            d'evenements</h5>
                         <br>
-                    <p class="alert alert-dark alert-dismissible fade show">Soyez le/la premier/e a lancer le pas et crée votre evenement</p>";
-           <?php endif;?>
-        </div>
-    <?php endif;?>
-    </section>
+                        <p class="alert alert-dark alert-dismissible fade show">Soyez le/la premier/e a lancer le pas et
+                            crée votre evenement</p>";
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        </section>
 
-</section>
-     <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-               <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                         <span aria-hidden="true">&laquo;</span>
-                    </a>
-               </li>
-               <li class="page-item"><a class="page-link" href="#">1</a></li>
-               <li class="page-item"><a class="page-link" href="#">2</a></li>
-               <li class="page-item"><a class="page-link" href="#">3</a></li>
-               <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                         <span aria-hidden="true">&raquo;</span>
-                    </a>
-               </li>
-          </ul>
-     </nav>
+    </section>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 </body>
 </html>

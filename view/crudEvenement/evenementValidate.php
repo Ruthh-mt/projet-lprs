@@ -56,12 +56,12 @@ if (session_status() === PHP_SESSION_NONE) {
 </header>
 <section class=" bg-dark text-white text-center py-1 rounded">
     <h1>Évènements en attente de validation</h1>
-<a  class="btn btn-outline-light" href="../evenements.php" role="button">Retour au evenements</a>'
+    <a class="btn btn-outline-light" href="../evenements.php" role="button">Retour au evenements</a>'
 </section>
 <main>
-    <?php if(!empty($_SESSION["toastr"])):
-        $type=$_SESSION["toastr"]["type"];
-        $message=$_SESSION["toastr"]["message"];
+    <?php if (!empty($_SESSION["toastr"])):
+        $type = $_SESSION["toastr"]["type"];
+        $message = $_SESSION["toastr"]["message"];
         ?>
         <script>
             // Set the options that I want
@@ -87,45 +87,47 @@ if (session_status() === PHP_SESSION_NONE) {
         </script>';
 
 
-    <?php unset($_SESSION['toastr']);
-    endif;?>
+        <?php unset($_SESSION['toastr']);
+    endif; ?>
     <section class="container">
         <section class="container my-4">
-            <?php if(!isset($_SESSION['utilisateur'])):?>
-                <h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>'
+            <?php if (!isset($_SESSION['utilisateur'])): ?>
+                <h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous
+                    connecter</h5>'
 
-            <?php else :?>
+            <?php else : ?>
                 <div class="d-flex flex-wrap justify-content-start gap-4">';
                 <?php $evenementRepository = new EvenementRepository();
-                $allEvenement = $evenementRepository->getAllEvenementNonValide(New ModeleEvenement(["status"=>"en attente","estValide"=>0]));
+                $allEvenement = $evenementRepository->getAllEvenementNonValide(new ModeleEvenement(["status" => "en attente", "estValide" => 0]));
 
-                if(!empty($allEvenement)) :
+                if (!empty($allEvenement)) :
                     foreach ($allEvenement as $evenement) :?>
-                       <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
-                    <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
-                         class="card-img-top"
-                         alt="Image événement"
-                         style="height: 180px; object-fit: cover;">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve)?></h5>
-                        <p class="card-text flex-grow-1 text-muted">
-                            <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
-                        </p>
-                        <a href="evenementRead.php?id=<?=$evenement->id_evenement?>"
-                           class="btn btn-primary mt-auto">
-                            En savoir plus
-                        </a>
+                        <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
+                            <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
+                                 class="card-img-top"
+                                 alt="Image événement"
+                                 style="height: 180px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h5>
+                                <p class="card-text flex-grow-1 text-muted">
+                                    <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
+                                </p>
+                                <a href="evenementRead.php?id=<?= $evenement->id_evenement ?>"
+                                   class="btn btn-primary mt-auto">
+                                    En savoir plus
+                                </a>
+                            </div>
+                            <div class="card-footer text-muted small">
+                                Dernière mise à jour : <?= date("d/m/Y H:i") ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait qu'il n'y a pas d'evenements
+                        a valider</h5>
                     </div>
-                    <div class="card-footer text-muted small">
-                        Dernière mise à jour : <?= date("d/m/Y H:i")?>
-                    </div>
-                </div>
-                 <?php endforeach;?>
-                <?php else :?>
-                    <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait qu'il n'y a pas d'evenements a valider</h5>
-                    </div>
-            <?php endif;
-            endif;?>
+                <?php endif;
+            endif; ?>
 
 
         </section>
@@ -150,6 +152,8 @@ if (session_status() === PHP_SESSION_NONE) {
     </nav>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 </body>
 </html>

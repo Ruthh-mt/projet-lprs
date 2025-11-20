@@ -9,18 +9,19 @@ require_once "../repository/EvenementUserRepository.php";
 
 session_start();
 
-function redirectWith(string $type, string $message, string $target): void {
-    $_SESSION['toastr']=[
-        "type"=>$type,
-        "message"=>$message,
+function redirectWith(string $type, string $message, string $target): void
+{
+    $_SESSION['toastr'] = [
+        "type" => $type,
+        "message" => $message,
     ];
     session_write_close();
-    header("Location: $target",$_SESSION["toastr"]["type"]);
+    header("Location: $target", $_SESSION["toastr"]["type"]);
     exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-   redirectWith('error', "Méthode invalide.", '../../view/evenements.php');
+    redirectWith('error', "Méthode invalide.", '../../view/evenements.php');
 }
 $idEve = $_POST["idevenement"];
 

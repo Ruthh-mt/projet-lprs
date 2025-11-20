@@ -18,10 +18,10 @@ if (!$id) {
 $evenementRepo = new EvenementRepository();
 $evenementUserRepository = new EvenementUserRepository();
 $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" => $id]));
-$nbInscrits=$evenementUserRepository->countAllInscritsByEvenement($id);
+$nbInscrits = $evenementUserRepository->countAllInscritsByEvenement($id);
 
 $superviseurs = $evenementUserRepository->getSuperviseur($evenement->id_evenement);
-$eveUser = new ModeleEvenementUser(["refUser" => $_SESSION['utilisateur']['id_user'],"refEvenement"=>$evenement->id_evenement]);
+$eveUser = new ModeleEvenementUser(["refUser" => $_SESSION['utilisateur']['id_user'], "refEvenement" => $evenement->id_evenement]);
 $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
 ?>
 <!doctype html>
@@ -34,20 +34,24 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <style>
         body {
             background-color: #f8f9fa;
         }
+
         .section-offre {
             background: white;
             border-radius: 1rem;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             padding: 2rem;
         }
+
         .offre-header {
             background-color: #212529;
             color: white;
@@ -55,13 +59,16 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
             padding: 1.5rem;
             border-bottom: 2px solid #0d6efd;
         }
+
         .offre-header h2 {
             margin: 0;
         }
+
         label {
             font-weight: 600;
             margin-bottom: 6px;
         }
+
         input[type=text],
         input[type=number],
         textarea {
@@ -71,6 +78,7 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.9);
         }
+
         textarea {
             min-height: 120px;
             resize: vertical;
@@ -101,19 +109,20 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
     <div class="section-offre">
         <div class="offre-header d-flex justify-content-between align-items-center">
             <h2 class="fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h2>
-            <?php if(in_array($_SESSION['utilisateur']['id_user'],$superviseurs,true)):?>
-            <button type="button" class="btn btn-outline-light" onclick="window.location.href='evenementValidateUser.php?id=<?=$id?>'">
-                <i class="bi bi-person-gear"></i>Voir la liste des inscrits
-            </button>
+            <?php if (in_array($_SESSION['utilisateur']['id_user'], $superviseurs, true)): ?>
+                <button type="button" class="btn btn-outline-light"
+                        onclick="window.location.href='evenementValidateUser.php?id=<?= $id ?>'">
+                    <i class="bi bi-person-gear"></i>Voir la liste des inscrits
+                </button>
             <?php endif; ?>
             <button type="button" class="btn btn-outline-light" onclick="window.location.href='../evenements.php'">
                 <i class="bi bi-arrow-left-circle"></i> Retour
             </button>
         </div>
-        <?php if(!empty($_SESSION["toastr"])){
-        $type=$_SESSION["toastr"]["type"];
-        $message=$_SESSION["toastr"]["message"];
-        echo'<script>
+        <?php if (!empty($_SESSION["toastr"])) {
+            $type = $_SESSION["toastr"]["type"];
+            $message = $_SESSION["toastr"]["message"];
+            echo '<script>
             // Set the options that I want
             toastr.options = {
                 "closeButton": true,
@@ -131,11 +140,11 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
                 "showMethod": "slideDown",
                 "hideMethod": "slideUp"
             }
-            toastr.'.$type.'("'.$message.'");
+            toastr.' . $type . '("' . $message . '");
 
 
         </script>';
-        unset($_SESSION['toastr']);
+            unset($_SESSION['toastr']);
         }
         ?>
         <form class="mt-4" action="../../src/treatment/traitementInscriptionEvenement.php" method="post">
@@ -160,7 +169,8 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
 
             <div class="mb-3">
                 <label for="desc_eve">Description</label>
-                <textarea readonly class="form-control" id="desc_eve"><?= htmlspecialchars($evenement->desc_eve) ?></textarea>
+                <textarea readonly class="form-control"
+                          id="desc_eve"><?= htmlspecialchars($evenement->desc_eve) ?></textarea>
             </div>
 
             <div class="mb-3">
@@ -171,34 +181,35 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
 
             <div class="mb-3">
                 <label for="nb_place">Places disponibles</label>
-                <?php if($evenement->nb_place-$nbInscrits===0):?>
+                <?php if ($evenement->nb_place - $nbInscrits === 0): ?>
                     <input type="text" readonly class="form-control" id="nb_place"
                            value="Evenement complet">
                 <?php else: ?>
-                <input type="number" readonly class="form-control" id="nb_place"
-                       value="<?= htmlspecialchars($evenement->nb_place-$nbInscrits) ?>">
+                    <input type="number" readonly class="form-control" id="nb_place"
+                           value="<?= htmlspecialchars($evenement->nb_place - $nbInscrits) ?>">
                 <?php endif; ?>
             </div>
 
             <div class="text-center mt-4">
 
 
-                <?php if (!in_array($_SESSION['utilisateur']['id_user'],$superviseurs,true)) : ?>
+                <?php if (!in_array($_SESSION['utilisateur']['id_user'], $superviseurs, true)) : ?>
                     <?php if ($estInscrit): ?>
-                        <button class="btn btn-primary" <?php if ($evenement->nb_place-$nbInscrits==0) {
-                         echo'id="liveAlertBtn"';
-                        }else {
-                            echo'type="submit"';
-                        }?>>
+                        <button class="btn btn-primary" <?php if ($evenement->nb_place - $nbInscrits == 0) {
+                            echo 'id="liveAlertBtn"';
+                        } else {
+                            echo 'type="submit"';
+                        } ?>>
                             <i class="bi bi-person-plus"></i> Participer
                         </button>
                     <?php else: ?>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#confirmModal">
                             <i class="bi bi-trash"></i> Se desinscrire
                         </button>
                     <?php endif; ?>
                 <?php endif; ?>
-                <?php if ($_SESSION["utilisateur"]["role"]=="Professeur" && $evenement->est_valide==0 ): // ajouter le fait que l'evenement doit etre crée par un etudient pour afficher le btn?>
+                <?php if ($_SESSION["utilisateur"]["role"] == "Professeur" && $evenement->est_valide == 0): // ajouter le fait que l'evenement doit etre crée par un etudient pour afficher le btn?>
 
                     <button type="button" class="btn btn-success" data-bs-toggle="modal"
                             data-bs-target="#confirmEvenementModal">
@@ -207,9 +218,9 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
                 <?php endif; ?>
             </div>
         </form>
-        <?php if (in_array($_SESSION['utilisateur']['id_user'],$superviseurs,true)): ?>
+        <?php if (in_array($_SESSION['utilisateur']['id_user'], $superviseurs, true)): ?>
             <div class="text-center mt-3">
-                <a href="evenementUpdate.php?id=<?= $evenement->id_evenement?>" class="btn btn-warning">
+                <a href="evenementUpdate.php?id=<?= $evenement->id_evenement ?>" class="btn btn-warning">
                     <i class="bi bi-pencil-square"></i> Modifier l’évènement
                 </a>
             </div>
@@ -241,7 +252,8 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
     </div>
 </div>
 <!-- MODALE DE CONFIRMATION POUR VALIDER LES EVENEMENTS -->
-<div class="modal fade" id="confirmEvenementModal" tabindex="-1" aria-labelledby="confirmEvenementModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmEvenementModal" tabindex="-1" aria-labelledby="confirmEvenementModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
@@ -249,7 +261,8 @@ $estInscrit = $evenementUserRepository->verifDejaInscritEvenement($eveUser);
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                Êtes-vous sûr de vouloir valider l'evenement ? Vous allez devenir superviseur de cette evenement et vous ne pourrez plus le quitter.
+                Êtes-vous sûr de vouloir valider l'evenement ? Vous allez devenir superviseur de cette evenement et vous
+                ne pourrez plus le quitter.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

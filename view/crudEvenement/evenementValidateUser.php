@@ -15,8 +15,8 @@ if (!$id) {
 $evenementRepo = new EvenementRepository();
 $evenementUserRepository = new EvenementUserRepository();
 $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" => $id]));
-$eveUser = new ModeleEvenementUser(["refEvenement"=>$evenement->id_evenement, "estSuperviseur"=>0]);
-$allUser=$evenementUserRepository->getAllInscritsByEvenement($eveUser);
+$eveUser = new ModeleEvenementUser(["refEvenement" => $evenement->id_evenement, "estSuperviseur" => 0]);
+$allUser = $evenementUserRepository->getAllInscritsByEvenement($eveUser);
 var_dump($allUser);
 ?>
 <!doctype html>
@@ -25,14 +25,18 @@ var_dump($allUser);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>EVENEMENTS • LPRS</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
@@ -68,18 +72,19 @@ var_dump($allUser);
     </div>
 </header>
 <section class=" bg-dark text-white text-center py-1 rounded">
-    <h1>Liste des inscrit a l'evenement : <?=$evenement->titre_eve?></h1>
+    <h1>Liste des inscrit a l'evenement : <?= $evenement->titre_eve ?></h1>
     <?php
-    if(!isset($_SESSION['utilisateur'])) {
-        echo'<br>';
-    }     ?>
-    <a  class="btn btn-outline-light" href="evenementRead.php?id=<?=$evenement->id_evenement?>" role="button">Retour à l'evenement </a>
+    if (!isset($_SESSION['utilisateur'])) {
+        echo '<br>';
+    } ?>
+    <a class="btn btn-outline-light" href="evenementRead.php?id=<?= $evenement->id_evenement ?>" role="button">Retour à
+        l'evenement </a>
 </section>
 <main>
-    <?php if(!empty($_SESSION["toastr"])){
-        $type=$_SESSION["toastr"]["type"];
-        $message=$_SESSION["toastr"]["message"];
-        echo'<script>
+    <?php if (!empty($_SESSION["toastr"])) {
+        $type = $_SESSION["toastr"]["type"];
+        $message = $_SESSION["toastr"]["message"];
+        echo '<script>
             // Set the options that I want
             toastr.options = {
                 "closeButton": true,
@@ -97,7 +102,7 @@ var_dump($allUser);
                 "showMethod": "slideDown",
                 "hideMethod": "slideUp"
             }
-            toastr.'.$type.'("'.$message.'");
+            toastr.' . $type . '("' . $message . '");
 
 
         </script>';
@@ -107,33 +112,34 @@ var_dump($allUser);
     <section class="container">
         <br>
         <section class="container my-4">
-            <?php if(!isset($_SESSION['utilisateur'])):?>
-                <h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous connecter</h5>
+            <?php if (!isset($_SESSION['utilisateur'])): ?>
+                <h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous
+                    connecter</h5>
 
-            <?php else :?>
-                <?php if(!empty($allUser)) :?>
-                    <?php foreach ($allUser as $user) :?>
+            <?php else : ?>
+                <?php if (!empty($allUser)) : ?>
+                    <?php foreach ($allUser as $user) : ?>
                         <div class="card bg-base-100 w-96 shadow-sm">
                             <div class="card-body">
-                                <h2 class="card-title"><?=htmlspecialchars(strtoupper($user->nom))." ".htmlspecialchars($user->prenom) ?></h2>
-                                <p><?=htmlspecialchars($user->role)?></p>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"  data-bs-target="#confirmModal"
+                                <h2 class="card-title"><?= htmlspecialchars(strtoupper($user->nom)) . " " . htmlspecialchars($user->prenom) ?></h2>
+                                <p><?= htmlspecialchars($user->role) ?></p>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#confirmModal"
                                         data-ref-user="<?= htmlspecialchars($user->ref_user) ?>"
                                         data-nom="<?= htmlspecialchars($user->nom) ?>"
                                         data-prenom="<?= htmlspecialchars($user->prenom) ?>">
                                     <i class="bi bi-trash"></i> Supprimer
                                 </button>
-                                </div>
                             </div>
                         </div>
                     <?php endforeach;
-                    else :?>
+                else :?>
                     <h5> Il semblerait qu'il n'y est pas de participant a cet evenement</h5>
-                        <br>
+                    <br>
                     <p>Allez faire votre promotion de votre evenement </p>";
 
-            <?php endif;
-            endif;?>
+                <?php endif;
+            endif; ?>
         </section>
         <!-- MODALE DE CONFIRMATION -->
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
@@ -144,12 +150,14 @@ var_dump($allUser);
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        Êtes-vous sûr de vouloir desinscrire <span id="modalUserNom"></span>  <span id="modalUserPrenom"></span> ?
+                        Êtes-vous sûr de vouloir desinscrire <span id="modalUserNom"></span> <span
+                                id="modalUserPrenom"></span> ?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                         <form method="post" action="../../src/treatment/traitementValidationUserEvenement.php">
-                            <input type="hidden" name="idevenement" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
+                            <input type="hidden" name="idevenement"
+                                   value="<?= htmlspecialchars($evenement->id_evenement) ?>">
                             <input type="hidden" name="refuser" id="refUser" value="">
                             <button type="submit" class="btn btn-danger">
                                 <i class="bi bi-exclamation-octagon"></i> Confirmer la desinscription
@@ -180,26 +188,28 @@ var_dump($allUser);
     </nav>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
         var confirmModal = document.getElementById('confirmModal');
-            if (!confirmModal) return;
+        if (!confirmModal) return;
 
         confirmModal.addEventListener('show.bs.modal', function (event) {
-        // bouton qui a déclenché l'ouverture
-        var button = event.relatedTarget;
+            // bouton qui a déclenché l'ouverture
+            var button = event.relatedTarget;
 
-        // récupérer les data-*
-        var refUser = button.getAttribute('data-ref-user') || '';
-        var nom = button.getAttribute('data-nom') || '';
-        var prenom = button.getAttribute('data-prenom') || '';
+            // récupérer les data-*
+            var refUser = button.getAttribute('data-ref-user') || '';
+            var nom = button.getAttribute('data-nom') || '';
+            var prenom = button.getAttribute('data-prenom') || '';
 
-        // injecter dans le modal
-        document.getElementById('modalUserNom').textContent = nom;
-        document.getElementById('modalUserPrenom').textContent = prenom;
-        document.getElementById('refUser').value = refUser;
-    });
+            // injecter dans le modal
+            document.getElementById('modalUserNom').textContent = nom;
+            document.getElementById('modalUserPrenom').textContent = prenom;
+            document.getElementById('refUser').value = refUser;
+        });
     });
 
 </script>

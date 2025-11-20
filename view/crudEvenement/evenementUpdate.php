@@ -34,12 +34,14 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
         body {
             background-color: #f8f9fa;
         }
+
         .section-offre {
             background: white;
             border-radius: 1rem;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             padding: 2rem;
         }
+
         .offre-header {
             background-color: #212529;
             color: white;
@@ -47,14 +49,17 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
             padding: 1.5rem;
             border-bottom: 2px solid #0d6efd;
         }
+
         .offre-header h2 {
             margin: 0;
         }
+
         label {
             font-weight: 600;
             margin-top: 10px;
             display: block;
         }
+
         input[type=text],
         input[type=number],
         textarea {
@@ -64,6 +69,7 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.9);
         }
+
         textarea {
             resize: vertical;
             min-height: 120px;
@@ -88,10 +94,10 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
     </div>
 </header>
 
-<?php if(!empty($_SESSION["toastr"])){
-    $type=$_SESSION["toastr"]["type"];
-    $message=$_SESSION["toastr"]["message"];
-    echo'<script>
+<?php if (!empty($_SESSION["toastr"])) {
+    $type = $_SESSION["toastr"]["type"];
+    $message = $_SESSION["toastr"]["message"];
+    echo '<script>
             // Set the options that I want
             toastr.options = {
                 "closeButton": true,
@@ -109,7 +115,7 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
                 "showMethod": "slideDown",
                 "hideMethod": "slideUp"
             }
-            toastr.'.$type.'("'.$message.'");
+            toastr.' . $type . '("' . $message . '");
 
 
         </script>';
@@ -122,7 +128,8 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
 
         <div class="offre-header d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">Modifier un évènement</h2>
-            <button type="button" class="btn btn-outline-light" onclick="window.location.href='evenementRead.php?id=<?=$evenement->id_evenement?>'">
+            <button type="button" class="btn btn-outline-light"
+                    onclick="window.location.href='evenementRead.php?id=<?= $evenement->id_evenement ?>'">
                 <i class="bi bi-arrow-left-circle"></i> Retour
             </button>
         </div>
@@ -147,16 +154,16 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
                 <label for="status">Status</label>
                 <select class="form-select" id="status" name="status">
 
-            <?php //if($_SESSION["utilisateur"]['role']!="Étudiant"|| $evenement->est_valide===1 ):?>
-            <?php $options=["en attente", "actif", "inactif"];
-                for($i=0; $i<count($options); $i++){
-                    if($evenement->status==$options[$i]){
-                        echo'<option selected value="'.$options[$i].'">'.$options[$i].'</option>';
-                    } else {
-                        echo'<option value="'.$options[$i].'">'.$options[$i].'</option>';
+                    <?php //if($_SESSION["utilisateur"]['role']!="Étudiant"|| $evenement->est_valide===1 ):?>
+                    <?php $options = ["en attente", "actif", "inactif"];
+                    for ($i = 0; $i < count($options); $i++) {
+                        if ($evenement->status == $options[$i]) {
+                            echo '<option selected value="' . $options[$i] . '">' . $options[$i] . '</option>';
+                        } else {
+                            echo '<option value="' . $options[$i] . '">' . $options[$i] . '</option>';
+                        }
                     }
-                }
-                ?>
+                    ?>
 
                 </select>
             </div>
@@ -168,7 +175,8 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
 
             <div class="mb-3">
                 <label for="desc_eve">Description</label>
-                <textarea class="form-control" id="desc_eve" name="desc_eve" rows="5"><?= htmlspecialchars($evenement->desc_eve) ?></textarea>
+                <textarea class="form-control" id="desc_eve" name="desc_eve"
+                          rows="5"><?= htmlspecialchars($evenement->desc_eve) ?></textarea>
             </div>
 
             <div class="mb-3">

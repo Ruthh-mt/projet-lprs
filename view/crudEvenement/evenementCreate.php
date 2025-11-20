@@ -23,12 +23,14 @@ $role = $_SESSION['utilisateur']["role"];
         body {
             background-color: #f8f9fa;
         }
+
         .section-offre {
             background: white;
             border-radius: 1rem;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             padding: 2rem;
         }
+
         .offre-header {
             background-color: #212529;
             color: white;
@@ -36,14 +38,17 @@ $role = $_SESSION['utilisateur']["role"];
             padding: 1.5rem;
             border-bottom: 2px solid #0d6efd;
         }
+
         .offre-header h2 {
             margin: 0;
         }
+
         label {
             font-weight: 600;
             margin-top: 10px;
             display: block;
         }
+
         input[type=text],
         input[type=number],
         textarea {
@@ -53,6 +58,7 @@ $role = $_SESSION['utilisateur']["role"];
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.9);
         }
+
         textarea {
             resize: vertical;
             min-height: 120px;
@@ -101,16 +107,16 @@ $role = $_SESSION['utilisateur']["role"];
 
         <!-- Formulaire -->
         <form class="mt-4" action="../../src/treatment/traitementAjoutEvenement.php" method="post">
-            <?php if(!empty($_SESSION["toastr"])){
-                $type=$_SESSION["toastr"]["type"];
-                $message=$_SESSION["toastr"]["message"];
-                echo'<script>
+            <?php if (!empty($_SESSION["toastr"])) {
+                $type = $_SESSION["toastr"]["type"];
+                $message = $_SESSION["toastr"]["message"];
+                echo '<script>
             // Set the options that I want
             toastr.options = {
                 "closeButton": true,
                 "newestOnTop": false,
                 "progressBar": false,
-                "positionClass": "toast-top-full-width",
+                "positionClass": "toast-bottom-full-width",
                 "preventDuplicates": true,
                 "onclick": null,
                 "showDuration": "300",
@@ -122,7 +128,7 @@ $role = $_SESSION['utilisateur']["role"];
                 "showMethod": "slideDown",
                 "hideMethod": "slideUp"
             }
-            toastr.'.$type.'("'.$message.'");
+            toastr.' . $type . '("' . $message . '");
 
 
         </script>';
@@ -135,22 +141,24 @@ $role = $_SESSION['utilisateur']["role"];
 
             <div class="mb-3">
                 <label for="titre_eve">Titre de l’évènement</label>
-                <input class="form-control" type="text" id="titre_eve" name="titre_eve" placeholder="Entrez le titre de l’évènement" required>
+                <input class="form-control" type="text" id="titre_eve" name="titre_eve"
+                       placeholder="Entrez le titre de l’évènement" required>
             </div>
 
             <div class="mb-3">
                 <label for="type_eve">Type de l’évènement</label>
-                <input class="form-control" type="text" id="type_eve" name="type_eve" placeholder="Ex : Conférence, Atelier..." required>
+                <input class="form-control" type="text" id="type_eve" name="type_eve"
+                       placeholder="Ex : Conférence, Atelier..." required>
             </div>
 
             <div class="mb-3">
                 <label for="status">Status de l'evenement</label>
-                <select class="form-select" aria-label="Default select example"  name="status" required>
+                <select class="form-select" aria-label="Default select example" name="status" required>
                     <option selected>Choisissez le status</option>
                     <option value="en attente">En attente de validation par un prof</option>
                     <?php
-                    if($_SESSION["utilisateur"]['role']!="Étudiant" ){
-                        echo'<option value="actif">Actif</option>
+                    if ($_SESSION["utilisateur"]['role'] != "Étudiant") {
+                        echo '<option value="actif">Actif</option>
                     <option value="inactif">Inactif</option>';
                     }
                     ?>
@@ -159,22 +167,26 @@ $role = $_SESSION['utilisateur']["role"];
 
             <div class="mb-3">
                 <label for="desc_eve">Description</label>
-                <textarea class="form-control" id="desc_eve" name="desc_eve" placeholder="Entrez la description de l’évènement" required></textarea>
+                <textarea class="form-control" id="desc_eve" name="desc_eve"
+                          placeholder="Entrez la description de l’évènement" required></textarea>
             </div>
 
             <div class="mb-3">
                 <label for="lieu_eve">Lieu</label>
-                <input class="form-control" type="text" id="lieu_eve" name="lieu_eve" placeholder="Ex : Salle 203 ou Campus principal" required>
+                <input class="form-control" type="text" id="lieu_eve" name="lieu_eve"
+                       placeholder="Ex : Salle 203 ou Campus principal" required>
             </div>
 
             <div class="mb-3">
                 <label for="element_eve">Éléments nécessaires</label>
-                <textarea class="form-control" id="element_eve" name="element_eve" placeholder="Liste du matériel ou documents nécessaires"></textarea>
+                <textarea class="form-control" id="element_eve" name="element_eve"
+                          placeholder="Liste du matériel ou documents nécessaires"></textarea>
             </div>
 
             <div class="mb-3">
                 <label for="nb_plc">Nombre de places disponibles</label>
-                <input class="form-control" type="number" id="nb_plc" name="nb_plc" placeholder="Entrez le nombre de places disponibles" required>
+                <input class="form-control" type="number" id="nb_plc" name="nb_plc"
+                       placeholder="Entrez le nombre de places disponibles" required>
             </div>
 
             <div class="d-flex gap-2">
