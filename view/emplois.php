@@ -140,8 +140,8 @@ $id_user = $_SESSION['utilisateur']['id_user'];
                     <i class="bi bi-pencil"></i>
                 </a>
 
-
-                <form action="crudOffre/offreDelete.php" method="post" style="display:inline;">
+                <?php if($_SESSION['utilisateur']['role'] === 'Partenaire' || $_SESSION['utilisateur']['role'] === 'Alumni'): ?>
+                <form action="../src/treatment/traitementDeleteOffre.php" method="post" style="display:inline;">
                     <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                     <input type="hidden" name="delete_offre" value="1">
                     <button type="submit" class="btn btn-sm btn-outline-danger"
@@ -149,6 +149,8 @@ $id_user = $_SESSION['utilisateur']['id_user'];
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>
+                <?php endif; ?>
+
                 <?php if($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
                 <form action="../view/postuler.php?id=<?= $offre['id_offre'] ?>" method="post" style="display:inline;">
                     <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">

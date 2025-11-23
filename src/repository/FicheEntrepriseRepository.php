@@ -46,5 +46,15 @@ class FicheEntrepriseRepository
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    public function findFicheByUser(int $id){
+        $pdo = $this->db->connexion();
+        $sql = "SELECT * FROM fiche_entreprise f inner join partenaire p
+         on f.id_fiche_entreprise = p.ref_fiche_entreprise
+         WHERE ref_user = :ref_user";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['ref_user' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
 
 }

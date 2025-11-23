@@ -20,14 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($nom) || empty($adresse) || empty($web)) {
         $_SESSION['error'] = "Tous les champs sont obligatoires.";
-        header('Location: ../crudEntreprise/creer_fiche.php');
+        header('Location: creerFiche.php');
         exit();
     }
     $check = $ficheRepo->findFicheByWeb($web);
 
     if ($check) {
         $_SESSION['error'] = "Une entreprise avec cette adresse web existe déjà.";
-        header('Location: ../crudEntreprise/creer_fiche.php');
+        header('Location: creerFiche.php');
         exit();
     }
     $idFicheCree = $ficheRepo->createFiche([
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'web' => $web
     ]);
 
-    if ($idFicheCree && $_SESSION['utilisateur']['role'] == 'Patenaire') {
+    if ($idFicheCree && $_SESSION['utilisateur']['role'] == 'Partenaire') {
         $partenaireRepo->affecterFichePartenaire($idUser, $idFicheCree);
         $_SESSION['success'] = "Fiche entreprise créée et rattachée avec succès !";
         header("Location: ../emplois.php");
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     else{
 
         $_SESSION['error'] = "Erreur lors de la création de la fiche entreprise.";
-        header('Location: ../crudEntreprise/creer_fiche.php');
+        header('Location:creerFiche.php');
         exit();
     }
 }

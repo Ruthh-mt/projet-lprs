@@ -2,6 +2,27 @@
 session_start();
 require_once("../../src/bdd/config.php");
 require_once("../../src/repository/FicheEntrepriseRepository.php");
+require_once("../../src/repository/PartenaireRepository.php");
+require_once("../../src/repository/AlumniRepository.php");
+
+require_once("../../src/repository/OffreRepository.php");
+$ficheRepo = new FicheEntrepriseRepository();
+$id_user = $_SESSION['utilisateur']['id_user'];
+$role = $_SESSION['utilisateur']['role'];
+$ref_fiche = null;
+
+if ($role === 'Partenaire') {
+    $partenaire_repo = new PartenaireRepository();
+    $fiche = $partenaire_repo->getFicheByPartenaire($id_user);
+    $ref_fiche = $fiche['id_fiche_entreprise'];
+}
+
+if ($role === 'Alumni') {
+    $alumni_repo = new AlumniRepository();
+    $fiche = $alumni_repo->getFicheByAlumni($id_user);
+    $ref_fiche = $fiche['id_fiche_entreprise'];
+}
+
 
 
 ?>
@@ -115,6 +136,18 @@ require_once("../../src/repository/FicheEntrepriseRepository.php");
                 <input class="form-control" type="number" id="salaire" name="salaire"
                        placeholder="Entrez le salaire" step="0.01">
             </div>
+            <div class="mb-3">
+                <label class="form-label">Entreprise</label>
+
+                <input type="text" class="form-control"
+                       value="<?= htmlspecialchars($fiche['nom_entreprise']); ?>"
+                       disabled>
+
+
+                <input type="hidden" name="ref_fiche"
+                       value="<?= htmlspecialchars($ref_fiche); ?>">
+            </div>
+
 
 
             <div class="d-flex gap-2">

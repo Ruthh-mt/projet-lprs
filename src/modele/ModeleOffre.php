@@ -2,15 +2,14 @@
 
 class ModeleOffre
 {
-
+    private $idOffre;
     private $titreOffre;
     private $description;
     private $mission;
     private $salaire;
     private $typeContrat;
     private $etat;
-    private $refFiche ;
-
+    private $refFiche;
 
     public function __construct(array $donnees){
         $this->hydrate($donnees);
@@ -25,132 +24,84 @@ class ModeleOffre
         }
     }
 
-    /**
-     * @return mixed
-     */
     public function getIdOffre()
     {
         return $this->idOffre;
     }
 
-    /**
-     * @param mixed $idOffre
-     */
-    public function setIdOfre($idOffre): void
+    public function setIdOffre($idOffre): void
     {
         $this->idOffre = $idOffre;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTitreOffre()
     {
         return $this->titreOffre;
     }
 
-    /**
-     * @param mixed $titreOffre
-     */
     public function setTitreOffre($titreOffre): void
     {
         $this->titreOffre = $titreOffre;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDescription()
     {
-        return $this->description ;
+        return $this->description;
     }
 
-    /**
-     * @param mixed $description
-     */
     public function setDescription($description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return mixed
-     */
     public function getMission()
     {
         return $this->mission;
     }
 
-    /**
-     * @param mixed $mission
-     */
     public function setMission($mission): void
     {
         $this->mission = $mission;
     }
 
-    /**
-     * @return mixed
-     */
     public function getSalaire()
     {
-        return $this->salaire ;
+        return $this->salaire;
     }
 
-    /**
-     * @param mixed $salaire
-     */
     public function setSalaire($salaire): void
     {
         $this->salaire = $salaire;
     }
 
-    /**
-     * @return mixed
-     */
     public function getEtat()
     {
         return $this->etat;
     }
 
-    /**
-     * @param mixed $mission
-     */
     public function setEtat($etat): void
     {
         $this->etat = $etat;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTypeContrat()
     {
-        return $this->typeContrat ;
-    }
-    /**
-     * @param mixed $typeContrat
-     */
-    public function setType($typeContrat)
-    {
-        return $this->typeContrat = $typeContrat;
+        return $this->typeContrat;
     }
 
-    /**
-     * @return mixed
-     */
+
+    public function setTypeContrat($typeContrat): void
+    {
+        $this->typeContrat = $typeContrat;
+    }
+
     public function getRefFiche()
     {
         return $this->refFiche;
     }
 
-    /**
-     * @param mixed $refFiche
-     */
     public function setRefFiche($refFiche): void
     {
         $this->refFiche = $refFiche;
     }
-
-
 }
