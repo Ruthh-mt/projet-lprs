@@ -43,17 +43,17 @@ class OffreRepository
         return $offres;
     }
 
-    public function getOffreById($user)
+    public function getOffreById($userId)
     {
         $sql = "SELECT * FROM offre o 
                 INNER JOIN postuler p ON o.id_offre = p.ref_offre 
                 INNER JOIN utilisateur u ON p.ref_user = u.id_user 
                 WHERE id_user = :id";
         $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute(['id' => $user->getIdUser()]);
+        $stmt->execute(['id' => $userId]);
         $req = $stmt->fetchAll();
 
-        return $req[0];
+        return $req[0] ?? null;
     }
     public function getOffresParenaire(int $id)
     {
