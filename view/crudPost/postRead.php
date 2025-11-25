@@ -196,7 +196,7 @@ $reponses = $reponseRepo->getAllReponsebyPostId($id)
                         <i class="bi bi-person-circle fs-3 text-dark"></i>
                     <?php endif; ?>
                     <?= $userpost["prenom"] . " " . $userpost["nom"]?>
-                    <?php if (!empty($_SESSION['utilisateur']) && $reponse->ref_user == $_SESSION['utilisateur']['id_user'])  : ?>
+                    <?php if (!empty($_SESSION['utilisateur']) && $reponse->ref_user == $_SESSION['utilisateur']['id_user'] || $_SESSION['utilisateur']['role']=="Gestionnaire")  : ?>
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
