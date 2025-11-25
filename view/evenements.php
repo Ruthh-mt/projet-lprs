@@ -6,13 +6,16 @@ require_once "../src/bdd/config.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-if (!isset ($_GET['page']) ) {  $page_number = 1;      }
-else {   $page_number = $_GET['page'];      }
+if (!isset ($_GET['page'])) {
+    $page = 1;
+} else {
+    $page = $_GET['page'];
+}
 $nbEvenementParPage = 12;
-$debut=($page_number-1)*$nbEvenementParPage;
+$debut = ($page - 1) * $nbEvenementParPage;
 $evenementRepository = new EvenementRepository();
-$allEvenement = $evenementRepository->getAllEvenement($debut,$nbEvenementParPage);
-$nbTotalEve=$evenementRepository->countAllEvenement()/$nbEvenementParPage;
+$allEvenement = $evenementRepository->getAllEvenement($debut, $nbEvenementParPage);
+$nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
 
 ?>
 <!doctype html>
@@ -142,51 +145,53 @@ $nbTotalEve=$evenementRepository->countAllEvenement()/$nbEvenementParPage;
                     connecter</h5>';
 
             <?php else : ?>
-            <article class="row my-3">
+            <section class
+                <article class="row my-3">
                 <div class="justify-content-center card-group">
-                    <?php
-                    if (!empty($allEvenement)):
-                        $count=0;
-                    $img=["https://wallpaper.dog/large/20516113.png","https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg","https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
-                        foreach ($allEvenement as $evenement):
-                            if($count==3) :?>
+                <?php
+                if (!empty($allEvenement)):
+                    $count = 0;
+                    $img = ["https://wallpaper.dog/large/20516113.png", "https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg", "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
+                    foreach ($allEvenement as $evenement):
+                        if ($count == 3) :?>
                             </div></article>
                             <article class="row my-3">
                             <div class="justify-content-center card-group">
-                                <?php $count=0;
-                                endif; ?>
-                            <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
-                                <img src="<?=$img[$count]?>"
-                                     class="card-img-top"
-                                     alt="Image événement"
-                                     style="height: 180px; object-fit: cover;">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h5>
-                                    <p class="card-text flex-grow-1 text-muted">
-                                        <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
-                                    </p>
-                                    <a href="../view/crudEvenement/evenementRead.php?id=<?=$evenement->id_evenement?>"
-                                       class="btn btn-primary mt-auto">
-                                        En savoir plus
-                                    </a>
-                                </div>
-                                <div class="card-footer text-muted small">
-                                    Dernière mise à jour : <?= date("d/m/Y H:i") ?>
-                                </div>
+                            <?php $count = 0;
+                        endif; ?>
+                        <div class="card shadow-sm"> <!---style="width: 320px; height: 430px; flex: 0 0 auto;"-->
+                            <img src="<?= $img[$count] ?>"
+                                 class="card-img-top"
+                                 alt="Image événement"
+                                style="height: 230px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h5>
+                                <p class="card-text flex-grow-1 text-muted">
+                                    <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
+                                </p>
+                                <a href="../view/crudEvenement/evenementRead.php?id=<?= $evenement->id_evenement ?>"
+                                   class="btn btn-primary mt-auto">
+                                    En savoir plus
+                                </a>
                             </div>
-                        <?php $count ++;
-                        endforeach;
-                    else :?>
+                            <div class="card-footer text-muted small">
+                                Dernière mise à jour : <?= date("d/m/Y H:i") ?>
+                            </div>
+                        </div>
+
+                        <?php $count++;
+                    endforeach;
+                else :?>
                     <div class="alert alert-dark alert-dismissible fade show">
-                        <h5 > Il semblerait qu'il n'y a pas
+                        <h5> Il semblerait qu'il n'y a pas
                             d'evenements</h5>
                         <br>
-                        <p >Soyez le/la premier/e a lancer le pas et
+                        <p>Soyez le/la premier/e a lancer le pas et
                             crée votre evenement</p>";
                     </div>
-                    <?php endif; ?>
+                <?php endif; ?>
                 </div>
-            </article>
+                </article>
             <?php endif; ?>
         </section>
 
@@ -194,15 +199,15 @@ $nbTotalEve=$evenementRepository->countAllEvenement()/$nbEvenementParPage;
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
+                <a class="page-link" href="evenements.php?page=<?php if($page>1){echo$page-1;}else{echo $page; } ?>" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <?php for ($page = 1; $page <= $nbTotalEve ; $page++):?>
-                <li class="page-item"><a class="page-link" href="evenements.php?page=<?=$page?>"><?=$page?></a></li>
+            <?php for ($pages=1 ; $pages <= $nbTotalEve; $pages++): ?>
+                <li class="page-item"><a class="page-link" href="evenements.php?page=<?= $pages ?>"><?= $pages ?></a></li>
             <?php endfor; ?>
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+                <a class="page-link" href="evenements.php?page=<?= $page +1 ?>" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
