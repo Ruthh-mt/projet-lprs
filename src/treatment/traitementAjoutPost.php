@@ -20,6 +20,7 @@ $refUser = $_POST["ref_user"];
 $titrePost = $_POST["titre_post"];
 $contenuPost = $_POST["contenu_post"];
 $canal=$_POST["canal"];
+date_default_timezone_set('Europe/Paris');
 $dateHeurePost = date("Y-m-d H:i:s");
 
 
