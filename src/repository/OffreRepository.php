@@ -45,10 +45,10 @@ class OffreRepository
 
     public function getOffreById($user)
     {
-        $sql = "SELECT * FROM offre o inner join postuler p inner join utilisateur u
-         on o.id_offre = p.ref_offre 
-         on p.ref_user = u.id_user
-         WHERE id_user =:id";
+        $sql = "SELECT * FROM offre o 
+                INNER JOIN postuler p ON o.id_offre = p.ref_offre 
+                INNER JOIN utilisateur u ON p.ref_user = u.id_user 
+                WHERE id_user = :id";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute(['id' => $user->getIdUser()]);
         $req = $stmt->fetchAll();

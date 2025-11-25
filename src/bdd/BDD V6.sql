@@ -19,10 +19,6 @@ CREATE TABLE IF NOT EXISTS `alumni` (
     KEY `fk_fiche_entreprise_alumni` (`ref_fiche_entreprise`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `alumni` (`ref_user`, `cv`, `annee_promo`, `poste`, `ref_fiche_entreprise`) VALUES
-                                                                                            (3, NULL, '1999', 'Aucun', NULL),
-                                                                                            (5, NULL, '2013', 'CIO', NULL);
-
 DROP TABLE IF EXISTS `etudiant`;
 CREATE TABLE IF NOT EXISTS `etudiant` (
                                           `ref_user` int NOT NULL,
@@ -32,9 +28,6 @@ CREATE TABLE IF NOT EXISTS `etudiant` (
     KEY `fk_utilisateur_etudiant` (`ref_user`),
     KEY `fk_formation_etudiant` (`ref_formation`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-INSERT INTO `etudiant` (`ref_user`, `cv`, `annee_promo`, `ref_formation`) VALUES
-    (1, NULL, '2025', 1);
 
 DROP TABLE IF EXISTS `evenement`;
 CREATE TABLE IF NOT EXISTS `evenement` (
@@ -65,10 +58,6 @@ CREATE TABLE IF NOT EXISTS `formation` (
                                            `nom` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     PRIMARY KEY (`id_formation`)
     ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-INSERT INTO `formation` (`id_formation`, `nom`) VALUES
-                                                    (1, 'BTS SIO SLAM'),
-                                                    (2, 'BTS MS');
 
 DROP TABLE IF EXISTS `gestionnaire`;
 CREATE TABLE IF NOT EXISTS `gestionnaire` (
@@ -139,9 +128,6 @@ CREATE TABLE IF NOT EXISTS `professeur` (
     KEY `fk_utilisateur_professeur` (`ref_user`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `professeur` (`ref_user`, `specialite`) VALUES
-    (2, 'Anglais');
-
 DROP TABLE IF EXISTS `professeur_formation`;
 CREATE TABLE IF NOT EXISTS `professeur_formation` (
                                                       `ref_user` int NOT NULL,
@@ -184,14 +170,6 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
     PRIMARY KEY (`id_user`),
     KEY `fk_gestionaire_utilisateur` (`ref_validateur`)
     ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-INSERT INTO `utilisateur` (`id_user`, `nom`, `prenom`, `email`, `mdp`, `role`, `ref_validateur`, `avatar`) VALUES
-                                                                                                               (1, 'd&#039;Erceville', 'Augustin', 'a.erceville2000@gmail.com', '$2y$10$ufqZFqIlSh80ce8BPr1XNObxnXgLDr8dkBCyspuVn.kaoAaMakc.q', 'Gestionnaire', NULL, '/uploads/avatar/user1.gif'),
-                                                                                                               (2, 'Lagrognasse', 'Capucine', 'CapucinePoissonnier@armyspy.com', '$2y$10$PrqwZ3zhGLOjNNcyiSRoUOvt4Bmri1qGuZozfCfevDh.VQz.mPEl2', 'Professeur', NULL, '/uploads/avatar/user2.png'),
-                                                                                                               (3, 'Boivin', 'Felicienne', 'FelicienneBoivin@armyspy.com', '$2y$10$sB/s1gz9DqEZcebH5hF5fORgeQ5g/reaCUvMI0/XkF1lZTucvYR0O', 'Alumni', NULL, NULL),
-                                                                                                               (4, 'Seguin', 'Mallory', 'MallorySeguin@dayrep.com', '$2y$10$3DK5bsbhjQaHGudrzvyI3uOjDg6pSJCmynCOilAXVBiq6zPcW6NYW', 'Étudiant', NULL, NULL),
-                                                                                                               (5, 'Grognasse', 'La', 'lagrognasse68@gmail.com', '$2y$10$yHb/uQYGaP/xuBfyYeyWiuI7kWpZ43JM98NbqLu8aQENoL5tf6QY2', 'Alumni', NULL, NULL);
-
 
 ALTER TABLE `alumni`
     ADD CONSTRAINT `fk_fiche_entreprise_alumni` FOREIGN KEY (`ref_fiche_entreprise`) REFERENCES `fiche_entreprise` (`id_fiche_entreprise`),
