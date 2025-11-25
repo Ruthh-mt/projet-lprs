@@ -1,6 +1,6 @@
 <?php
 
-class ModeleGestionnaire
+class ModelePartenaire
 {
     private $id_user;
     private $prenom;
@@ -28,18 +28,11 @@ class ModeleGestionnaire
             }
         }
     }
-
-    /**
-     * @return mixed
-     */
-    public function getIdUser()
+    public function getId()
     {
         return $this->id_user;
     }
 
-    /**
-     * @param mixed $id_user
-     */
     public function setIdUser($id_user): void
     {
         $this->id_user = $id_user;
