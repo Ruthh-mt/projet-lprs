@@ -123,7 +123,7 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
             <?php endif; ?>
 
             <div class="mb-3">
-                <label for="titre_eve" class="form-label">Titre du poste</label>
+                <label for="titre" class="form-label">Titre du poste</label>
                 <input class="form-control" type ="text" name="titre" value="<?= $offre['titre']?>">
             </div>
 

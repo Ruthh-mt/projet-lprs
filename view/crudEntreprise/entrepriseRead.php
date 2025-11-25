@@ -18,8 +18,7 @@ if (session_status() === PHP_SESSION_NONE) {
           crossorigin="anonymous">
 </head>
 <body>
-<header
-        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
             <img src="https://i.pinimg.com/originals/a0/50/1e/a0501e0c5659dcfde397299e4234e75a.gif" class="mx-3" style="max-width: 48px;">

@@ -17,8 +17,7 @@ if (session_status() === PHP_SESSION_NONE) {
           crossorigin="anonymous">
 </head>
 <body>
-<header
-    class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
             <img src="https://media.tenor.com/ifEkV-aGn3EAAAAi/fat-cat.gif"
@@ -60,7 +59,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
             <a href="../crudPost/postRead.php" class="btn btn-outline-danger disabled">Post</a>
-            <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
+            <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info active">Réponses</a>
             <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
         </div>
     </div>
