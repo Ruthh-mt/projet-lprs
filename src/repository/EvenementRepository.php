@@ -30,11 +30,14 @@ class EvenementRepository
         return $this->db->connexion()->lastInsertId();
     }
 
-    public function getAllEvenement()
+    public function getAllEvenement($limit,$perPage)
     {
-        $sql = "SELECT * FROM evenement";
+        $sql = "SELECT * FROM evenement LIMIT :limit,:perPage";
         $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute([
+            'limit' => $limit,
+            'perPage' => $perPage
+        ]);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
@@ -73,6 +76,12 @@ class EvenementRepository
         ]);
         return $evenement->getIdEvenement();
 
+    }
+    public function countAllEvenement(){
+        $sql = "SELECT COUNT(*) FROM evenement";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 
     public function validateEvenement(ModeleEvenement $evenement)

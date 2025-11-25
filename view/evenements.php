@@ -6,6 +6,14 @@ require_once "../src/bdd/config.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+if (!isset ($_GET['page']) ) {  $page_number = 1;      }
+else {   $page_number = $_GET['page'];      }
+$nbEvenementParPage = 12;
+$debut=($page_number-1)*$nbEvenementParPage;
+$evenementRepository = new EvenementRepository();
+$allEvenement = $evenementRepository->getAllEvenement($debut,$nbEvenementParPage);
+$nbTotalEve=$evenementRepository->countAllEvenement()/$nbEvenementParPage;
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -134,14 +142,21 @@ if (session_status() === PHP_SESSION_NONE) {
                     connecter</h5>';
 
             <?php else : ?>
-                <div class="d-flex flex-wrap justify-content-start gap-4">
-                    <?php $evenementRepository = new EvenementRepository();
-                    $allEvenement = $evenementRepository->getAllEvenement();
-
+            <article class="row my-3">
+                <div class="justify-content-center card-group">
+                    <?php
                     if (!empty($allEvenement)):
-                        foreach ($allEvenement as $evenement):?>
+                        $count=0;
+                    $img=["https://wallpaper.dog/large/20516113.png","https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg","https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
+                        foreach ($allEvenement as $evenement):
+                            if($count==3) :?>
+                            </div></article>
+                            <article class="row my-3">
+                            <div class="justify-content-center card-group">
+                                <?php $count=0;
+                                endif; ?>
                             <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
-                                <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
+                                <img src="<?=$img[$count]?>"
                                      class="card-img-top"
                                      alt="Image événement"
                                      style="height: 180px; object-fit: cover;">
@@ -159,16 +174,19 @@ if (session_status() === PHP_SESSION_NONE) {
                                     Dernière mise à jour : <?= date("d/m/Y H:i") ?>
                                 </div>
                             </div>
-
-                        <?php endforeach;
+                        <?php $count ++;
+                        endforeach;
                     else :?>
-                        <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait qu'il n'y a pas
+                    <div class="alert alert-dark alert-dismissible fade show">
+                        <h5 > Il semblerait qu'il n'y a pas
                             d'evenements</h5>
                         <br>
-                        <p class="alert alert-dark alert-dismissible fade show">Soyez le/la premier/e a lancer le pas et
+                        <p >Soyez le/la premier/e a lancer le pas et
                             crée votre evenement</p>";
+                    </div>
                     <?php endif; ?>
                 </div>
+            </article>
             <?php endif; ?>
         </section>
 
@@ -180,9 +198,9 @@ if (session_status() === PHP_SESSION_NONE) {
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <?php for ($page = 1; $page <= $nbTotalEve ; $page++):?>
+                <li class="page-item"><a class="page-link" href="evenements.php?page=<?=$page?>"><?=$page?></a></li>
+            <?php endfor; ?>
             <li class="page-item">
                 <a class="page-link" href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
@@ -190,6 +208,7 @@ if (session_status() === PHP_SESSION_NONE) {
             </li>
         </ul>
     </nav>
+
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
