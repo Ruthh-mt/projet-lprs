@@ -73,7 +73,6 @@ if($ligne){
                 header("location: ../../view/messageConfirmation.php");
             }else{
                 echo"le message n'a pas pu etre envoyer(".$mail->ErrorInfo.")";
-
             }
         }catch (Exception $e){
             echo"Erreur lors de l'envoi de votre mail : (".$mail->ErrorInfo.")";
