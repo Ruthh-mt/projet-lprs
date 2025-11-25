@@ -2,25 +2,8 @@
 $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-}
 
-require_once '../../src/repository/FormationRepository.php';
-
-$page = 'Formation';
-
-$repo = new FormationRepository();
-
-// ID en GET
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-if ($id <= 0) {
-    header('Location: formationRead.php');
-    exit;
-}
-
-$formation = $repo->getById($id);
-if (!$formation) {
-    header('Location: formationRead.php');
-    exit;
+    $page = 'Évènement';
 }
 ?>
 <!doctype html>
@@ -89,8 +72,8 @@ if (!$formation) {
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
-            <a href="../crudEvenement/evenementListe.php" class="btn btn-outline-info">Évènement</a>
-            <a href="../crudFormation/formationRead.php" class="btn btn-outline-info active">Formation</a>
+            <a href="../crudEvenement/evenementListe.php" class="btn btn-outline-info active">Évènement</a>
+            <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
             <a href="../crudOffre/offreListe.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
@@ -103,43 +86,6 @@ if (!$formation) {
 <section class="container banner bg-info text-white text-center py-1 rounded border">
     <h1>Gestion <?=$page?></h1>
 </section>
-
-<section class="container my-3">
-    <div class="row">
-        <div class="col"></div>
-
-        <div class="col-6 border border-3 border-dark rounded p-3">
-            <h2 class="text-center mb-3">Modifier une formation</h2>
-
-            <form action="../../src/treatment/traitementFormation.php?action=update&id=<?= (int)$formation['id_formation'] ?>"
-                  method="post"
-                  class="align-self-center">
-
-                <input type="hidden" name="id_formation" value="<?= (int)$formation['id_formation'] ?>">
-
-                <div class="form-floating my-2">
-                    <input type="text"
-                           name="nom"
-                           class="form-control"
-                           id="floatingNomFormation"
-                           placeholder="Nom de la formation"
-                           value="<?= htmlspecialchars($formation['nom'], ENT_QUOTES, 'UTF-8') ?>"
-                           required>
-                    <label for="floatingNomFormation" class="ms-4">Nom de la formation</label>
-                </div>
-
-                <div class="d-grid gap-2 my-2">
-                    <button class="btn btn-outline-warning" type="submit">METTRE À JOUR</button>
-                </div>
-            </form>
-        </div>
-
-        <div class="col"></div>
-    </div>
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -9,15 +9,15 @@ class etudiantRepository
           $this->db=NEW Config();
      }
 
-     public function findByUserId(int $id_user): ?array
-     {
-          $sql = "SELECT * FROM utilisateur WHERE id_user = :ref_user";
-          $stmt = $this->db->connexion()->prepare($sql);
-          $stmt->execute(['id_user' => $id_user]);
-          $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    public function findByUserId(int $id_user): ?array
+    {
+        $sql = "SELECT * FROM utilisateur WHERE id_user = :id_user";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute(['id_user' => $id_user]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-          return $result ?: null;
-     }
+        return $result ?: null;
+    }
 
      public function insert(array $data): bool
      {

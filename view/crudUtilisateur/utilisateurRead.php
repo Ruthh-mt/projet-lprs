@@ -17,23 +17,18 @@ $page = 'Utilisateur';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ACCUEIL • LPRS</title>
+    <title>ADMIN • LPRS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
 </head>
 <body>
-<header
-        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
-        <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img src="https://media.tenor.com/ifEkV-aGn3EAAAAi/fat-cat.gif"
-                 class="rounded-circle mx-3"
-                 style="max-width: 15%; height: auto;">
-            <div class="fs-4 text-light text-uppercase">LPRS • ADMIN</div>
+        <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
+            <img src="https://i.pinimg.com/originals/a0/50/1e/a0501e0c5659dcfde397299e4234e75a.gif" class="mx-3" style="max-width: 48px;">
+            <div class="fs-4 text-light text-uppercase">LPRS</div>
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
@@ -49,36 +44,54 @@ $page = 'Utilisateur';
             </li>
         <?php endif; ?>
     </ul>
-    <div class="col-2 btn-group md-3 me-3 text-end" role="group" aria-label="Boutons utilisateur">
-        <?php if (isset($_SESSION['utilisateur'])): ?>
-            <a href="../account/accountRead.php" class="btn btn-outline-primary">Mon compte</a>
-            <a href="../../src/treatment/traitementDeconnexion.php" class="btn btn-outline-danger">Déconnexion</a>
-        <?php else: ?>
-            <a href="../connexion.php" class="btn btn-outline-success">Connexion</a>
-            <a href="../inscription.php" class="btn btn-outline-primary">Inscription</a>
-        <?php endif; ?>
+    <div class="col-2 text-end me-3">
+        <div class="dropdown">
+            <?php if (isset($_SESSION['utilisateur'])): ?>
+                <?php $avatar = $_SESSION['utilisateur']['avatar'] ?? null; ?>
+                <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <?php if ($avatar): ?>
+                        <img src="<?= $prefix.htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" alt="Photo de profil" class="rounded-circle" style="max-width: 48px;object-fit:cover;">
+                    <?php else: ?>
+                        <i class="bi bi-person-circle fs-3 text-light"></i>
+                    <?php endif; ?>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end text-small">
+                    <li><a class="dropdown-item text-primary" href="../account/accountRead.php"><i class="bi bi-person"></i> Mon compte</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="../../src/treatment/traitementDeconnexion.php"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
+                </ul>
+            <?php else: ?>
+                <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle fs-3 text-light"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end text-small">
+                    <li><a class="dropdown-item text-primary" href="../connexion.php"><i class="bi bi-box-arrow-in-right"></i> Connexion</a></li>
+                    <li><a class="dropdown-item text-success" href="../inscription.php"><i class="bi bi-person-plus"></i> Inscription</a></li>
+                </ul>
+            <?php endif; ?>
+        </div>
     </div>
 </header>
 <nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
     <div class="nav col mb-2 justify-content-center mb-md-0">
         <div class="btn-group mx-1" role="group" aria-label="Basic example">
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
-            <a href="../crudEvenement/evenementRead.php" class="btn btn-outline-danger disabled">Évènement</a>
+            <a href="../crudEvenement/evenementListe.php" class="btn btn-outline-info">Évènement</a>
             <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
-            <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
+            <a href="../crudOffre/offreListe.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
-            <a href="../crudPost/postRead.php" class="btn btn-outline-danger ">Post</a>
+            <a href="../crudPost/postListe.php" class="btn btn-outline-info">Post</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
             <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info active">Utilisateur</a>
         </div>
     </div>
 </nav>
-
-<section class="container bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?= htmlspecialchars($page) ?></h1>
+<section class="container banner bg-info text-white text-center py-1 rounded border">
+    <h1>Gestion <?=$page?></h1>
 </section>
-
 <section class="container text-center">
     <a href="utilisateurCreate.php" class="btn btn-outline-success my-3 d-grid">Ajouter un utilisateur</a>
 </section>

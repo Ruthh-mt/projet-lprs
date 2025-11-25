@@ -45,10 +45,10 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
-        redirectWith('error', "Identifiants incorrects.", '../../view/connexion.php');
+        redirectWith('error', "Identifiants ou mot de passe incorrects.", '../../view/connexion.php');
     }
     if (!password_verify($motDePasse, $user['mdp'])) {
-        redirectWith('error', "Identifiants incorrects.", '../../view/connexion.php');
+        redirectWith('error', "Identifiants ou mot de passe incorrects.", '../../view/connexion.php');
     }
     if (password_needs_rehash($user['mdp'], PASSWORD_DEFAULT)) {
         $newHash = password_hash($motDePasse, PASSWORD_DEFAULT);
