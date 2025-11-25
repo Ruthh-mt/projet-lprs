@@ -18,8 +18,7 @@ if (session_status() === PHP_SESSION_NONE) {
           crossorigin="anonymous">
 </head>
 <body>
-<header
-        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
             <img src="https://i.pinimg.com/originals/a0/50/1e/a0501e0c5659dcfde397299e4234e75a.gif" class="mx-3" style="max-width: 48px;">
@@ -77,7 +76,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
             <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
             <a href="../crudOffre/offreRead.php" class="btn btn-outline-info">Offre</a>
-            <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
+            <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info active">Partenaire</a>
             <a href="../crudPost/postRead.php" class="btn btn-outline-danger disabled">Post</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
             <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>

@@ -70,7 +70,7 @@ $page = 'Utilisateur';
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
             <a href="../crudPost/postRead.php" class="btn btn-outline-danger ">Post</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
-            <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
+            <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info active">Utilisateur</a>
         </div>
     </div>
 </nav>
