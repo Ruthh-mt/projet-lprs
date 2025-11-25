@@ -74,7 +74,5 @@ class PostulerRepository
         $stmt->execute([
             'motivation' => $lettre_motivation
         ]);
-
     }
-
 }

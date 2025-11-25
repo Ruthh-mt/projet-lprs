@@ -134,13 +134,17 @@ $id_user = $_SESSION['utilisateur']['id_user'];
             <td><?= htmlspecialchars($offre['nom_entreprise']) ?></td>
             <td><?= htmlspecialchars($offre['type']) ?></td>
             <td><?= htmlspecialchars($offre['etat']) ?></td>
+
+
             <td class="row-actions">
-                <a href="crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>"
+                <?php if($_SESSION['utilisateur']['role'] === 'Partenaire'  && $partenaire_a_une_fiche['ref_fiche_entreprise'] == $offre['ref_fiche']
+                    || $_SESSION['utilisateur']['role'] === 'Alumni'  && $alumni_a_une_fiche['ref_fiche_entreprise'] == $offre['ref_fiche'])
+                    :?>
+
+                    <a href="crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>"
                    class="btn btn-sm btn-outline" title="Modifier">
                     <i class="bi bi-pencil"></i>
                 </a>
-
-                <?php if($_SESSION['utilisateur']['role'] === 'Partenaire' || $_SESSION['utilisateur']['role'] === 'Alumni'): ?>
                 <form action="../src/treatment/traitementDeleteOffre.php" method="post" style="display:inline;">
                     <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                     <input type="hidden" name="delete_offre" value="1">
@@ -149,7 +153,8 @@ $id_user = $_SESSION['utilisateur']['id_user'];
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>
-                <?php endif; ?>
+                <?php endif ?>
+
 
                 <?php if($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
                 <form action="../view/postuler.php?id=<?= $offre['id_offre'] ?>" method="post" style="display:inline;">
