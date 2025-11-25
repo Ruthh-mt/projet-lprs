@@ -143,9 +143,9 @@ $page = 'Gestionnaire';
                 url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json'
             },
             responsive: true,
-            order: [[1, 'asc']], // Tri par prénom par défaut
+            order: [[1, 'asc']],
             columnDefs: [
-                { orderable: false, targets: [5] } // Désactive le tri sur la colonne des actions
+                { orderable: false, targets: [5] }
             ]
         });
     });

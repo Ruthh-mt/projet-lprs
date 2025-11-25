@@ -17,7 +17,14 @@ class partenaireRepository
 
           return $result ?: null;
      }
-
+    public function findAll() {
+        $stmt = $this->db->connexion()->query('SELECT * FROM utilisateur WHERE role = "Partenaire" ORDER BY nom, prenom');
+        $partenaires = [];
+        while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $partenaires[] = new ModelePartenaire($data);
+        }
+        return $partenaires;
+    }
      public function insert(array $data): bool
      {
           $sql = "INSERT INTO partenaire (ref_user, cv, poste, ref_fiche_entreprise) 

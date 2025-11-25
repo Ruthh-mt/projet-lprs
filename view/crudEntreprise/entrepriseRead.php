@@ -86,6 +86,9 @@ if (session_status() === PHP_SESSION_NONE) {
 <section class="container banner bg-info text-white text-center py-1 rounded border">
     <h1>Gestion <?=$page?></h1>
 </section>
+<section class="container text-center">
+    <a href="creerFiche.php" class="btn btn-outline-success my-3 d-grid">Ajouter une formation</a>
+</section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

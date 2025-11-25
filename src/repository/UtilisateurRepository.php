@@ -81,28 +81,22 @@ class utilisateurRepository
         return $stmt->execute(['id_user' => $id_user]);
     }
 
-    public function changerMdp($mdp, $email)
-    {
-    }
-
-    /**
-     * Récupère tous les utilisateurs avec le rôle 'Étudiant' triés par nom et prénom
-     * @return array
-     */
+    public function changerMdp($mdp, $email){}
     public function findAllEtudiants(): array
     {
         $sql = "SELECT * FROM utilisateur WHERE role = 'Étudiant' ORDER BY nom, prenom";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
-
-    /**
-     * Récupère tous les utilisateurs qui ne sont pas des gestionnaires
-     * @return array
-     */
     public function findNonGestionnaires(): array
     {
         $sql = "SELECT * FROM utilisateur WHERE role != 'Gestionnaire' ORDER BY nom, prenom";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    }
+    public function findNonPartenaires(): array
+    {
+        $sql = "SELECT * FROM utilisateur WHERE role != 'Partenaire' ORDER BY nom, prenom";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }

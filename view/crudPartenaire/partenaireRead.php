@@ -2,9 +2,16 @@
 $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-
-    $page = 'Partenaire';
 }
+
+require_once '../../src/modele/ModelePartenaire.php';
+require_once '../../src/bdd/config.php';
+require_once '../../src/repository/PartenaireRepository.php';
+
+$repo = new PartenaireRepository();
+$partenaires = $repo->findAll();
+
+$page = 'Partenaire';
 ?>
 <!doctype html>
 <html lang="fr">
@@ -86,6 +93,62 @@ if (session_status() === PHP_SESSION_NONE) {
 <section class="container banner bg-info text-white text-center py-1 rounded border">
     <h1>Gestion <?=$page?></h1>
 </section>
+<section class="container text-center">
+    <a href="partenaireCreate.php" class="btn btn-outline-success my-3 d-grid">Ajouter un partenaire</a>
+</section>
+
+<section class="container">
+    <table id="partenaireTable" class="table table-striped" style="width:100%">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($partenaires) && is_array($partenaires)): ?>
+            <?php foreach ($partenaires as $partenaire): ?>
+                <tr>
+                    <td><?= htmlspecialchars($partenaire->getId()) ?></td>
+                    <td><?= htmlspecialchars($partenaire->getPrenom()) ?></td>
+                    <td><?= htmlspecialchars($partenaire->getNom()) ?></td>
+                    <td><?= htmlspecialchars($partenaire->getEmail()) ?></td>
+                    <td><?= htmlspecialchars($partenaire->getRole()) ?></td>
+                    <td class="text-center">
+                        <a href="partenaireDelete.php?id=<?= $partenaire->getId() ?>"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce partenaire ?')">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="6" class="text-center">Aucun partenaire trouvé</td>
+            </tr>
+        <?php endif; ?>
+        </tbody>
+    </table>
+</section>
+<script>
+    $(document).ready(function() {
+        $('#partenaireTable').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json'
+            },
+            responsive: true,
+            order: [[1, 'asc']],
+            columnDefs: [
+                { orderable: false, targets: [5] }
+            ]
+        });
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

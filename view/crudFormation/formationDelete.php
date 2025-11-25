@@ -1,9 +1,26 @@
 <?php
-$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
+$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0] . '/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
 
-    $page = 'Évènement';
+if (!isset($_SESSION['utilisateur']) || $_SESSION['utilisateur']['role'] !== 'Gestionnaire') {
+    header('Location: ../../index.php');
+    exit();
+}
+
+require_once '../../src/repository/FormationRepository.php';
+
+$page = 'Formation';
+$formation = null;
+
+$repo = new FormationRepository();
+
+$idFormation = $_GET['id_formation'] ?? $_GET['id'] ?? 0;
+$idFormation = (int) $idFormation;
+
+if ($idFormation > 0) {
+    $formation = $repo->getById($idFormation);
 }
 ?>
 <!doctype html>
@@ -12,8 +29,10 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ADMIN • LPRS</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
 </head>
@@ -21,7 +40,8 @@ if (session_status() === PHP_SESSION_NONE) {
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="../accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img src="https://i.pinimg.com/originals/a0/50/1e/a0501e0c5659dcfde397299e4234e75a.gif" class="mx-3" style="max-width: 48px;">
+            <img src="https://i.pinimg.com/originals/a0/50/1e/a0/501ea6dd4fd4dcfde397299e4234e75a.gif"
+                 class="mx-3" style="max-width: 48px;">
             <div class="fs-4 text-light text-uppercase">LPRS</div>
         </a>
     </div>
@@ -45,46 +65,40 @@ if (session_status() === PHP_SESSION_NONE) {
                 <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <?php if ($avatar): ?>
-                        <img src="<?= $prefix.htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" alt="Photo de profil" class="rounded-circle" style="max-width: 48px;object-fit:cover;">
+                        <img src="<?= $prefix . htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>"
+                             alt="Avatar"
+                             class="rounded-circle"
+                             style="max-width: 48px; object-fit: cover;">
                     <?php else: ?>
                         <i class="bi bi-person-circle fs-3 text-light"></i>
                     <?php endif; ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small">
-                    <li><a class="dropdown-item text-primary" href="../account/accountRead.php"><i class="bi bi-person"></i> Mon compte</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="../../src/treatment/traitementDeconnexion.php"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
+                    <li>
+                        <a class="dropdown-item text-primary" href="../profil.php">
+                            <i class="bi bi-person-lines-fill"></i> Profil
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="../../src/treatment/traitementDeconnexion.php">
+                            <i class="bi bi-box-arrow-right"></i> Déconnexion
+                        </a>
+                    </li>
                 </ul>
             <?php else: ?>
-                <a href="#" class="d-inline-block text-decoration-none dropdown-toggle"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle fs-3 text-light"></i>
+                <a href="../connexion.php" class="btn btn-outline-light me-2">
+                    <i class="bi bi-box-arrow-in-right"></i> Connexion
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end text-small">
-                    <li><a class="dropdown-item text-primary" href="../connexion.php"><i class="bi bi-box-arrow-in-right"></i> Connexion</a></li>
-                    <li><a class="dropdown-item text-success" href="../inscription.php"><i class="bi bi-person-plus"></i> Inscription</a></li>
-                </ul>
+                <a href="../inscription.php" class="btn btn-warning">
+                    <i class="bi bi-person-plus"></i> Inscription
+                </a>
             <?php endif; ?>
         </div>
     </div>
 </header>
-<nav class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom text-white bg-dark">
-    <div class="nav col mb-2 justify-content-center mb-md-0">
-        <div class="btn-group mx-1" role="group" aria-label="Basic example">
-            <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
-            <a href="../crudEvenement/evenementListe.php" class="btn btn-outline-info">Évènement</a>
-            <a href="../crudFormation/formationRead.php" class="btn btn-outline-info active">Formation</a>
-            <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
-            <a href="../crudOffre/offreListe.php" class="btn btn-outline-info">Offre</a>
-            <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
-            <a href="../crudPost/postListe.php" class="btn btn-outline-info">Post</a>
-            <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
-            <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
-        </div>
-    </div>
-</nav>
-<section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
+
+<section class="container banner bg-info text-white text-center py-1 rounded border mt-3">
+    <h1>Gestion <?= $page ?></h1>
 </section>
 
 <section class="container my-3">
@@ -95,7 +109,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="card-body">
             <h5 class="card-title">Confirmation</h5>
 
-            <?php if ($id <= 0 || !$formation): ?>
+            <?php if ($idFormation <= 0 || !$formation): ?>
                 <p class="card-text">Formation introuvable ou identifiant invalide.</p>
                 <a href="formationRead.php" class="btn btn-secondary">Retour</a>
             <?php else: ?>
@@ -104,8 +118,10 @@ if (session_status() === PHP_SESSION_NONE) {
                     <strong><?= htmlspecialchars($formation['nom'], ENT_QUOTES, 'UTF-8') ?></strong> ?
                 </p>
 
-                <form method="post" action="../../src/treatment/traitementFormation.php?action=delete" class="d-inline">
-                    <input type="hidden" name="id_formation" value="<?= (int) $id ?>">
+                <form method="post"
+                      action="../../src/treatment/traitementFormation.php?action=delete"
+                      class="d-inline">
+                    <input type="hidden" name="id_formation" value="<?= $idFormation ?>">
                     <button type="submit" class="btn btn-warning me-2">
                         Confirmer la suppression
                     </button>
