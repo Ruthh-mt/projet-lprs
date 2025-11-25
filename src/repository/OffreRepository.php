@@ -27,11 +27,35 @@ class OffreRepository
         ]);
         return $this->db->connexion()->lastInsertId();
     }
+
     public function deleteOffre($id)
     {
         $sql = "DELETE FROM offre WHERE id_offre = :id_offre";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute(['id_offre' => $id]) ;
+    }
+    public function updateOffre(ModeleOffre $offre){
+        $sql = "UPDATE offre
+                SET  titre=?,description=?, mission=?,salaire=? , type =?,etat=? ,ref_fiche=? 
+                WHERE id_offre=? ";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute([
+            $offre -> getIdOffre() ,
+            $offre->getTitreOffre(),
+            $offre->getDescription(),
+            $offre->getMission(),
+            $offre->getSalaire(),
+            $offre -> getTypeContrat() ,
+            $offre->getEtat(),
+            $offre->getRefFiche()
+        ]);
+    }
+    public function getOffreById($id){
+        $sql = "SELECT * FROM offre WHERE id_offre = :id_offre";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute(['id_offre' => $id]);
+        $offre = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $offre;
     }
 
     public function getAllOffre()
@@ -43,18 +67,6 @@ class OffreRepository
         return $offres;
     }
 
-    public function getOffreById($userId)
-    {
-        $sql = "SELECT * FROM offre o 
-                INNER JOIN postuler p ON o.id_offre = p.ref_offre 
-                INNER JOIN utilisateur u ON p.ref_user = u.id_user 
-                WHERE id_user = :id";
-        $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute(['id' => $userId]);
-        $req = $stmt->fetchAll();
-
-        return $req[0] ?? null;
-    }
     public function getOffresParenaire(int $id)
     {
         $sql = "

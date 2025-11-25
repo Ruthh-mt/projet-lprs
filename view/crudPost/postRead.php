@@ -186,8 +186,8 @@ $reponses = $reponseRepo->getAllReponsebyPostId($id)
             $userpost = $reponseRepo->findUsernameReponse(new ModeleReponse(["idReponse" => $reponse->id_reponse,
                 "refPost" => $reponse->ref_post]));
             ?>
-        <br>
-            <div class="card" style="width: 18rem;">
+            <br>
+            <div class="card" style="width: 25rem;">
                 <div class="card-header">
                     <?php if ($avatar): ?>
                         <img src="<?= $prefix . htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8') ?>" alt="Photo de profil"
@@ -195,30 +195,28 @@ $reponses = $reponseRepo->getAllReponsebyPostId($id)
                     <?php else: ?>
                         <i class="bi bi-person-circle fs-3 text-dark"></i>
                     <?php endif; ?>
-                    <?= $userpost["prenom"] . " " . $userpost["nom"] ?>
-
-                    <?php if (!empty($_SESSION['utilisateur']) && $reponse->ref_user == $_SESSION['utilisateur']['id_user'])  : ?>
+                    <?= $userpost["prenom"] . " " . $userpost["nom"]?>
+                    <?php if (!empty($_SESSION['utilisateur']) && $reponse->ref_user == $_SESSION['utilisateur']['id_user'] || $_SESSION['utilisateur']['role']=="Gestionnaire")  : ?>
                         <div class="dropdown">
-                            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <button class="dropdown-item" data-bs-toggle="collapse"
+                                    <button class="btn dropdown-item" data-bs-toggle="collapse"
                                             data-bs-target="#showCommentUpdateForm-<?= $reponse->id_reponse ?>"
                                             aria-expanded="false" aria-controls="showCommentUpdateForm">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
                                 </li>
                                 <li>
-                                    <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                    <button class="btn dropdown-item" data-bs-toggle="modal"
                                             data-bs-target="#deleteReponseModal"
                                             data-id-reponse="<?= htmlspecialchars($reponse->id_reponse) ?>">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </li>
-                            </ul>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -261,7 +259,7 @@ $reponses = $reponseRepo->getAllReponsebyPostId($id)
                         Se connecter
                     </a>
                     <a href="../inscription.php" type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">S'inscrire
+                       data-bs-dismiss="modal">S'inscrire
                     </a>
                 </div>
             </div>

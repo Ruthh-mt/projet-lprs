@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 $refUser = $_POST["refUser"];
 $contenuReponse = $_POST["contenu_reponse"];
+date_default_timezone_set('Europe/Paris');
 $dateHeureReponse = date("Y-m-d H:i:s");
 
 
@@ -38,7 +39,7 @@ try {
     redirectWith("sucess","Le commentaire a bien été publié",'../../view/crudPost/postRead?id='.$refPost.'.php');
     session_write_close();
 } catch (PDOException $e) {
-    redirectWith("error","Erreur lors de la creation du Commentaire : ". $e->getMessage(),'../../view/crudPost/PostCreate.php');
+    redirectWith("error","Erreur lors de la creation du Commentaire : ". $e->getMessage(),'../../view/crudPost/postRead?id='.$refPost.'.php');
 }
 
 
