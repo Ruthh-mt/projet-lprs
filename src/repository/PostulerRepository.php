@@ -75,4 +75,12 @@ class PostulerRepository
             'motivation' => $lettre_motivation
         ]);
     }
+    public function getCandidat(int $id_user){
+        $sql = "SELECT u.nom , u.prenom FROM postuler p inner join offre o inner join utilisateur u
+         on p.ref_offre = o.id_offre WHERE p.ref_user = :ref_user";
+         $stmt = $this->db->connexion()->prepare($sql);
+         $stmt->execute(['ref_user' => $id_user]);
+         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+         return $result;
+    }
 }

@@ -1,6 +1,13 @@
 <?php
+global $e;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+require '../../vendor/autoload.php';
 session_start();
 require_once('../bdd/config.php');
+require_once('../repository/PostulerRepository.php');
 
 $pdo = (new Config())->connexion();
 
@@ -15,10 +22,11 @@ $utilisateur = $_SESSION['utilisateur'];
 $ref_user = (int) $utilisateur['id_user'];
 $nom_user = $utilisateur['nom'];
 $prenom_user = $utilisateur['prenom'];
-
 $ref_offre = (int) ($_POST['ref_offre'] ?? 0);
 $lettre = $_POST['lettre'] ?? '';
 $est_accepte = 1;
+
+$postulerRepo = new PostulerRepository();
 
 // Vérification des champs de base
 if (empty($ref_offre) || empty($lettre)) {
@@ -61,13 +69,37 @@ $sql = $pdo->prepare("
     INSERT INTO postuler (ref_user, ref_offre, motivation, est_accepte)
     VALUES (?,  ?, ?, ?)
 ");
+$candidat = $postulerRepo ->getCandidat($ref_user);
+$nomCandidat = $candidat['nom']." ".$candidat['prenom'];
 $ok = $sql->execute([$ref_user, $ref_offre, $lettre, $est_accepte,]);
 
 if ($ok) {
-    echo "<script>alert('Votre candidature a été envoyée avec succès !'); window.location.href='../../view/redirection_postuler.php';</script>";
-    exit;
-} else {
-    echo "<script>alert('Erreur lors de la soumission de la candidature.'); window.history.back();</script>";
-    exit;
+    $mail = new PHPMailer();
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'ltrsproject@gmail.com';
+    $mail->Password = 'xbxp ihqx ptym ummb';
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
+    $mail->setFrom("ltrsproject@gmail.com", 'Support');
+    $mail->addAddress("ltrsproject@gmail.com", $nomCandidat);
+    $mail->addreplyTo("ltrsproject@gmail.com", 'Support');
+
+    $mail->isHTML();
+    $mail->Subject = "Candidature offre d'emplois";
+    $mail->Body = "<?php echo nomCandidat ?> <p> vient de postuler </p>";
+    $mail->AltBody = "";
+
+    if ($mail->send()) {
+        echo 'to:' . $mail->getToAddresses()[0][0];
+        echo "<script>alert('Votre candidature a été envoyée avec succès !'); window.location.href='../../view/redirection_postuler.php';</script>";
+
+    } else {
+        echo "le message n'a pas pu etre envoyer(" . $mail->ErrorInfo . ")";
+
+
+        exit;
+    }
 }
 ?>

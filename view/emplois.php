@@ -31,6 +31,12 @@ $id_user = $_SESSION['utilisateur']['id_user'];
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
+    <link rel="stylesheet" href="">
+
+    <link rel="stylesheet" href="">
+
+
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -104,17 +110,16 @@ $id_user = $_SESSION['utilisateur']['id_user'];
                             <a href="profil.php" class="btn btn-dark">Voir mes offres</a>
                             <a href="crudOffre/offreCreate.php" class="btn btn-dark">Créer une offre</a>
                             <!-- Si le partenaire/Alumni n’a pas encore de fiche -->
-                        <?php else : ?>
+                        <?php if(!$partenaire_a_une_fiche || !$alumni_a_une_fiche): ?>
                             <a href="crudEntreprise/creerFiche.php" class="btn btn-dark">Créer une fiche</a>
-                        <?php endif; ?>
+                        <?php endif ?>
 
-
-
-                            <?php if($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
+                        <?php elseif ($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
                     <a href="profil.php" class="btn btn-success btn-sm">
                         <i class="bi bi-plus-circle"></i> Mes candidatures
                     </a>
                 <?php endif; ?>
+
         </div>
     </div>
 </section>
