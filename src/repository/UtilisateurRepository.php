@@ -45,11 +45,11 @@ class utilisateurRepository
                 VALUES (:nom, :prenom, :email, :mdp, :role, :ref_validateur)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
-            'nom'            => $data->getNom(),
-            'prenom'         => $data->getPrenom(),
-            'email'          => $data->getEmail(),
-            'mdp'            => $data->getMdp(),
-            'role'           => $data->getRole(),
+            'nom' => $data->getNom(),
+            'prenom' => $data->getPrenom(),
+            'email' => $data->getEmail(),
+            'mdp' => $data->getMdp(),
+            'role' => $data->getRole(),
             'ref_validateur' => $data->getRefValidateur() ?? null,
         ]);
     }
@@ -57,8 +57,8 @@ class utilisateurRepository
     public function update(int $id_user, array $data): bool
     {
         $allowed = [
-            'nom','prenom','email','mdp','role','ref_validateur',
-            'telephone','date_naissance','ville_residence','avatar',
+            'nom', 'prenom', 'email', 'mdp', 'role', 'ref_validateur',
+            'telephone', 'date_naissance', 'ville_residence', 'avatar',
         ];
         $set = [];
         $params = ['id_user' => $id_user];
@@ -69,7 +69,7 @@ class utilisateurRepository
             }
         }
         if (!$set) return false;
-        $sql = "UPDATE utilisateur SET ".implode(', ', $set)." WHERE id_user = :id_user";
+        $sql = "UPDATE utilisateur SET " . implode(', ', $set) . " WHERE id_user = :id_user";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute($params);
     }
@@ -81,23 +81,54 @@ class utilisateurRepository
         return $stmt->execute(['id_user' => $id_user]);
     }
 
-    public function changerMdp($mdp, $email){}
+    public function changerMdp($mdp, $email)
+    {
+    }
+
     public function findAllEtudiants(): array
     {
         $sql = "SELECT * FROM utilisateur WHERE role = 'Étudiant' ORDER BY nom, prenom";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
+
     public function findNonGestionnaires(): array
     {
         $sql = "SELECT * FROM utilisateur WHERE role != 'Gestionnaire' ORDER BY nom, prenom";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
+
     public function findNonPartenaires(): array
     {
         $sql = "SELECT * FROM utilisateur WHERE role != 'Partenaire' ORDER BY nom, prenom";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    }
+
+    public function getAllUtilisateurs($limit,$perPage)
+    {
+        $sql = "SELECT * FROM utilisateur LIMIT :limit,:perPage";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            'limit' => $limit,
+            'perPage' => $perPage
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+
+    }
+    public function countAllUtilisateurs(){
+        $sql = "SELECT COUNT(id_user) FROM utilisateur";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+    public function searchUser($searchWord){
+        $sql = "SELECT * FROM utilisateur WHERE nom LIKE :searchWord OR prenom LIKE :searchWord";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+           "searchWord" => "%$searchWord%"
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 }
