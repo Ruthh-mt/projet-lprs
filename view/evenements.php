@@ -11,7 +11,7 @@ if (!isset ($_GET['page'])) {
 } else {
     $page = $_GET['page'];
 }
-$nbEvenementParPage = 12;
+$nbEvenementParPage = 9;
 $debut = ($page - 1) * $nbEvenementParPage;
 $evenementRepository = new EvenementRepository();
 $allEvenement = $evenementRepository->getAllEvenement($debut, $nbEvenementParPage);
@@ -102,7 +102,7 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
     }
     ?>
 </section>
-<main>
+<section>
     <section class="container">
         <?php if (isset($_SESSION['utilisateur'])): ?>
             <div class="d-grid gap-2">
@@ -145,7 +145,7 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
                     connecter</h5>';
 
             <?php else : ?>
-            <section class
+            <section class="container"
                 <article class="row my-3">
                 <div class="justify-content-center card-group">
                 <?php
@@ -169,7 +169,7 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
                                 <p class="card-text flex-grow-1 text-muted">
                                     <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
                                 </p>
-                                <a href="../view/crudEvenement/evenementRead.php?id=<?= $evenement->id_evenement ?>"
+                                <a href="../view/crudEvenement/evenementRead.php?id=<?= htmlspecialchars($evenement->id_evenement) ?>"
                                    class="btn btn-primary mt-auto">
                                     En savoir plus
                                 </a>
@@ -196,6 +196,7 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
         </section>
 
     </section>
+    <section class="container"
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item">
@@ -203,7 +204,7 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <?php for ($pages=1 ; $pages <= $nbTotalEve; $pages++): ?>
+            <?php for ($pages=1 ; $pages <= $nbTotalEve+1; $pages++): ?>
                 <li class="page-item"><a class="page-link" href="evenements.php?page=<?= $pages ?>"><?= $pages ?></a></li>
             <?php endfor; ?>
             <li class="page-item">
@@ -213,7 +214,7 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
             </li>
         </ul>
     </nav>
-
+</section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
