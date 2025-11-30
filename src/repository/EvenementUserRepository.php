@@ -106,11 +106,31 @@ class EvenementUserRepository
 
     public function getRoleSuperviseur($evenementUser)
     {
-        $sql = "SELECT utilisateur.role FROM user_evenement INNER JOIN  utilisateur ON post.ref_user = utilisateur.id_user WHERE ref_user=:user AND ref_evenement=:evenement AND est_superviseur =:estSuperviseur ";
+        $sql = "SELECT utilisateur.role FROM user_evenement INNER JOIN  utilisateur ON user_evenement.ref_user = utilisateur.id_user WHERE user_evenement.ref_user=:user AND ref_evenement=:evenement AND est_superviseur =:estSuperviseur ";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute(["user" => $evenementUser->getRefUser(),
             "evenement" => $evenementUser->getRefEvenement(),
             "estSuperviseur" => $evenementUser->getEstSuperviseur()]);
         return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+    public function getAllEvenementCreatedByUser($evenement)
+    {
+        $sql = "SELECT evenement.id_evenement,evenement.titre_eve,evenement.desc_eve FROM user_evenement INNER JOIN  evenement ON user_evenement.ref_evenement = evenement.id_evenement WHERE  user_evenement.ref_user=:refUser AND user_evenement.est_superviseur=:estSuperviseur";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute([
+            "refUser"=>$evenement->getRefUser(),
+            "estSuperviseur"=>1
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+    public function getAllEvenementUserInscrit($evenement)
+    {
+        $sql = "SELECT evenement.id_evenement,evenement.titre_eve,evenement.desc_eve FROM user_evenement INNER JOIN  evenement ON user_evenement.ref_evenement = evenement.id_evenement WHERE  user_evenement.ref_user=:refUser AND user_evenement.est_superviseur=:estSuperviseur";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute([
+            "refUser"=>$evenement->getRefUser(),
+            "estSuperviseur"=>0
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 }
