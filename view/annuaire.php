@@ -120,7 +120,7 @@ $nbTotalUser = $utilisateurRepository->countAllUtilisateurs() / $nbUtilisateurPa
         <div class="card-group">
             <?php $count =0; endif;?>
             <div class="card">
-                <img src="<?= $img[$count]?>"
+                <img src="<?= htmlspecialchars($img[$count]) ?>"
                      class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title"><?= htmlspecialchars($user->prenom." ".strtoupper($user->nom) )?></h5>
