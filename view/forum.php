@@ -86,7 +86,18 @@ if (session_status() === PHP_SESSION_NONE) {
 </header>
 <section class="container banner bg-dark text-white text-center py-1 rounded">
     <h1>Forum</h1>
-    <!--- rajouter un system de filtre et un bouton pour afficher les post de l'user connecter--->
+    <a class="btn btn-outline-light" href="crudPost/postReadMyPost.php" role="button"><i class="bi bi-chat-dots"></i>
+        Mes Post</a>
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-light" id="showGeneral">General</button>
+        <?php if ($_SESSION["utilisateur"]['role'] === "Étudiant" || $_SESSION["utilisateur"]['role'] === "Professeur"): ?>
+            <button type="button" class="btn btn-outline-light" id="showProfediant">Professeur / Etudiant</button>
+        <?php elseif ($_SESSION["utilisateur"]['role'] === "Alumni" || $_SESSION["utilisateur"]['role'] === "Partenaire"): ?>
+            <button type="button" class="btn btn-outline-light" id="showEntrumnis">Entreprise / Alumni</button>
+        <?php elseif ($_SESSION["utilisateur"]['role'] === 'Gestionnaire'): ?>
+            <button type="button" class="btn btn-outline-light" id="showAdmin">Admin</button>
+        <?php endif; ?>
+    </div>
 </section>
 <main>
     <section class="container">
@@ -122,18 +133,17 @@ if (session_status() === PHP_SESSION_NONE) {
             <a class="btn btn-outline-success text-uppercase my-3" href="crudPost/postCreate.php" role="button">Créer un
                 post</a>
         </div>
-        <!--- <?php //if(!isset($_SESSION['utilisateur'])):?>
-    <h5> Vous etes pas connecté. Veuillez vous connecter</h5>
-<a  class="btn btn-secondary" href="connexion.php" role="button">Se connecter</a>
-<p>Erreur : Identify yourself who are you</p>--->
+
+        <section class="container" id="general">
         <?php
+        $post= new ModelePost(["canal"=>"general"]);
         $postRepository = new PostRepository();
-        $allpost = $postRepository->getAllPost();
-        if (empty($allpost)) :?>
+        $allPostGeneral = $postRepository->getAllPostByCanal($post);
+        if (empty($allPostGeneral)) :?>
             <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait que la communication soit surcoter,
                 Soyer le premier à communiquer </h5>
         <?php else : ?>
-            <?php foreach ($allpost as $post):
+            <?php foreach ($allPostGeneral as $post):
                 $username = $postRepository->findUsername($post->id_post); ?>
                 <div class="card">
                     <div class="card-header"><i class="bi bi-person-circle"><?= " " ?></i>
@@ -148,6 +158,79 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div> <br>
             <?php endforeach;
         endif; ?>
+        </section>
+        <section class="container" id="profediant">
+            <?php
+            $post= new ModelePost(["canal"=>"profediant"]);
+            $allPostProfediant = $postRepository->getAllPostByCanal($post);
+            if (empty($allPostProfediant)) :?>
+                <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait que la communication soit surcoter,
+                    Soyer le premier à communiquer </h5>
+            <?php else : ?>
+                <?php foreach ($allPostProfediant as $post):
+                    $username = $postRepository->findUsername($post->id_post); ?>
+                    <div class="card">
+                        <div class="card-header"><i class="bi bi-person-circle"><?= " " ?></i>
+                            <?= $username["prenom"] . ' ' . $username["nom"] ?></i></div>
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $post->titre_post ?> | <span
+                                        class="badge text-bg-dark"><?= $post->canal ?></span>
+                            </h5>
+                            <p class="col-20 text-truncate" id="contenu"><?= $post->contenu_post ?></p>
+                            <a href="crudPost/postRead.php?id=<?= $post->id_post ?>" class="btn btn-primary">Voir plus</a>
+                        </div>
+                    </div> <br>
+                <?php endforeach;
+            endif; ?>
+        </section>
+        <section class="container" id="entrumnis">
+            <?php
+            $post= new ModelePost(["canal"=>"entrumnis"]);
+            $allPostEntrumnis = $postRepository->getAllPostByCanal($post);
+            if (empty($allpost)) :?>
+                <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait que la communication soit surcoter,
+                    Soyer le premier à communiquer </h5>
+            <?php else : ?>
+                <?php foreach ($allPostEntrumnis as $post):
+                    $username = $postRepository->findUsername($post->id_post); ?>
+                    <div class="card">
+                        <div class="card-header"><i class="bi bi-person-circle"><?= " " ?></i>
+                            <?= $username["prenom"] . ' ' . $username["nom"] ?></i></div>
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $post->titre_post ?> | <span
+                                        class="badge text-bg-dark"><?= $post->canal ?></span>
+                            </h5>
+                            <p class="col-20 text-truncate" id="contenu"><?= $post->contenu_post ?></p>
+                            <a href="crudPost/postRead.php?id=<?= $post->id_post ?>" class="btn btn-primary">Voir plus</a>
+                        </div>
+                    </div> <br>
+                <?php endforeach;
+            endif; ?>
+        </section>
+        <section class="container" id="admin">
+            <?php
+            $post= new ModelePost(["canal"=>"admin"]);
+            $allPostAdmin = $postRepository->getAllPostByCanal($post);
+            if (empty($allPostAdmin)) :?>
+                <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait que la communication soit surcoter,
+                    Soyer le premier à communiquer </h5>
+            <?php else : ?>
+                <?php foreach ($allPostAdmin as $post):
+                    $username = $postRepository->findUsername($post->id_post); ?>
+                    <div class="card">
+                        <div class="card-header"><i class="bi bi-person-circle"><?= " " ?></i>
+                            <?= $username["prenom"] . ' ' . $username["nom"] ?></i></div>
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $post->titre_post ?> | <span
+                                        class="badge text-bg-dark"><?= $post->canal ?></span>
+                            </h5>
+                            <p class="col-20 text-truncate" id="contenu"><?= $post->contenu_post ?></p>
+                            <a href="crudPost/postRead.php?id=<?= $post->id_post ?>" class="btn btn-primary">Voir plus</a>
+                        </div>
+                    </div> <br>
+                <?php endforeach;
+            endif; ?>
+        </section>
     </section>
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
@@ -173,6 +256,40 @@ if (session_status() === PHP_SESSION_NONE) {
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+   $(document).ready(function () {
+        $("#general").show();
+        $("#profediant").hide();
+       $("#entrumnis").hide();
+       $("#admin").hide();
+
+       $("#showProfediant").click(function () {
+           $("#profediant").show();
+           $("#general").hide();
+           $("#entrumnis").hide();
+           $("#admin").hide();
+        });
+       $("#showEntrumnis").click(function () {
+           $("#profediant").hide();
+           $("#general").hide();
+           $("#entrumnis").show();
+           $("#admin").hide();
+       });
+       $("#showAdmin").click(function () {
+           $("#profediant").hide();
+           $("#general").hide();
+           $("#entrumnis").hide();
+           $("#admin").show();
+       });
+       $("#showGeneral").click(function () {
+           $("#profediant").hide();
+           $("#general").show();
+           $("#entrumnis").hide();
+           $("#admin").hide();
+       });
+
+    });
+</script>
 </body>
 </html>
 
