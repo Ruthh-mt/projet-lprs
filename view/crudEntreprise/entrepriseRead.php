@@ -3,6 +3,11 @@ $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 
+    require_once '../../src/bdd/config.php';
+    require_once '../../src/repository/FicheEntrepriseRepository.php';
+    $ficheEntrepriseRepo = new FicheEntrepriseRepository();
+    $entreprises = $ficheEntrepriseRepo->getAllFicheEntreprises();
+
     $page = 'Entreprise';
 }
 ?>
@@ -16,6 +21,27 @@ if (session_status() === PHP_SESSION_NONE) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    <style>
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 20px auto;
+        }
+        .dataTables_wrapper .dataTables_filter input {
+            margin-left: 10px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            padding: 4px 8px;
+        }
+        .dataTables_wrapper .dataTables_length select {
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            padding: 4px 8px;
+        }
+    </style>
 </head>
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
@@ -87,8 +113,73 @@ if (session_status() === PHP_SESSION_NONE) {
     <h1>Gestion <?=$page?></h1>
 </section>
 <section class="container text-center">
-    <a href="creerFiche.php" class="btn btn-outline-success my-3 d-grid">Ajouter une formation</a>
+    <a href="entrepriseCreate.php" class="btn btn-outline-success my-3 d-grid">Créer une entreprise</a>
 </section>
+<section class="container">
+    <div class="table-container">
+        <table id="entreprisesTable" class="table table-striped table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Adresse</th>
+                    <th>Site web</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($entreprises as $entreprise): ?>
+                <tr>
+                    <td><?= htmlspecialchars($entreprise['id_fiche_entreprise']) ?></td>
+                    <td><?= htmlspecialchars($entreprise['nom_entreprise']) ?></td>
+                    <td><?= htmlspecialchars($entreprise['adresse_entreprise']) ?></td>
+                    <td>
+                        <?php if (!empty($entreprise['adresse_web'])): ?>
+                            <a href="<?= htmlspecialchars($entreprise['adresse_web']) ?>" target="_blank" class="text-decoration-none">
+                                <?= htmlspecialchars($entreprise['adresse_web']) ?>
+                            </a>
+                        <?php else: ?>
+                            -
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <a href="entrepriseUpdate.php?id=<?= $entreprise['id_fiche_entreprise'] ?>" class="btn btn-sm btn-primary">
+                            <i class="bi bi-pencil"></i> Modifier
+                        </a>
+                        <a href="#" class="btn btn-sm btn-danger" 
+                           onclick="confirmDelete(<?= $entreprise['id_fiche_entreprise'] ?>)">
+                            <i class="bi bi-trash"></i> Supprimer
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</section>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-1.13.8/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#entreprisesTable').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/fr-FR.json'
+            },
+            responsive: true,
+            order: [[1, 'asc']], // Tri par nom par défaut
+            pageLength: 10,
+            lengthMenu: [10, 25, 50, 100]
+        });
+    });
+
+    function confirmDelete(id) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer cette entreprise ? Cette action est irréversible.')) {
+            // Ajouter ici la logique de suppression
+            window.location.href = 'entrepriseDelete.php?id=' + id;
+        }
+    }
+</script>
 </body>
 </html>
