@@ -1,5 +1,5 @@
 <?php
-
+$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 require_once "../../src/bdd/config.php";
 
 if (session_status() === PHP_SESSION_NONE) {

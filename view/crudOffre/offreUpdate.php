@@ -1,5 +1,6 @@
 <?php
 require_once("../../src/bdd/config.php");
+$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 $pdo  = (new Config())->connexion();
 
 $sql =$pdo->prepare("SELECT * FROM offre o  where id_offre=? ");

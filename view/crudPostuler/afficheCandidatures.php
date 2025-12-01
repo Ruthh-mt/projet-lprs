@@ -1,4 +1,5 @@
 <?php
+$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 session_start();
     $page = 'Etudiant';
     require_once '../../src/modele/ModelePostuler.php';

@@ -1,4 +1,5 @@
 <?php
+$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
     $page = 'Offre';
