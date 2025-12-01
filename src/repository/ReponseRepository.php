@@ -60,4 +60,9 @@ class ReponseRepository
         $stmt = $this->db->connexion()->prepare($delete);
         $stmt->execute(['id' => $reponse->getRefPost()]);
     }
+    public function getAllReponseByUser($reponse){
+        $delete = "SELECT * FROM reponse where ref_user=:id ORDER BY date_heure DESC";
+        $stmt = $this->db->connexion()->prepare($delete);
+        $stmt->execute(['id' => $reponse->getRefUser()]);
+    }
 }
