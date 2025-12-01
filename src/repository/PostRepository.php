@@ -9,11 +9,11 @@ class PostRepository
         $this->db = new Config();
     }
 
-    public function getAllPost()
+    public function getAllPostByCanal($post)
     {
-        $sql = "SELECT * FROM post ORDER BY date_heure_post DESC ";
+        $sql = "SELECT * FROM post WHERE canal=:canal ORDER BY date_heure_post DESC";
         $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute(["canal" => $post->getCanal()]);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
@@ -72,13 +72,6 @@ class PostRepository
         $stmt->execute(["idPost" => $post->getIdPost()]);
     }
 
-    public function getAllPostByCanal($post)
-    {
-        $sql = "SELECT * FROM post WHERE canal=:canal ORDER BY date_heure_post DESC";
-        $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute(["canal" => $post->getCanal()]);
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
 
     public function getAllPostByUser($post)
     {
