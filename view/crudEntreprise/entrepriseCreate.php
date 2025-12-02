@@ -2,20 +2,59 @@
 $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-
-    $page = 'Entreprise';
 }
+
+$page = 'Entreprise';
+$error = '';
+$success = '';
 ?>
 <!doctype html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ADMIN • LPRS</title>
+    <title>Création d'entreprise • LPRS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .required:after {
+            content: " *";
+            color: red;
+        }
+        .suggestions {
+            position: relative;
+            width: 100%;
+        }
+        .suggestions-list {
+            position: absolute;
+            z-index: 1000;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            display: none;
+        }
+        .suggestion-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        .suggestion-item:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
@@ -84,8 +123,241 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
 </nav>
 <section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
+    <h1>Création d'une entreprise</h1>
 </section>
+
+<section class="container mt-4">
+    <div class="form-container">
+        <?php if ($error): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+        
+        <?php if ($success): ?>
+            <div class="alert alert-success">
+                <?= htmlspecialchars($success) ?>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <button type="submit" class="btn btn-primary me-md-2" id="submitBtn">
+                    <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status" aria-hidden="true"></span>
+                    <span id="btnText">Créer l'entreprise</span>
+                </button>
+                <a href="entrepriseRead.php" class="btn btn-outline-secondary">Annuler</a>
+            </div>
+            </div>
+        <?php endif; ?>
+        
+        <?php if (!$success): ?>
+            <form id="entrepriseForm" class="needs-validation" novalidate>
+            <div id="formAlert" class="alert d-none" role="alert"></div>
+                <div class="mb-3">
+                    <label for="nom_entreprise" class="form-label required">Nom de l'entreprise</label>
+                    <input type="text" class="form-control" id="nom_entreprise" name="nom_entreprise" 
+                           value="<?= htmlspecialchars($_POST['nom_entreprise'] ?? '') ?>" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="adresse_recherche" class="form-label">Rechercher une adresse</label>
+                    <div class="suggestions">
+                        <input type="text" class="form-control" id="adresse_recherche" 
+                               placeholder="Commencez à taper une adresse..." autocomplete="off">
+                        <div id="suggestions" class="suggestions-list"></div>
+                    </div>
+                    <div class="form-text">Sélectionnez une adresse dans les suggestions</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="adresse_entreprise" class="form-label">Adresse complète</label>
+                    <textarea class="form-control" id="adresse_entreprise" name="adresse_entreprise" 
+                              rows="3" readonly><?= htmlspecialchars($_POST['adresse_entreprise'] ?? '') ?></textarea>
+                    <input type="hidden" id="code_postal" name="code_postal" value="<?= htmlspecialchars($_POST['code_postal'] ?? '') ?>">
+                    <input type="hidden" id="ville" name="ville" value="<?= htmlspecialchars($_POST['ville'] ?? '') ?>">
+                    <input type="hidden" id="pays" name="pays" value="France">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="adresse_web" class="form-label">Site web</label>
+                    <div class="input-group">
+                        <span class="input-group-text">https://</span>
+                        <input type="text" class="form-control" id="adresse_web" name="adresse_web" 
+                               placeholder="www.exemple.com" 
+                               value="<?= htmlspecialchars(str_replace('https://', '', $_POST['adresse_web'] ?? '')) ?>">
+                    </div>
+                    <div class="form-text">Ne pas inclure "https://"</div>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="entrepriseRead.php" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Retour à la liste
+                    </a>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status" aria-hidden="true"></span>
+                        <span id="btnText"><i class="bi bi-save"></i> Enregistrer l'entreprise</span>
+                    </button>
+                </div>
+            </form>
+        <?php endif; ?>
+    </div>
+</section>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Gestion de l'autocomplétion d'adresse
+    const searchInput = document.getElementById('adresse_recherche');
+    const suggestionsDiv = document.getElementById('suggestions');
+    const adresseComplete = document.getElementById('adresse_entreprise');
+    const codePostalInput = document.getElementById('code_postal');
+    const villeInput = document.getElementById('ville');
+    
+    let timeoutId;
+    
+    searchInput.addEventListener('input', function() {
+        clearTimeout(timeoutId);
+        const query = this.value.trim();
+        
+        if (query.length < 3) {
+            suggestionsDiv.style.display = 'none';
+            return;
+        }
+        
+        timeoutId = setTimeout(() => {
+            fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=5`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.features && data.features.length > 0) {
+                        displaySuggestions(data.features);
+                    } else {
+                        suggestionsDiv.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la recherche d\'adresse:', error);
+                    suggestionsDiv.style.display = 'none';
+                });
+        }, 300); // Délai de 300ms pour éviter trop de requêtes
+    });
+    
+    function displaySuggestions(features) {
+        suggestionsDiv.innerHTML = '';
+        
+        features.forEach(feature => {
+            const div = document.createElement('div');
+            div.className = 'suggestion-item';
+            div.textContent = feature.properties.label;
+            
+            div.addEventListener('click', () => {
+                const props = feature.properties;
+                searchInput.value = '';
+                adresseComplete.value = props.label;
+                codePostalInput.value = props.postcode || '';
+                villeInput.value = props.city || '';
+                suggestionsDiv.style.display = 'none';
+            });
+            
+            suggestionsDiv.appendChild(div);
+        });
+        
+        suggestionsDiv.style.display = 'block';
+    }
+    
+    // Masquer les suggestions quand on clique en dehors
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.suggestions')) {
+            suggestionsDiv.style.display = 'none';
+        }
+    });
+    
+    // Gestion de la soumission du formulaire
+    document.getElementById('entrepriseForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Ajout automatique de https:// si non présent
+        const webInput = document.getElementById('adresse_web');
+        if (webInput.value && !webInput.value.match(/^https?:\/\//i)) {
+            webInput.value = 'https://' + webInput.value;
+        }
+        
+        // Validation du formulaire
+        const form = this;
+        if (!form.checkValidity()) {
+            e.stopPropagation();
+            form.classList.add('was-validated');
+            return;
+        }
+        
+        // Désactiver le bouton et afficher le spinner
+        const submitBtn = document.getElementById('submitBtn');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('btnText');
+        const formAlert = document.getElementById('formAlert');
+        
+        submitBtn.disabled = true;
+        spinner.classList.remove('d-none');
+        btnText.textContent = 'Traitement...';
+        formAlert.classList.add('d-none');
+        
+        // Préparer les données du formulaire
+        const formData = new FormData(form);
+        
+        // Envoyer les données via AJAX
+        fetch('../../src/treatment/traitementAjoutEntreprise.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Afficher le message de succès et rediriger
+                formAlert.className = 'alert alert-success';
+                formAlert.textContent = data.message;
+                formAlert.classList.remove('d-none');
+                
+                // Redirection après 1,5 secondes
+                setTimeout(() => {
+                    window.location.href = data.redirect;
+                }, 1500);
+            } else {
+                // Afficher l'erreur
+                formAlert.className = 'alert alert-danger';
+                formAlert.textContent = data.message;
+                formAlert.classList.remove('d-none');
+                
+                // Réactiver le bouton
+                submitBtn.disabled = false;
+                spinner.classList.add('d-none');
+                btnText.textContent = 'Créer l\'entreprise';
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            formAlert.className = 'alert alert-danger';
+            formAlert.textContent = 'Une erreur est survenue lors de la communication avec le serveur';
+            formAlert.classList.remove('d-none');
+            
+            // Réactiver le bouton
+            submitBtn.disabled = false;
+            spinner.classList.add('d-none');
+            btnText.textContent = 'Créer l\'entreprise';
+        });
+    });
+    
+    // Gestion de la validation du formulaire
+    (function () {
+        'use strict'
+        
+        // Récupérer tous les formulaires auxquels nous voulons appliquer des styles de validation Bootstrap personnalisés
+        const forms = document.querySelectorAll('.needs-validation')
+        
+        // Boucle sur les formulaires et empêcher la soumission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
 </body>
 </html>
