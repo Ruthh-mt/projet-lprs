@@ -3,7 +3,27 @@ $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 
+    require_once '../../src/bdd/config.php';
+    require_once '../../src/repository/EvenementRepository.php';
+
+    $evenementRepo = new EvenementRepository();
     $page = 'Évènement';
+
+    // Récupération de la page actuelle depuis l'URL, 1 par défaut
+    $pageActuelle = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $parPage = 10; // Nombre d'éléments par page
+    $totalEvenements = $evenementRepo->countAllEvenement();
+    $pagesTotales = ceil($totalEvenements / $parPage);
+
+    // Vérification que la page demandée est valide
+    if ($pageActuelle < 1) {
+        $pageActuelle = 1;
+    } elseif ($pageActuelle > $pagesTotales && $pagesTotales > 0) {
+        $pageActuelle = $pagesTotales;
+    }
+
+    $offset = ($pageActuelle - 1) * $parPage;
+    $evenements = $evenementRepo->getAllEvenement($offset, $parPage);
 }
 ?>
 <!doctype html>
@@ -16,6 +36,27 @@ if (session_status() === PHP_SESSION_NONE) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    <style>
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 20px auto;
+        }
+        .dataTables_wrapper .dataTables_filter input {
+            margin-left: 10px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            padding: 4px 8px;
+        }
+        .dataTables_wrapper .dataTables_length select {
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            padding: 4px 8px;
+        }
+    </style>
 </head>
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
@@ -90,6 +131,113 @@ if (session_status() === PHP_SESSION_NONE) {
     <a href="evenementCreate.php" class="btn btn-outline-success my-3 d-grid">Créer un évènement</a>
 </section>
 
+<section class="container">
+    <div class="table-container">
+        <table id="evenementsTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Type</th>
+                    <th>Lieu</th>
+                    <th>Places</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($evenements as $evenement): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($evenement->id_evenement) ?></td>
+                        <td><?= htmlspecialchars($evenement->titre_eve) ?></td>
+                        <td><?= htmlspecialchars($evenement->type_eve) ?></td>
+                        <td><?= htmlspecialchars($evenement->lieu_eve) ?></td>
+                        <td><?= htmlspecialchars($evenement->nb_place) ?></td>
+                        <td>
+                            <?php if ($evenement->est_valide == 1): ?>
+                                <span class="badge bg-success">Validé</span>
+                            <?php else: ?>
+                                <span class="badge bg-warning text-dark">En attente</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="evenementRead.php?id=<?= $evenement->id_evenement ?>" class="btn btn-sm btn-info" title="Voir">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="evenementUpdate.php?id=<?= $evenement->id_evenement ?>" class="btn btn-sm btn-primary" title="Modifier">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="../../src/treatment/traitementDeleteEvenement.php?id=<?= $evenement->id_evenement ?>" 
+                                   class="btn btn-sm btn-danger" 
+                                   title="Supprimer"
+                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <?php if ($pagesTotales > 1): ?>
+            <nav aria-label="Navigation des pages">
+                <ul class="pagination justify-content-center">
+                    <?php if ($pageActuelle > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $pageActuelle - 1 ?>" aria-label="Précédent">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    
+                    <?php for ($i = 1; $i <= $pagesTotales; $i++): ?>
+                        <li class="page-item <?= ($i == $pageActuelle) ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+                    
+                    <?php if ($pageActuelle < $pagesTotales): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?= $pageActuelle + 1 ?>" aria-label="Suivant">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
+    </div>
+</section>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#evenementsTable').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/fr-FR.json',
+                search: "Rechercher :",
+                lengthMenu: "Afficher _MENU_ éléments par page",
+                info: "Affichage de _START_ à _END_ sur _TOTAL_ éléments",
+                paginate: {
+                    first: "Premier",
+                    last: "Dernier",
+                    next: "Suivant",
+                    previous: "Précédent"
+                }
+            },
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [6] } // Désactive le tri sur la colonne des actions
+            ],
+            order: [[0, 'desc']] // Tri par ID décroissant par défaut
+        });
+    });
+</script>
 </body>
 </html>

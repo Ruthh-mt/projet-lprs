@@ -19,7 +19,7 @@ function redirectWith(string $type, string $message, string $target): void
 $idEve = $_POST["ref_eve"];
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirectWith('error', "Méthode invalide.", '../../view/crudEvenement/evenementUpdate .php?id=' . $idEve);
+    redirectWith('error', "Méthode invalide.", '../../view/crudEvenement/evenementUpdate.php?id=' . $idEve);
 }
 
 $titreEve = $_POST["titre_eve"];
@@ -31,7 +31,7 @@ $nbPlace = $_POST["nb_place"];
 
 if ($titreEve === '' || $typeEve === '' || $descEve === '' || $lieuEve === ''
     || $elementEve === '' || $nbPlace === '' || $idEve === '') {
-    redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementUpdate .php?id=' . $idEve);
+    redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementUpdate.php?id=' . $idEve);
 }
 try {
     $evenement = new ModeleEvenement(array(
@@ -45,7 +45,7 @@ try {
     ));
     $evenementRepository = new EvenementRepository();
     $refEvenement = $evenementRepository->updateEvenement($evenement);
-    redirectWith('success', "L'evenement a bien été modifié", '../../view/crudEvenement/evenementRead .php?id=' . $idEve);
+    redirectWith('success', "L'evenement a bien été modifié", '../../view/crudEvenement/evenementRead.php?id=' . $idEve);
     session_write_close();
 } catch (PDOException $e) {
     redirectWith('error', "Erreur de la modification d'evenement : " . $e->getMessage(), '../../view/crudEvenement/evenementUpdate.php?id=' . $idEve);
