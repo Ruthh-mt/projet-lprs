@@ -105,10 +105,7 @@ if (!$formation) {
 </section>
 
 <section class="container my-3">
-    <div class="row">
-        <div class="col"></div>
-
-        <div class="col-6 border border-3 border-dark rounded p-3">
+        <div class="border border-3 border-dark rounded p-3">
             <h2 class="text-center mb-3">Modifier une formation</h2>
 
             <form action="../../src/treatment/traitementFormation.php?action=update&id=<?= (int)$formation['id_formation'] ?>"
@@ -127,14 +124,17 @@ if (!$formation) {
                            required>
                     <label for="floatingNomFormation" class="ms-4">Nom de la formation</label>
                 </div>
-
-                <div class="d-grid gap-2 my-2">
-                    <button class="btn btn-outline-warning" type="submit">METTRE À JOUR</button>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="formationRead.php" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                    <button type="submit" class="btn btn-outline-primary" id="submitBtn">
+                        <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status" aria-hidden="true"></span>
+                        <span id="btnText"><i class="bi bi-floppy"></i></span>
+                    </button>
                 </div>
             </form>
         </div>
-
-        <div class="col"></div>
     </div>
 </section>
 

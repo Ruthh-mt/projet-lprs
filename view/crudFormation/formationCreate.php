@@ -109,7 +109,13 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
 
                 <div class="d-grid gap-2 my-2">
-                    <button class="btn btn-outline-success" type="submit">AJOUTER</button>
+
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="formationRead.php" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-floppy"></i></button>
                 </div>
             </form>
         </div>

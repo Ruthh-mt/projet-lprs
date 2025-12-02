@@ -107,28 +107,25 @@ if ($idFormation > 0) {
             Suppression de formation
         </div>
         <div class="card-body">
-            <h5 class="card-title">Confirmation</h5>
+                <h5 class="card-title">Confirmation</h5>
 
-            <?php if ($idFormation <= 0 || !$formation): ?>
-                <p class="card-text">Formation introuvable ou identifiant invalide.</p>
-                <a href="formationRead.php" class="btn btn-secondary">Retour</a>
-            <?php else: ?>
+                <?php if ($idFormation <= 0 || !$formation): ?>
+                    <p class="card-text">Formation introuvable ou identifiant invalide.</p>
+                    <a href="formationRead.php" class="btn btn-secondary">Retour</a>
+                <?php else: ?>
                 <p class="card-text">
                     Souhaitez-vous supprimer la formation
                     <strong><?= htmlspecialchars($formation['nom'], ENT_QUOTES, 'UTF-8') ?></strong> ?
                 </p>
-
-                <form method="post"
-                      action="../../src/treatment/traitementFormation.php?action=delete"
-                      class="d-inline">
-                    <input type="hidden" name="id_formation" value="<?= $idFormation ?>">
-                    <button type="submit" class="btn btn-warning me-2">
-                        Confirmer la suppression
-                    </button>
-                    <a href="formationRead.php" class="btn btn-secondary">
-                        Annuler
-                    </a>
-                </form>
+            <form method="post" action="../../src/treatment/traitementFormation.php?action=delete" class="d-flex justify-content-between mt-4">
+                <input type="hidden" name="id_formation" value="<?= $idFormation ?>">
+                <a href="formationRead.php" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <button type="submit" class="btn btn-outline-danger me-2">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
             <?php endif; ?>
         </div>
         <div class="card-footer">

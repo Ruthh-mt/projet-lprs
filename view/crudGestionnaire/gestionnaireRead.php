@@ -119,9 +119,7 @@ $page = 'Gestionnaire';
                     <td><?= htmlspecialchars($gestionnaire->getEmail()) ?></td>
                     <td><?= htmlspecialchars($gestionnaire->getRole()) ?></td>
                     <td class="text-center">
-                        <a href="gestionnaireDelete.php?id=<?= $gestionnaire->getId() ?>" 
-                           class="btn btn-danger btn-sm" 
-                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce gestionnaire ?')">
+                        <a href="gestionnaireDelete.php?id=<?= $gestionnaire->getId() ?>" class="btn btn-danger btn-sm">
                             <i class="bi bi-trash"></i>
                         </a>
                     </td>

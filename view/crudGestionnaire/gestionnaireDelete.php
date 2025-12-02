@@ -110,40 +110,36 @@ $page = 'Gestionnaire';
         <div class="card-header bg-danger text-white">
             <h5 class="card-title mb-0">Confirmation de suppression</h5>
         </div>
-        <div class="card-body text-center">
-            <p class="card-text">
-                Êtes-vous sûr de vouloir rétrograder ce gestionnaire au rôle d'étudiant ?
+        <div class="card-body bg-danger-subtle mx-3 my-3 rounded border border-danger">
+            <p class="card-text text-center fw-bold">
+                Êtes-vous sûr de vouloir rétrograder ce gestionnaire au rôle d'étudiant ?<br>
+                Cette action est irréversible !
             </p>
-            <p class="text-warning">
-                <i class="bi bi-exclamation-triangle-fill"></i> Cette action ne peut pas être annulée.
-            </p>
-            <h5 class="mb-3">
-                <?= htmlspecialchars($gestionnaire->getPrenom() . ' ' . $gestionnaire->getNom()) ?>
-            </h5>
+
             <p class="text-muted">
+                <i class="bi bi-person-square me-2"></i><?= htmlspecialchars($gestionnaire->getPrenom() . ' ' . $gestionnaire->getNom()) ?><br>
                 <i class="bi bi-envelope me-2"></i><?= htmlspecialchars($gestionnaire->getEmail()) ?><br>
                 <i class="bi bi-briefcase me-2"></i><?= htmlspecialchars($gestionnaire->getPoste()) ?>
             </p>
-            
-            <div class="d-flex justify-content-center gap-3 mt-4">
-                <form action="../../src/treatment/treatmentGestionnaireDelete.php" method="post" class="d-inline">
+
+            <div class="justify-content-center">
+                <form action="../../src/treatment/treatmentGestionnaireDelete.php" method="post" class="">
                     <input type="hidden" name="id" value="<?= $gestionnaire->getId() ?>">
-                    <button type="submit" class="btn btn-danger">
-                        <i class="bi bi-trash me-2"></i>Confirmer la suppression
-                    </button>
+                    <small class="text-center"></small>
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="gestionnaireRead.php" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                        <button type="submit" class="btn btn-outline-danger")>
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
                 </form>
-                <a href="gestionnaireRead.php" class="btn btn-outline-secondary">
-                    <i class="bi bi-x-circle me-2"></i>Annuler
-                </a>
             </div>
-        </div>
-        <div class="card-footer text-muted text-center">
-            <small>Cette action est irréversible !</small>
         </div>
     </div>
 </section>
 
-<!-- Scripts Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

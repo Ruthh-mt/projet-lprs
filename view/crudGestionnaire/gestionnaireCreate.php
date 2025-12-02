@@ -111,13 +111,19 @@ $utilisateurs = $utilisateurRepo->findNonGestionnaires();
                                 <?php endforeach; ?>
                             </select>
                             <div class="form-text">Sélectionnez un utilisateur existant à promouvoir en tant que gestionnaire.</div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="gestionnaireRead.php" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left"></i>
+                                </a>
+                                <button type="submit" class="btn btn-outline-success" id="submitBtn">
+                                    <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status" aria-hidden="true"></span>
+                                    <span id="btnText"><i class="bi bi-floppy"></i></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="d-grid gap-2 my-2">
-            <button class="btn btn-outline-success" type="submit">AJOUTER</button>
         </div>
     </form>
 </section>

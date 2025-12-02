@@ -22,6 +22,9 @@ $page = 'Formation';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
 </head>
 <body>
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom bg-dark">
@@ -98,12 +101,12 @@ $page = 'Formation';
 </section>
 
 <section class="container">
-    <table id="example" class="table table-striped" style="width:100%">
+    <table id="example" class="table table-striped table-hover" style="width:100%">
         <thead>
         <tr>
             <th>ID</th>
             <th>Nom de la formation</th>
-            <th>Action</th>
+            <th class="text-center">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -118,11 +121,11 @@ $page = 'Formation';
                         $updateUrl = "formationUpdate.php?id={$id}";
                         $deleteUrl = "formationDelete.php?id={$id}";
                         ?>
-                        <a href="<?= htmlspecialchars($updateUrl) ?>" class="btn btn-sm btn-warning me-1">
+                        <a href="<?= htmlspecialchars($updateUrl) ?>" class="btn btn-warning me-1">
                             <i class="bi bi-pencil-square"></i>
                         </a>
 
-                        <a href="<?= htmlspecialchars($deleteUrl) ?>" class="btn btn-sm btn-danger">
+                        <a href="<?= htmlspecialchars($deleteUrl) ?>" class="btn btn-danger">
                             <i class="bi bi-trash"></i>
                         </a>
                     </td>
@@ -133,15 +136,29 @@ $page = 'Formation';
     </table>
 </section>
 
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+<!-- Bootstrap JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
+            responsive: true,
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json'
             },
-            "pageLength": 10,
-            "lengthMenu": [5, 10, 25, 50, 100]
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50, 100],
+            order: [[0, 'asc']],
+            columnDefs: [
+                { orderable: false, targets: -1 } // Désactive le tri sur la colonne des actions
+            ]
         });
     });
 </script>
