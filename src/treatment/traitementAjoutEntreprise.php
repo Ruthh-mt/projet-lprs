@@ -49,7 +49,7 @@ try {
     // Succès
     $response['success'] = true;
     $response['message'] = 'L\'entreprise a été créée avec succès !';
-    $response['redirect'] = '..x/crudEntreprise/entrepriseRead.php';
+    $response['redirect'] = '../crudEntreprise/entrepriseRead.php';
     
 } catch (Exception $e) {
     $response['message'] = $e->getMessage();
