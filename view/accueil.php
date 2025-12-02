@@ -4,12 +4,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once('../src/bdd/config.php');
+require_once('../src/modele/ModeleEvenement.php');
+require_once('../src/repository/EvenementRepository.php');
 $pdo = (new Config())->connexion();
 $sql = "SELECT * from offre limit 5" ;
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+$eveRepo=New EvenementRepository();
+$eveAcceuil=$eveRepo->showEvenementAcceuil();
 ?>
 <!doctype html>
 <html lang="fr">
@@ -119,46 +122,17 @@ $offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <section class="container border rounded border-dark my-3">
     <h3 class="text-center py-3 text-center text-uppercase">Derniers évènements créés</h3>
     <article class="article row" style="text-align: justify;">
+        <?php $img =["https://tse1.mm.bing.net/th/id/OIP.xSzocAtzqNOE2PZeS5_nRAHaHa?w=626&h=626&rs=1&pid=ImgDetMain&o=7&rm=3",]?>
+        <?php foreach ($eveAcceuil as $index=>$eve):?>
         <div class="col card m-3" style="width: 18rem;">
-            <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
+            <img src="<?=$img[0]?>" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title">Titre de l'évènement</h5>
-                <p class="card-text">Description de l'évènement</p>
-                <a href="#" class="btn btn-primary">Voir l'évènement</a>
+                <h5 class="card-title"><?=htmlspecialchars($eve->titre_eve)?></h5>
+                <p class="card-text d-inline-block text-truncate" style="max-width: 150px;"><?=htmlspecialchars($eve->desc_eve)?></p>
+                <a href="crudEvenement/evenementRead.php?id=<?=htmlspecialchars($eve->id_evenement)?>" class="btn btn-primary">Voir l'évènement</a>
             </div>
         </div>
-        <div class="col card m-3" style="width: 18rem;">
-            <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Titre de l'évènement</h5>
-                <p class="card-text">Description de l'évènement</p>
-                <a href="#" class="btn btn-primary">Voir l'évènement</a>
-            </div>
-        </div>
-        <div class="col card m-3" style="width: 18rem;">
-            <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Titre de l'évènement</h5>
-                <p class="card-text">Description de l'évènement</p>
-                <a href="#" class="btn btn-primary">Voir l'évènement</a>
-            </div>
-        </div>
-        <div class="col card m-3" style="width: 18rem;">
-            <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Titre de l'évènement</h5>
-                <p class="card-text">Description de l'évènement</p>
-                <a href="#" class="btn btn-primary">Voir l'évènement</a>
-            </div>
-        </div>
-        <div class="col card m-3" style="width: 18rem;">
-            <img src="https://wallpapercave.com/wp/wp3403850.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Titre de l'évènement</h5>
-                <p class="card-text">Description de l'évènement</p>
-                <a href="#" class="btn btn-primary">Voir l'évènement</a>
-            </div>
-        </div>
+        <?php endforeach;?>
     </article>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

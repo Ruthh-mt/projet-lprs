@@ -102,5 +102,10 @@ class EvenementRepository
         $stmt->execute(['id' => $evenement->getIdEvenement()]);
     }
 
-
+    public function showEvenementAcceuil(){
+        $sql="SELECT * FROM evenement ORDER BY id_evenement DESC LIMIT 5"; //AJOUTER LE SYSTEME DE DATE A LA PLACE DE L4ID
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 }
