@@ -128,10 +128,6 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
 
         <div class="offre-header d-flex justify-content-between align-items-center">
             <h2 class="fw-bold">Modifier un évènement</h2>
-            <button type="button" class="btn btn-outline-light"
-                    onclick="window.location.href='evenementRead.php?id=<?= $evenement->id_evenement ?>'">
-                <i class="bi bi-arrow-left-circle"></i> Retour
-            </button>
         </div>
 
         <form class="mt-4" action="../../src/treatment/traitementUpdateEvenement.php" method="post">
@@ -193,15 +189,16 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
 
             <div class="d-flex justify-content-between mt-4">
                 <div>
-                    <button class="btn btn-primary" type="submit">
-                        <i class="bi bi-save"></i> Enregistrer les modifications
-                    </button>
-                    <a href="../evenements.php" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left"></i> Annuler
+                    <a href="../evenements.php" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i>
                     </a>
+
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </div>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">
-                    <i class="bi bi-trash"></i> Supprimer
+                <button class="btn btn-outline-primary" type="submit">
+                    <i class="bi bi-floppy"></i>
                 </button>
             </div>
         </form>

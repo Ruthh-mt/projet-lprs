@@ -161,20 +161,12 @@ if (session_status() === PHP_SESSION_NONE) {
                             <?php endif; ?>
                         </td>
                         <td>
-                            <div class="btn-group" role="group">
-                                <a href="evenementRead.php?id=<?= $evenement->id_evenement ?>" class="btn btn-sm btn-info" title="Voir">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="evenementUpdate.php?id=<?= $evenement->id_evenement ?>" class="btn btn-sm btn-primary" title="Modifier">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a href="../../src/treatment/traitementDeleteEvenement.php?id=<?= $evenement->id_evenement ?>" 
-                                   class="btn btn-sm btn-danger" 
-                                   title="Supprimer"
-                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </div>
+                            <a href="evenementUpdate.php?id=<?= $evenement->id_evenement ?>" class="btn btn-warning">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="../../src/treatment/traitementDeleteEvenement.php?id=<?= $evenement->id_evenement ?>" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

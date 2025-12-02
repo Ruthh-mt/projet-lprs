@@ -48,7 +48,7 @@ $ville = trim($_POST['ville'] ?? '');
 $pays = trim($_POST['pays'] ?? 'France');
 $adresse_web = trim($_POST['adresse_web'] ?? '');
 
-if (empty($nom) || empty($adresse) || empty($web)) {
+if (empty($nom) || empty($adresse) || empty($adresse_web)) {
     http_response_code(400);
     echo json_encode([
         'success' => false,
@@ -67,13 +67,12 @@ try {
     }
     
     $data = [
-        'id_fiche_entreprise' => $id_fiche_entreprise,
-        'nom_entreprise' => $nom,
-        'adresse_entreprise' => $adresse,
-        'adresse_web' => $web
+        'nom' => $nom,
+        'adresse' => $adresse,
+        'web' => $adresse_web
     ];
     
-    $success = $ficheRepo->updateFiche($data);
+    $success = $ficheRepo->updateFiche($id_fiche_entreprise, $data);
     
     if (!$success) {
         throw new Exception("Une erreur est survenue lors de la mise à jour de la fiche entreprise.");
