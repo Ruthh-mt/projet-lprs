@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../bdd/config.php';
 
 class FicheEntrepriseRepository
 {
@@ -46,6 +47,25 @@ class FicheEntrepriseRepository
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    public function getFicheEntrepriseById(int $id_fiche_entreprise): ?array
+    {
+        $pdo = $this->db->connexion();
+        $sql = "SELECT * FROM fiche_entreprise WHERE id_fiche_entreprise = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id_fiche_entreprise]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+    
+    public function deleteFicheEntreprise(int $id_fiche_entreprise): bool
+    {
+        $pdo = $this->db->connexion();
+        $sql = "DELETE FROM fiche_entreprise WHERE id_fiche_entreprise = :id";
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute(['id' => $id_fiche_entreprise]);
+    }
+
     public function findFicheByUser(int $id){
         $pdo = $this->db->connexion();
         $sql = "SELECT * FROM fiche_entreprise f inner join partenaire p
@@ -57,4 +77,29 @@ class FicheEntrepriseRepository
         return $result ?: null;
     }
 
+    public function getFicheById(int $id): ?array {
+        $pdo = $this->db->connexion();
+        $sql = "SELECT * FROM fiche_entreprise WHERE id_fiche_entreprise = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
+
+    public function updateFiche(int $id, array $data): bool {
+        $pdo = $this->db->connexion();
+        $sql = "UPDATE fiche_entreprise SET 
+                nom_entreprise = :nom,
+                adresse_entreprise = :adresse,
+                adresse_web = :web
+                WHERE id_fiche_entreprise = :id";
+                
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute([
+            'nom' => $data['nom'],
+            'adresse' => $data['adresse'],
+            'web' => $data['web'],
+            'id' => $id
+        ]);
+    }
 }

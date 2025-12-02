@@ -2,8 +2,31 @@
 $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
 
-    $page = 'Entreprise';
+$page = 'Entreprise';
+
+// Vérifier si l'ID de la fiche entreprise est fourni
+if (!isset($_GET['id_fiche_entreprise']) || !is_numeric($_GET['id_fiche_entreprise'])) {
+    $_SESSION['error'] = "ID de fiche entreprise invalide.";
+    header('Location: ./entrepriseRead.php');
+    exit();
+}
+
+$id_fiche_entreprise = (int)$_GET['id_fiche_entreprise'];
+
+// Inclure le repository pour les fiches entreprise
+require_once __DIR__ . '../../../src/repository/FicheEntrepriseRepository.php';
+$ficheEntrepriseRepository = new FicheEntrepriseRepository();
+
+// Récupérer les détails de la fiche entreprise
+$fiche = $ficheEntrepriseRepository->getFicheEntrepriseById($id_fiche_entreprise);
+
+// Vérifier si la fiche existe
+if (!$fiche) {
+    $_SESSION['error'] = "Fiche entreprise non trouvée.";
+    header('Location: ./entrepriseRead.php');
+    exit();
 }
 ?>
 <!doctype html>
@@ -11,7 +34,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ADMIN • LPRS</title>
+    <title>ADMIN • LPRS - Supprimer une entreprise</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
@@ -83,9 +106,49 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </nav>
-<section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
-</section>
+<main class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="h4 mb-0">Supprimer une entreprise</h2>
+                </div>
+                <div class="card-body">
+                    <?php if (isset($_SESSION['error'])): ?>
+                        <div class="alert alert-danger">
+                            <?= htmlspecialchars($_SESSION['error']); ?>
+                            <?php unset($_SESSION['error']); ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="alert alert-danger">
+                        <h5 class="alert-heading">Attention !</h5>
+                        <p>Vous êtes sur le point de supprimer définitivement l'entreprise suivante : <?= htmlspecialchars($fiche['nom_entreprise'] ?? 'N/A') ?></p>
+                        <ul class="mb-0">
+                            <li><strong>ID :</strong> <?= htmlspecialchars($fiche['id_fiche_entreprise'] ?? 'N/A') ?></li>
+                            <li><strong>Nom :</strong> <?= htmlspecialchars($fiche['nom_entreprise'] ?? 'N/A') ?></li>
+                            <li><strong>Ville :</strong> <?= htmlspecialchars($fiche['adresse_entreprise'] ?? 'Non spécifiée') ?></li>
+                            <li><strong>Site :</strong> <?= htmlspecialchars($fiche['adresse_web'] ?? 'Non spécifiée') ?></li>
+                        </ul>
+                        <hr>
+                        <p class="mb-0 fw-bold">Cette action est irréversible. Êtes-vous sûr de vouloir continuer ?</p>
+                    </div>
+
+                    <form action="../../src/treatment/traitementDeleteEntreprise.php" method="post" class="d-flex justify-content-between">
+                        <input type="hidden" name="id_fiche_entreprise" value="<?= $id_fiche_entreprise ?>">
+                        <a href="entrepriseRead.php" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                        <button type="submit" class="btn btn-outline-danger");">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

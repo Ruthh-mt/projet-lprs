@@ -143,30 +143,49 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="col">
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        // Fonction pour charger les formations depuis l'API
+        async function loadFormations() {
+            try {
+                const response = await fetch('../api/get_formations.php');
+                if (!response.ok) {
+                    throw new Error('Erreur lors du chargement des formations');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Erreur:', error);
+                // Retourner une liste vide en cas d'erreur
+                return [];
+            }
+        }
+
+        // Fonction pour générer les options de formation
+        async function generateFormationOptions() {
+            const formations = await loadFormations();
+            let options = '<option value="">Sélectionnez une formation</option>';
+            
+            formations.forEach(formation => {
+                options += `<option value="${formation.nom}">${formation.nom}</option>`;
+            });
+            
+            return `
+                <div class="form-selectfloating my-2">
+                    <select class="form-select" name="classe" id="floatingClasse" required>
+                        ${options}
+                    </select>
+                </div>`;
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
             const extraFields = document.getElementById("extraFields");
             const selectRole = document.getElementById("choix");
 
-            selectRole.addEventListener("change", () => {
+            selectRole.addEventListener("change", async () => {
                 extraFields.innerHTML = "";
 
                 if (selectRole.value === "Étudiant") {
-                    extraFields.innerHTML = `
-                 <div class="form-selectfloating my-2">
-                    <select class="form-select" name="classe"   id="floatingClasse">
-                        <option value="3° Pro">Troisième Pro</option>
-                        <option value="Bac TRPM">Bac Pro TRPM</option>
-                        <option value="BAC MSPC">Bac Pro MSPC</option>
-                        <option value="BAC CIEL">Bac Pro CIEL</option>
-                        <option value="Formation SST">Formation SST</option>
-                        <option value="BAC STI2D">Bac STI2D</option>
-                        <option value="BTS CPRP">BTS CPRP</option>
-                        <option value="BTS SIO SISR">BTS SIO SISR</option>
-                        <option value="BTS SIO SLAM">BTS SIO SLAM</option>
-                        <option value="BTS MS">BTS MS</option>
-                        <option value="BTS CQPM">BTS CQPM</option>
-                    </select>
-                </div>
+                    const formationOptions = await generateFormationOptions();
+                    extraFields.innerHTML = formationOptions;
+                    extraFields.innerHTML += `
                 <div class="form-floating my-2">
                     <input type="number" name="annee_promo" class="form-control" id="floatingAnnee" placeholder="Année de promotion" min="1900" max="2100" step="1">
                     <label for="floatingAnnee">Année de promotion</label>

@@ -143,12 +143,11 @@ if (session_status() === PHP_SESSION_NONE) {
                         <?php endif; ?>
                     </td>
                     <td>
-                        <a href="entrepriseUpdate.php?id=<?= $entreprise['id_fiche_entreprise'] ?>" class="btn btn-sm btn-primary">
-                            <i class="bi bi-pencil"></i> Modifier
+                        <a href="entrepriseUpdate.php?id_fiche_entreprise=<?= $entreprise['id_fiche_entreprise'] ?>" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i>
                         </a>
-                        <a href="#" class="btn btn-sm btn-danger" 
-                           onclick="confirmDelete(<?= $entreprise['id_fiche_entreprise'] ?>)">
-                            <i class="bi bi-trash"></i> Supprimer
+                        <a href="entrepriseDelete.php?id_fiche_entreprise=<?= $entreprise['id_fiche_entreprise'] ?>" class="btn btn-danger">
+                            <i class="bi bi-trash"></i>
                         </a>
                     </td>
                 </tr>
@@ -168,18 +167,11 @@ if (session_status() === PHP_SESSION_NONE) {
                 url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/fr-FR.json'
             },
             responsive: true,
-            order: [[1, 'asc']], // Tri par nom par défaut
+            order: [[1, 'asc']],
             pageLength: 10,
             lengthMenu: [10, 25, 50, 100]
         });
     });
-
-    function confirmDelete(id) {
-        if (confirm('Êtes-vous sûr de vouloir supprimer cette entreprise ? Cette action est irréversible.')) {
-            // Ajouter ici la logique de suppression
-            window.location.href = 'entrepriseDelete.php?id=' + id;
-        }
-    }
 </script>
 </body>
 </html>
