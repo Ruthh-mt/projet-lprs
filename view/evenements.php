@@ -99,12 +99,11 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
         if (isset($_SESSION['utilisateur'])) :?>
             <a class="btn btn-outline-light" href="crudEvenement/evenementReadMyEvent.php" role="button"><i
                         class="bi bi-calendar4-event"></i> Mes evenements</a>
-        <?php endif; ?>
-
         <?php if ($_SESSION["utilisateur"]["role"] === "Professeur") : ?>
             <a class="btn btn-outline-light" href="crudEvenement/evenementValidate.php" role="button"><i
                         class="bi bi-calendar4-event"></i> Voir les evenement a valider</a>
-        <?php endif; ?>
+        <?php endif;
+        endif; ?>
     </section>
     <section>
         <section class="container">
