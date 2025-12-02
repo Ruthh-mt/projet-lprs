@@ -92,11 +92,11 @@ $utilisateurs = $utilisateurRepo->findNonPartenaires();
     <h1>Gestion <?=$page?></h1>
 </section>
 <section class="container">
-    <form action="../../src/treatment/treatmentGestionnaireCreate.php" method="post" class="align-self-center" enctype="multipart/form-data">
+    <form action="../../src/treatment/treatmentPartenaireCreate.php" method="post" class="align-self-center" enctype="multipart/form-data">
         <div class="row">
             <div class="col-12 my-3">
-                <div class="card my-3">
-                    <div class="card-header bg-danger text-white">
+                <div class="card mx-auto my-3" style="max-width: 50%;">
+                    <div class="card-header bg-success text-white">
                         <h5 class="card-title mb-0">Sélectionner un utilisateur existant</h5>
                     </div>
                     <div class="card-body">
@@ -110,14 +110,20 @@ $utilisateurs = $utilisateurRepo->findNonPartenaires();
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <div class="form-text">Sélectionnez un utilisateur existant à promouvoir en tant que gestionnaire.</div>
+                            <div class="form-text">Sélectionnez un utilisateur existant à promouvoir en tant que partenaire.</div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="partenaireRead.php" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left"></i>
+                                </a>
+                                <button type="submit" class="btn btn-outline-success" id="submitBtn">
+                                    <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status" aria-hidden="true"></span>
+                                    <span id="btnText"><i class="bi bi-floppy"></i></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="d-grid gap-2 my-2">
-            <button class="btn btn-outline-success" type="submit">AJOUTER</button>
         </div>
     </form>
 </section>

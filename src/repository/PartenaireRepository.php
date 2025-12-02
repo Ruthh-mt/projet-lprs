@@ -21,6 +21,12 @@ class partenaireRepository
         $stmt = $this->db->connexion()->query('SELECT * FROM utilisateur WHERE role = "Partenaire" ORDER BY nom, prenom');
         $partenaires = [];
         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // S'assurer que l'ID est correctement mappé
+            if (isset($data['id'])) {
+                $data['id_user'] = $data['id'];  // Mapper 'id' vers 'id_user' pour le modèle
+            } elseif (isset($data['id_utilisateur'])) {
+                $data['id_user'] = $data['id_utilisateur'];  // Ou mapper 'id_utilisateur' vers 'id_user'
+            }
             $partenaires[] = new ModelePartenaire($data);
         }
         return $partenaires;

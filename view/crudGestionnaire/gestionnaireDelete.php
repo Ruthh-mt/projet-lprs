@@ -106,7 +106,7 @@ $page = 'Gestionnaire';
     <h1>Gestion <?=$page?></h1>
 </section>
 <section class="container my-5">
-    <div class="card mx-auto" style="max-width: 30rem;">
+    <div class="card mx-auto" style="max-width: 50%;">
         <div class="card-header bg-danger text-white">
             <h5 class="card-title mb-0">Confirmation de suppression</h5>
         </div>
@@ -115,15 +115,13 @@ $page = 'Gestionnaire';
                 Êtes-vous sûr de vouloir rétrograder ce gestionnaire au rôle d'étudiant ?<br>
                 Cette action est irréversible !
             </p>
-
             <p class="text-muted">
                 <i class="bi bi-person-square me-2"></i><?= htmlspecialchars($gestionnaire->getPrenom() . ' ' . $gestionnaire->getNom()) ?><br>
                 <i class="bi bi-envelope me-2"></i><?= htmlspecialchars($gestionnaire->getEmail()) ?><br>
                 <i class="bi bi-briefcase me-2"></i><?= htmlspecialchars($gestionnaire->getPoste()) ?>
             </p>
-
             <div class="justify-content-center">
-                <form action="../../src/treatment/treatmentGestionnaireDelete.php" method="post" class="">
+                <form action="../../src/treatment/treatmentDeleteGestionnaire.php" method="post" class="">
                     <input type="hidden" name="id" value="<?= $gestionnaire->getId() ?>">
                     <small class="text-center"></small>
                     <div class="d-flex justify-content-between mt-4">

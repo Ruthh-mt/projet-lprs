@@ -113,7 +113,7 @@ $page = 'Partenaire';
         <?php if (!empty($partenaires) && is_array($partenaires)): ?>
             <?php foreach ($partenaires as $partenaire): ?>
                 <tr>
-                    <td><?= htmlspecialchars($partenaire->getId()) ?></td>
+                    <td><?= $partenaire->getId() !== null ? htmlspecialchars($partenaire->getId()) : 'N/A' ?></td>
                     <td><?= htmlspecialchars($partenaire->getPrenom()) ?></td>
                     <td><?= htmlspecialchars($partenaire->getNom()) ?></td>
                     <td><?= htmlspecialchars($partenaire->getEmail()) ?></td>
