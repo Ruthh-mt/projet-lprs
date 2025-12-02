@@ -194,12 +194,6 @@ if (!$fiche) {
                     <label for="adresse_entreprise" class="form-label">Adresse complète</label>
                     <textarea class="form-control" id="adresse_entreprise" name="adresse_entreprise" 
                               rows="3" required><?= htmlspecialchars($fiche['adresse_entreprise'] ?? '') ?></textarea>
-                    <input type="hidden" id="code_postal" name="code_postal" 
-                           value="<?= htmlspecialchars($fiche['code_postal'] ?? '') ?>">
-                    <input type="hidden" id="ville" name="ville" 
-                           value="<?= htmlspecialchars($fiche['adresse_entreprise'] ?? '') ?>">
-                    <input type="hidden" id="pays" name="pays" 
-                           value="<?= htmlspecialchars($fiche['pays'] ?? 'France') ?>">
                 </div>
                 
                 <div class="mb-3">
@@ -219,7 +213,7 @@ if (!$fiche) {
                     </a>
                     <button type="submit" class="btn btn-outline-primary" id="submitBtn">
                         <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status" aria-hidden="true"></span>
-                        <span id="btnText"><i class="bi bi-save"></i></span>
+                        <span id="btnText"><i class="bi bi-floppy"></i></span>
                     </button>
                 </div>
             </form>

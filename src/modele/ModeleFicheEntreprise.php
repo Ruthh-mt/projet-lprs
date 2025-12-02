@@ -19,65 +19,41 @@ private $adresseWeb ;
         }
     }
 
-    /**
-     * @return mixed
-     */
     public function getIdFicheEntreprise()
     {
         return $this->idFicheEntreprise;
     }
 
-    /**
-     * @param mixed $idFicheEntreprise
-     */
     public function setIdFicheEntreprise($idFicheEntreprise): void
     {
         $this->idFicheEntreprise = $idFicheEntreprise;
     }
 
-    /**
-     * @return mixed
-     */
     public function getNomEntreprise()
     {
         return $this->nomEntreprise;
     }
 
-    /**
-     * @param mixed $nomEntreprise
-     */
     public function setNomEntreprise($nomEntreprise): void
     {
         $this->nomEntreprise = $nomEntreprise;
     }
 
-    /**
-     * @return mixed
-     */
     public function getAdresseEntreprise()
     {
         return $this->adresseEntreprise;
     }
 
-    /**
-     * @param mixed $adresseEntreprise
-     */
     public function setAdresseEntreprise($adresseEntreprise): void
     {
         $this->adresseEntreprise = $adresseEntreprise;
     }
 
-    /**
-     * @return mixed
-     */
     public function getAdresseWeb()
     {
         return $this->adresseWeb;
     }
 
-    /**
-     * @param mixed $adresseWeb
-     */
     public function setAdresseWeb($adresseWeb): void
     {
         $this->adresseWeb = $adresseWeb;

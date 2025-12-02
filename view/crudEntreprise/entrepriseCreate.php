@@ -186,11 +186,11 @@ $success = '';
                 
                 <div class="d-flex justify-content-between mt-4">
                     <a href="entrepriseRead.php" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left"></i> Retour à la liste
+                        <i class="bi bi-arrow-left"></i>
                     </a>
-                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <button type="submit" class="btn btn-outline-success" id="submitBtn">
                         <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status" aria-hidden="true"></span>
-                        <span id="btnText"><i class="bi bi-save"></i> Enregistrer l'entreprise</span>
+                        <span id="btnText"><i class="bi bi-floppy"></i></span>
                     </button>
                 </div>
             </form>
@@ -200,7 +200,6 @@ $success = '';
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Gestion de l'autocomplétion d'adresse
     const searchInput = document.getElementById('adresse_recherche');
     const suggestionsDiv = document.getElementById('suggestions');
     const adresseComplete = document.getElementById('adresse_entreprise');

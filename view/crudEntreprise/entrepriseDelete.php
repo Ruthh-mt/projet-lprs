@@ -6,7 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $page = 'Entreprise';
 
-// Vérifier si l'ID de la fiche entreprise est fourni
 if (!isset($_GET['id_fiche_entreprise']) || !is_numeric($_GET['id_fiche_entreprise'])) {
     $_SESSION['error'] = "ID de fiche entreprise invalide.";
     header('Location: ./entrepriseRead.php');
@@ -15,14 +14,11 @@ if (!isset($_GET['id_fiche_entreprise']) || !is_numeric($_GET['id_fiche_entrepri
 
 $id_fiche_entreprise = (int)$_GET['id_fiche_entreprise'];
 
-// Inclure le repository pour les fiches entreprise
 require_once __DIR__ . '../../../src/repository/FicheEntrepriseRepository.php';
 $ficheEntrepriseRepository = new FicheEntrepriseRepository();
 
-// Récupérer les détails de la fiche entreprise
 $fiche = $ficheEntrepriseRepository->getFicheEntrepriseById($id_fiche_entreprise);
 
-// Vérifier si la fiche existe
 if (!$fiche) {
     $_SESSION['error'] = "Fiche entreprise non trouvée.";
     header('Location: ./entrepriseRead.php');

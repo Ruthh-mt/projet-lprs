@@ -52,8 +52,9 @@ class FicheRepository
         $stmt = $this->db->connexion()->prepare($sql);
 
         return $stmt->execute([
-            'nomEntreprise'     => $fiche->getNomEntreprise(),
-            'adresseEntreprise' => $fiche->getAdresseEntreprise(),
+            'nom'     => $fiche->getNomEntreprise(),
+            'adresse' => $fiche->getAdresseEntreprise(),
+            'web'     => $fiche->getAdresseWeb()
             'adresseWeb'     => $fiche->getAdresseWeb()
         ]);
     }
