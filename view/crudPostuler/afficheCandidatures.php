@@ -112,7 +112,7 @@ session_start();
 
             <div class="mb-3">
                 <label for="cv" class="form-label">CV (PDF, DOCX) </label>
-                <input id="cv" name="cv" type="file" class="form-control" accept=".pdf,.doc,.docx">
+                <input id="cv" name="cv" type="file" class="form-control" accept=".pdf,.doc,.docx" value="?=" >
             </div>
             <div class="text-center mt-4">
                 <form action="candidatureDelete.php" method="post" style="display:inline;">
