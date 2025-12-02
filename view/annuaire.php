@@ -103,44 +103,41 @@ $nbTotalUser = $utilisateurRepository->countAllUtilisateurs() / $nbUtilisateurPa
         </div>
     </form>
 </section>
-<section class="container">
+<section class="container my-3">
     <article class="row my-3">
-        <div class="card-group">
+        <div class="justify-content-center card-group">
             <?php
             if (!empty($allUtilisateur)):
             $count = 0;
             $img = ["https://wallpaperbat.com/img/804383-flat-2d-4k-wallpaper-top-free-flat-2d-4k-background.jpg", "https://wallpapercave.com/wp/wp12959808.jpg", "https://images.hdqwalls.com/wallpapers/minimal-morning-mountains-4k-ja.jpg"];
-            foreach ($allUtilisateur
-
-            as $user):
-            if ($count == 3) : ?>
+            foreach ($allUtilisateur as $user): ?>
+            <?php if ($count == 3) : ?>
         </div>
     </article>
 </section>
-<section class="container">
+
+<section class="container my-3">
     <article class="row my-3">
-        <div class="card-group">
+        <div class="justify-content-center card-group">
             <?php $count = 0;
-            endif;
-            ?>
-            <div class="card">
+            endif; ?>
+            <div class="card shadow-sm">
                 <img src="<?= htmlspecialchars($img[$count]) ?>"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title"><?= htmlspecialchars($user->prenom . " " . strtoupper($user->nom)) ?></h5>
-                    <p class="card-text">
+                     class="card-img-top" alt="..." style="height: 230px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold"><?= htmlspecialchars($user->prenom . " " . strtoupper($user->nom)) ?></h5>
                     <div class="card">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><i
-                                        class="bi bi-envelope-at"></i> <?= htmlspecialchars($user->email) ?></li>
+                            <li class="list-group-item">
+                                <i class="bi bi-envelope-at"></i>
+                                <?= htmlspecialchars($user->email) ?></li>
                         </ul>
                     </div>
-                    </p>
                 </div>
             </div>
-            <?php $count++;
-            endforeach;
-            if ($count < 3): ?>
+            <?php $count++;?>
+            <?php endforeach; ?>
+            <?php if ($count > 0 && $count < 3): ?>
         </div>
     </article>
 </section>
@@ -149,31 +146,40 @@ else : ?>
     <div class="alert alert-dark alert-dismissible fade show">
         <h5> Il semblerait qu'il n'y a pas d'utilisateur</h5>
         <br>
-        <p>Allez faire votre propagande et faite des adeptes</p>";
+        <p>Allez faire votre propagande et faite des adeptes</p>
     </div>
 <?php endif; ?>
-<section class="container"
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a class="page-link" href="annuaire.php?page=<?php if ($page > 1) {
-                echo $page - 1;
-            } else {
-                echo $page;
-            } ?>" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <?php for ($pages = 1; $pages <= $nbTotalUser + 1; $pages++): ?>
-            <li class="page-item"><a class="page-link" href="annuaire.php?page=<?= $pages ?>"><?= $pages ?></a></li>
-        <?php endfor; ?>
-        <li class="page-item">
-            <a class="page-link" href="annuaire.php?page=<?= $page + 1 ?>" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+<section class="container">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="annuaire.php?page=<?php if ($page > 1) {
+                    echo $page - 1;
+                } else {
+                    echo $page;
+                } ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <?php for ($pages = 1; $pages <= $nbTotalUser + 1; $pages++):
+                if ($pages == $page) : ?>
+                    <li class="page-item active">
+                        <a class="page-link" href="annuaire.php?page=<?= $pages ?>"
+                           aria-current="page"><?= $pages ?></a>
+                    </li>
+                <?php else : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="annuaire.php?page=<?= $pages ?>"><?= $pages ?></a>
+                    </li>
+                <?php endif;
+            endfor; ?>
+            <li class="page-item">
+                <a class="page-link" href="annuaire.php?page=<?= $page + 1 ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

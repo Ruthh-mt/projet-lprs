@@ -127,25 +127,23 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
     }
     ?>
     <section class="content my-4" id="eveCreated">
-        <section class="container">
+        <section class="container my-3">
             <article class="row my-3">
                 <div class="justify-content-center card-group">
                     <?php
                     if (!empty($allEveSuperviseur)):
                     $count = 0;
                     $img = ["https://wallpaper.dog/large/20516113.png", "https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg", "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
-                    foreach ($allEveSuperviseur
-
-                    as $eveSupervise):
-                    if ($count == 3) : ?>
+                    foreach ($allEveSuperviseur as $eveSupervise):?>
+                    <?php if ($count == 3) : ?>
                 </div>
             </article>
         </section>
-        <section class="container">
+        <section class="container my-3">
             <article class="row my-3">
                 <div class="justify-content-center card-group">
-                    <?php $count = 0;
-                    endif; ?>
+                    <?php $count = 0;?>
+                    <?php endif; ?>
                     <div class="card shadow-sm"> <!---style="width: 320px; height: 430px; flex: 0 0 auto;"-->
                         <img src="<?= htmlspecialchars($img[$count]) ?>"
                              class="card-img-top"
@@ -165,40 +163,38 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
                             Dernière mise à jour : <?= date("d/m/Y H:i") ?>
                         </div>
                     </div>
-
-                    <?php $count++;
-                    endforeach;
-                    else : ?>
-                    <div class="alert alert-dark alert-dismissible fade show">
-                        <h5> Il semblerait que vous avez crée aucun evenements</h5>
-                        <br>
-                        <p>Il s'agirait de contribuer au fun de ce lycée</p>
-                    </div>
+                    <?php $count++; endforeach; ?>
+                    <?php if ($count > 0 && $count < 3): ?>
                 </div>
             </article>
-            <?php endif; ?>
         </section>
+        <?php endif; ?>
+        <?php else : ?>
+            <div class="alert alert-dark alert-dismissible fade show">
+                <h5> Il semblerait que vous avez crée aucun evenements</h5>
+                <br>
+                <p>Il s'agirait de contribuer au fun de ce lycée</p>
+            </div>
+        <?php endif; ?>
     </section>
     <section class="content my-4" id="eveInscrit">
-        <section class="container">
+        <section class="container my-3">
             <article class="row my-3">
                 <div class="justify-content-center card-group">
                     <?php
                     if (!empty($allEveInscrit)):
                     $count = 0;
                     $img = ["https://wallpaper.dog/large/20516113.png", "https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg", "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
-                    foreach ($allEveInscrit
-
-                    as $eveInscrit):
-                    if ($count == 3) : ?>
+                    foreach ($allEveInscrit as $eveInscrit):?>
+                    <?php if ($count == 3) : ?>
                 </div>
             </article>
         </section>
-        <section class="container">
+        <section class="container my-3">
             <article class="row my-3">
                 <div class="justify-content-center card-group">
-                    <?php $count = 0;
-                    endif; ?>
+                    <?php $count = 0;?>
+                    <?php endif; ?>
                     <div class="card shadow-sm"> <!---style="width: 320px; height: 430px; flex: 0 0 auto;"-->
                         <img src="<?= htmlspecialchars($img[$count]) ?>"
                              class="card-img-top"
@@ -218,20 +214,20 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
                             Dernière mise à jour : <?= date("d/m/Y H:i") ?>
                         </div>
                     </div>
-
-                    <?php $count++;
-                    endforeach;
-                    else : ?>
+                    <?php $count++; endforeach; ?>
+                    <?php if ($count > 0 && $count < 3): ?>
+                </div>
+            </article>
+        </section>
+        <?php endif; ?>
+                    <?php else : ?>
                     <div class="alert alert-dark alert-dismissible fade show">
                         <h5> Il semblerait que vous vous etes inscrit a aucun evenements</h5>
                         <br>
                         <p>N'ayez pas peur, on ne mange pas souvent les gens </p>
                     </div>
-                </div>
-            </article>
             <?php endif; ?>
         </section>
-    </section>
     <section class="container">
         <nav aria-label="Page navigation example">
             <ul class="pagination">

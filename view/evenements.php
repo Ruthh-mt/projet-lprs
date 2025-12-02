@@ -141,22 +141,19 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
                 unset($_SESSION['toastr']);
             }
             ?>
-            <section class="container my-4">
-                <section class="container">
+                <section class="container my-3">
                     <article class="row my-3">
                         <div class="justify-content-center card-group">
                             <?php
                             if (!empty($allEvenement)):
                             $count = 0;
                             $img = ["https://wallpaper.dog/large/20516113.png", "https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg", "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
-                            foreach ($allEvenement
-
-                            as $evenement):
-                            if ($count == 3) : ?>
+                            foreach ($allEvenement as $evenement):?>
+                            <?php if ($count == 3) : ?>
                         </div>
                     </article>
                 </section>
-                <section class="container">
+                <section class="container my-3">
                     <article class="row my-3">
                         <div class="justify-content-center card-group">
                             <?php $count = 0;
@@ -181,29 +178,23 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
                                 </div>
                             </div>
 
-                            <?php $count++;
-                            endforeach;
-                            if ($count < 3): ?>
+                            <?php $count++; endforeach; ?>
+                            <?php if ($count > 0 && $count < 3): ?>
                         </div>
                     </article>
                 </section>
-                <?php endif;
-                else : ?>
+                <?php endif; ?>
+                <?php else : ?>
                 <div class="alert alert-dark alert-dismissible fade show">
                     <h5> Il semblerait qu'il n'y a pas
                         d'evenements</h5>
                     <br>
                     <p>Soyez le/la premier/e a lancer le pas et
                         crée votre evenement</p>";
-                </div>
-                </div>
-                </article>
-            </section>
         <?php endif; ?>
 
 
-        </section>
-        <section class="container"
+        <section class="container">
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li class="page-item">
