@@ -16,11 +16,19 @@ if (!$id) {
     echo "<script>alert('Aucun post sélectionné'); window.location.href='../forum.php';</script>";
     exit;
 }
-
+if (!isset ($_GET['page'])) {
+    $page = 1;
+} else {
+    $page = $_GET['page'];
+}
+$nbReponseParPage = 10;
+$debut = ($page - 1) * $nbReponseParPage;
 $postRepo = new PostRepository();
 $post = $postRepo->getPostById(new ModelePost(["idPost" => $id]));
 $reponseRepo = new ReponseRepository();
-$reponses = $reponseRepo->getAllReponsebyPostId($id)
+$reponses = $reponseRepo->getAllReponsebyPostId($post->getidPost(), $debut, $nbReponseParPage);
+$nbTotalReponse = $reponseRepo->countAllReponseByPost($post->getidPost()) / $nbReponseParPage;
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -195,8 +203,8 @@ $reponses = $reponseRepo->getAllReponsebyPostId($id)
                     <?php else: ?>
                         <i class="bi bi-person-circle fs-3 text-dark"></i>
                     <?php endif; ?>
-                    <?= $userpost["prenom"] . " " . $userpost["nom"]?>
-                    <?php if (!empty($_SESSION['utilisateur']) && $reponse->ref_user == $_SESSION['utilisateur']['id_user'] || $_SESSION['utilisateur']['role']=="Gestionnaire")  : ?>
+                    <?= $userpost["prenom"] . " " . $userpost["nom"] ?>
+                    <?php if (!empty($_SESSION['utilisateur']) && $reponse->ref_user == $_SESSION['utilisateur']['id_user'] || $_SESSION['utilisateur']['role'] == "Gestionnaire")  : ?>
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
@@ -290,6 +298,40 @@ $reponses = $reponseRepo->getAllReponsebyPostId($id)
             </div>
         </div>
     </div>
+    <section class="container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="postRead.php?id=<?= $post->getidPost()?>?page=<?php if ($page > 1) {
+                        echo $page - 1;
+                    } else {
+                        echo $page;
+                    } ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <?php for ($pages = 1; $pages <= $nbTotalReponse + 1; $pages++):
+                    if ($pages == $page) : ?>
+                        <li class="page-item active">
+                            <a class="page-link" href="postRead.php?id=<?=$post->getidPost()?>?page=<?= $pages ?>"
+                               aria-current="page"><?= $pages ?></a>
+                        </li>
+                    <?php else : ?>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="postRead.php?id=<?= $post->getidPost()?>?page=<?= $pages ?>"><?= $pages ?></a>
+                        </li>
+                    <?php endif;
+                endfor; ?>
+                <li class="page-item">
+                    <a class="page-link" href="postRead.php?id=<?= $post->getidPost() ?>?page=<?= $page + 1 ?>"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
     <script>
         function autoResize(textarea) {
             textarea.style.height = 'auto'; // Reset height

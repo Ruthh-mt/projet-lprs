@@ -9,11 +9,13 @@ class PostRepository
         $this->db = new Config();
     }
 
-    public function getAllPostByCanal($post)
+    public function getAllPostByCanal($post,$limit,$perPage)
     {
-        $sql = "SELECT * FROM post WHERE canal=:canal ORDER BY date_heure_post DESC";
+        $sql = "SELECT * FROM post WHERE canal=:canal ORDER BY date_heure_post DESC LIMIT :limit,:perPage";
         $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute(["canal" => $post->getCanal()]);
+        $stmt->execute(["canal" => $post->getCanal(),
+            "limit" =>$limit,
+            "perPage" =>$perPage,]);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
@@ -79,6 +81,12 @@ class PostRepository
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute(["refUser" => $post->getRefUser()]);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+    public function countAllEvenementByCanal($post){
+        $sql = "SELECT COUNT(*) FROM post WHERE canal=:canal";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute(["canal" => $post->getCanal()]);
+        return $stmt->fetchColumn();
     }
 
 

@@ -6,7 +6,14 @@ require_once "../src/bdd/config.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
+if (!isset ($_GET['page'])) {
+    $page = 1;
+} else {
+    $page = $_GET['page'];
+}
+$nbPostParPage = 10;
+$debut = ($page - 1) * $nbPostParPage;
+$postRepository = new postRepository();
 ?>
 <!doctype html>
 <html lang="fr">
@@ -138,8 +145,8 @@ if (session_status() === PHP_SESSION_NONE) {
         <section class="container" id="general">
         <?php
         $post= new ModelePost(["canal"=>"general"]);
-        $postRepository = new PostRepository();
-        $allPostGeneral = $postRepository->getAllPostByCanal($post);
+        $allPostGeneral = $postRepository->getAllPostByCanal($post,$debut, $nbPostParPage);
+        $nbTotalPost = $postRepository->countAllEvenementByCanal($post) / $nbPostParPage;
         if (empty($allPostGeneral)) :?>
             <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait que la communication soit surcoter,
                 Soyer le premier à communiquer </h5>
@@ -163,7 +170,8 @@ if (session_status() === PHP_SESSION_NONE) {
         <section class="container" id="profediant">
             <?php
             $post= new ModelePost(["canal"=>"profediant"]);
-            $allPostProfediant = $postRepository->getAllPostByCanal($post);
+            $allPostProfediant = $postRepository->getAllPostByCanal($post,$debut, $nbPostParPage);
+        $nbTotalPost = $postRepository->countAllEvenementByCanal($post) / $nbPostParPage;
             if (empty($allPostProfediant)) :?>
                 <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait que la communication soit surcoter,
                     Soyer le premier à communiquer </h5>
@@ -187,7 +195,8 @@ if (session_status() === PHP_SESSION_NONE) {
         <section class="container" id="entrumnis">
             <?php
             $post= new ModelePost(["canal"=>"entrumnis"]);
-            $allPostEntrumnis = $postRepository->getAllPostByCanal($post);
+            $allPostEntrumnis = $postRepository->getAllPostByCanal($post,$debut, $nbPostParPage);
+            $nbTotalPost = $postRepository->countAllEvenementByCanal($post) / $nbPostParPage;
             if (empty($allpost)) :?>
                 <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait que la communication soit surcoter,
                     Soyer le premier à communiquer </h5>
@@ -211,7 +220,8 @@ if (session_status() === PHP_SESSION_NONE) {
         <section class="container" id="admin">
             <?php
             $post= new ModelePost(["canal"=>"admin"]);
-            $allPostAdmin = $postRepository->getAllPostByCanal($post);
+            $allPostAdmin = $postRepository->getAllPostByCanal($post,$debut, $nbPostParPage);
+            $nbTotalPost = $postRepository->countAllEvenementByCanal($post) / $nbPostParPage;
             if (empty($allPostAdmin)) :?>
                 <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait que la communication soit surcoter,
                     Soyer le premier à communiquer </h5>
@@ -233,24 +243,38 @@ if (session_status() === PHP_SESSION_NONE) {
             endif; ?>
         </section>
     </section>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-
+    <section class="container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="forum.php?page=<?php if ($page > 1) {
+                        echo $page - 1;
+                    } else {
+                        echo $page;
+                    } ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <?php for ($pages = 1; $pages <= $nbTotalPost + 1; $pages++):
+                    if ($pages == $page) : ?>
+                        <li class="page-item active">
+                            <a class="page-link" href="forum.php?page=<?= $pages ?>"
+                               aria-current="page"><?= $pages ?></a>
+                        </li>
+                    <?php else : ?>
+                        <li class="page-item">
+                            <a class="page-link" href="forum.php?page=<?= $pages ?>"><?= $pages ?></a>
+                        </li>
+                    <?php endif;
+                endfor; ?>
+                <li class="page-item">
+                    <a class="page-link" href="forum.php?page=<?= $page + 1 ?>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
