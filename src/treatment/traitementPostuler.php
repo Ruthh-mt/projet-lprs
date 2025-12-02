@@ -43,6 +43,7 @@ if ($verif->fetchColumn() > 0) {
 }
 
 // -------------------------------- Gestion du CV -----------------------------------------
+
 $chemin_telechargement = __DIR__ . '/telechargement/candidatures/';
 if (!is_dir($chemin_telechargement)) {
     mkdir($chemin_telechargement, 0777, true);
