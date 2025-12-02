@@ -90,13 +90,14 @@ if (session_status() === PHP_SESSION_NONE) {
         Mes Post</a>
     <div class="btn-group" role="group" aria-label="Basic outlined example">
         <button type="button" class="btn btn-outline-light" id="showGeneral">General</button>
-        <?php if ($_SESSION["utilisateur"]['role'] === "Étudiant" || $_SESSION["utilisateur"]['role'] === "Professeur"): ?>
+        <?php if(isset($_SESSION['utilisateur'])) {
+            if ($_SESSION["utilisateur"]['role'] === "Étudiant" || $_SESSION["utilisateur"]['role'] === "Professeur"): ?>
             <button type="button" class="btn btn-outline-light" id="showProfediant">Professeur / Etudiant</button>
         <?php elseif ($_SESSION["utilisateur"]['role'] === "Alumni" || $_SESSION["utilisateur"]['role'] === "Partenaire"): ?>
             <button type="button" class="btn btn-outline-light" id="showEntrumnis">Entreprise / Alumni</button>
         <?php elseif ($_SESSION["utilisateur"]['role'] === 'Gestionnaire'): ?>
             <button type="button" class="btn btn-outline-light" id="showAdmin">Admin</button>
-        <?php endif; ?>
+        <?php endif; }?>
     </div>
 </section>
 <main>
@@ -255,7 +256,6 @@ if (session_status() === PHP_SESSION_NONE) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
    $(document).ready(function () {
         $("#general").show();

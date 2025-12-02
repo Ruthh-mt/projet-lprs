@@ -30,7 +30,7 @@ class PostRepository
         ]);
     }
 
-    public function UpdatePost($post)
+    public function updatePost($post)
     {
         $ajout = "UPDATE post SET titre_post=:titrePost,canal=:canal,contenu_post=:contenuPost WHERE id_post=:idPost";
         $stmt = $this->db->connexion()->prepare($ajout);
