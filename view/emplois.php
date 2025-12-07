@@ -1,6 +1,6 @@
 <?php
-$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
-session_start();
+ $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
+session_start(); 
 require_once ('../src/bdd/config.php');
 require_once ('../src/repository/OffreRepository.php');
 require_once ('../src/repository/PartenaireRepository.php');
@@ -170,9 +170,8 @@ $id_user = $_SESSION['utilisateur']['id_user'];
                 </form>
                 <?php endif; ?>
             </td>
-            <?php endforeach; ?>
-        </tr>
-        </form>
+            </tr>
+        <?php endforeach; ?>
         </tbody>
     </table>
 </div>

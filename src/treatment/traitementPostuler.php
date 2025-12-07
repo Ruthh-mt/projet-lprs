@@ -43,26 +43,35 @@ if ($verif->fetchColumn() > 0) {
 }
 
 // -------------------------------- Gestion du CV -----------------------------------------
-
 $chemin_telechargement = __DIR__ . '/telechargement/candidatures/';
+
 if (!is_dir($chemin_telechargement)) {
     mkdir($chemin_telechargement, 0777, true);
 }
 
 $lien_cv = null;
+
+// Normalisation nom/prénom
 $nom_simplifie = preg_replace("/[^a-zA-Z0-9]/", "_", strtolower($nom_user));
 $prenom_simplifie = preg_replace("/[^a-zA-Z0-9]/", "_", strtolower($prenom_user));
 
 if (!empty($_FILES['cv']['name'])) {
-    $cvTmp = $_FILES['cv']['tmp_name'];
+
+    // SI L'EXTENSION EST ABSENTE → ON FORCE PDF
     $extension = pathinfo($_FILES['cv']['name'], PATHINFO_EXTENSION);
-    $nom_cv = "cv_{$nom_simplifie}_{$prenom_simplifie}_" . "." . $extension;
+    if ($extension === "" || $extension === null) {
+        $extension = "pdf";
+    }
+
+    $cvTmp = $_FILES['cv']['tmp_name'];
+    $nom_cv = "cv_{$nom_simplifie}_{$prenom_simplifie}." . $extension;
     $cvDest = $chemin_telechargement . $nom_cv;
 
     if (move_uploaded_file($cvTmp, $cvDest)) {
         $lien_cv = "/telechargement/candidatures/" . $nom_cv;
     }
 }
+
 
 // -------------------------------- Insertion BDD -----------------------------------------
 
@@ -79,17 +88,17 @@ if ($ok) {
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'ltrsproject@gmail.com';
-    $mail->Password = 'xbxp ihqx ptym ummb';
+    $mail->Username = 'rom.quashie@gmail.com';
+    $mail->Password = 'fbzo qrgr fvut ytmg';
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = 587;
-    $mail->setFrom("ltrsproject@gmail.com", 'Support');
-    $mail->addAddress("ltrsproject@gmail.com", $nomCandidat);
-    $mail->addreplyTo("ltrsproject@gmail.com", 'Support');
+    $mail->setFrom("rom.quashie@gmail.com", 'Support');
+    $mail->addAddress("rom.quashie@gmail.com", $nomCandidat);
+    $mail->addreplyTo("rom.quashie@gmail.com", 'Support');
 
     $mail->isHTML();
     $mail->Subject = "Candidature offre d'emplois";
-    $mail->Body = "<?php echo nomCandidat ?> <p> vient de postuler </p>";
+    $mail->Body = "<?php echo nomCandidat ?> <p> vient de postuler au poste de </p> <?php echo titre ?>";
     $mail->AltBody = "";
 
     if ($mail->send()) {

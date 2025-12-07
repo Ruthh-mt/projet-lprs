@@ -67,14 +67,44 @@ class PostulerRepository
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-    public function updateCandidature($lettre_motivation){
-        $sql="UPDATE postuler SET
-                     motivation=:motivation ";
-        $stmt=$this->db->connexion()->prepare($sql);
-        $stmt->execute([
-            'motivation' => $lettre_motivation
-        ]);
+    public function updateCandidature($ref_user, $ref_offre, $motivation)
+    {
+        try {
+            $sql = "UPDATE postuler 
+                SET motivation = :motivation
+                WHERE ref_user = :ref_user 
+                AND ref_offre = :ref_offre";
+
+
+            $pdo = $this->db->connexion();
+            $stmt = $pdo->prepare($sql);
+
+            $params = [
+                ':motivation' => $motivation,
+                ':ref_user'   => $ref_user,
+                ':ref_offre'  => $ref_offre
+            ];
+
+            $ok = $stmt->execute($params);
+
+            // Vérifier si des lignes ont été affectées
+            if ($ok && $stmt->rowCount() > 0) {
+                return true;
+            } else {
+                $this->lastError = "Aucune ligne mise à jour. Vérifiez que la candidature existe.";
+                if ($stmt->errorInfo()[0] !== '00000') {
+                    $this->lastError .= " Erreur SQL: " . implode(" | ", $stmt->errorInfo());
+                }
+                return false;
+            }
+
+        } catch (PDOException $e) {
+            $this->lastError = "Erreur PDO: " . $e->getMessage();
+            error_log("PDO Exception: " . $e->getMessage());
+            return false;
+        }
     }
+
     public function getCandidat(int $id_user){
         $sql = "SELECT u.nom , u.prenom FROM postuler p inner join offre o inner join utilisateur u
          on p.ref_offre = o.id_offre WHERE p.ref_user = :ref_user";
