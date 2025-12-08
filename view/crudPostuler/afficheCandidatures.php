@@ -23,7 +23,7 @@ $cvUrl = $cvChemin ? "/projet-lprs/src/treatment/telechargement/candidatures/" .
 /* SUPPR CV */
 if (isset($_POST['delete_cv'])) {
     if ($cvChemin && file_exists($cvChemin)) {
-        unlink($cvPath);
+        unlink($cvChemin);
     }
     header("Location: ".$_SERVER['REQUEST_URI']);
     exit;

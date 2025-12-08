@@ -16,38 +16,7 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .section-offre {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-        }
-
-        .offre-header {
-            background-color: #212529;
-            color: white;
-            border-radius: .75rem .75rem 0 0;
-            padding: 1.5rem;
-            border-bottom: 2px solid #0d6efd;
-        }
-
-        .offre-header h2 {
-            margin: 0;
-        }
-
-        .offre-actions a {
-            transition: all 0.2s ease-in-out;
-        }
-
-        .offre-actions a:hover {
-            transform: scale(1.05);
-        }
-    </style>
+    
 </head>
 
 <body>
