@@ -115,7 +115,7 @@ class EvenementUserRepository
     }
     public function getAllEvenementCreatedByUser($evenement)
     {
-        $sql = "SELECT evenement.id_evenement,evenement.titre_eve,evenement.desc_eve FROM user_evenement INNER JOIN  evenement ON user_evenement.ref_evenement = evenement.id_evenement WHERE  user_evenement.ref_user=:refUser AND user_evenement.est_superviseur=:estSuperviseur";
+        $sql = "SELECT evenement.id_evenement,evenement.titre_eve,evenement.desc_eve, evenement.date_heure_evenement FROM user_evenement INNER JOIN  evenement ON user_evenement.ref_evenement = evenement.id_evenement WHERE  user_evenement.ref_user=:refUser AND user_evenement.est_superviseur=:estSuperviseur order by evenement.date_heure_evenement desc";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute([
             "refUser"=>$evenement->getRefUser(),
@@ -125,7 +125,7 @@ class EvenementUserRepository
     }
     public function getAllEvenementUserInscrit($evenement)
     {
-        $sql = "SELECT evenement.id_evenement,evenement.titre_eve,evenement.desc_eve FROM user_evenement INNER JOIN  evenement ON user_evenement.ref_evenement = evenement.id_evenement WHERE  user_evenement.ref_user=:refUser AND user_evenement.est_superviseur=:estSuperviseur";
+        $sql = "SELECT evenement.id_evenement,evenement.titre_eve,evenement.desc_eve, evenement.date_heure_evenement FROM user_evenement INNER JOIN  evenement ON user_evenement.ref_evenement = evenement.id_evenement WHERE  user_evenement.ref_user=:refUser AND user_evenement.est_superviseur=:estSuperviseur ORDER BY evenement.date_heure_evenement desc";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute([
             "refUser"=>$evenement->getRefUser(),

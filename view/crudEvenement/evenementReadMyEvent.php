@@ -126,6 +126,7 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
         unset($_SESSION['toastr']);
     }
     ?>
+    <!-- Section des eve ou que l'on a créer -->
     <section class="content my-4" id="eveCreated">
         <section class="container my-3">
             <article class="row my-3">
@@ -133,8 +134,10 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
                     <?php
                     if (!empty($allEveSuperviseur)):
                     $count = 0;
-                    $img = ["https://wallpaper.dog/large/20516113.png", "https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg", "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
-                    foreach ($allEveSuperviseur as $eveSupervise):?>
+                    $img = ["https://static.vecteezy.com/system/resources/previews/047/393/529/original/a-colorful-landscape-with-mountains-and-river-free-vector.jpg", "https://www.creativefabrica.com/wp-content/uploads/2024/10/17/Beautiful-Waterfall-Scene-Wallpaper-Graphics-108076283-1.jpg", "https://static.vecteezy.com/system/resources/previews/002/966/809/large_2x/sunset-waterfall-landscape-illustration-free-vector.jpg"];
+                    foreach ($allEveSuperviseur
+
+                    as $eveSupervise): ?>
                     <?php if ($count == 3) : ?>
                 </div>
             </article>
@@ -142,10 +145,14 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
         <section class="container my-3">
             <article class="row my-3">
                 <div class="justify-content-center card-group">
-                    <?php $count = 0;?>
+                    <?php $count = 0; ?>
                     <?php endif; ?>
                     <div class="card shadow-sm"> <!---style="width: 320px; height: 430px; flex: 0 0 auto;"-->
-                        <img src="<?= htmlspecialchars($img[$count]) ?>"
+                        <img src="<?php try {
+                            echo htmlspecialchars($img[random_int(0, 2)]);
+                        } catch (\Random\RandomException $e) {
+                            echo $e->getMessage();
+                        } ?>"
                              class="card-img-top"
                              alt="Image événement"
                              style="height: 230px; object-fit: cover;">
@@ -160,10 +167,40 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
                             </a>
                         </div>
                         <div class="card-footer text-muted small">
-                            Dernière mise à jour : <?= date("d/m/Y H:i") ?>
+                            <?php
+                            // tous sa c'est pour afficher la date au format que je veux et me donner l'intervalle entre maintenant et la date
+                            $dateEve = $eveSupervise->date_heure_evenement;
+
+                            try {
+                                // instanciation des class datetime
+                                $today = new DateTime(); // la date de maintenant
+                                $eventDate = new DateTime($dateEve);
+
+                                $formattedEventDate = $eventDate->format("d/m/Y");// on va mettre la date au format que l'on veut
+
+                                // je viens de decouvrir donc je saurais pas trop expliquer mais grace a nitea classe datetime
+                                $interval = $today->diff($eventDate);//on a une methode qui permet d'avoir la difference entre 2 date
+
+
+                                if ($eventDate > $today) {// on va determiner l'evenement est dans le futur
+                                    echo "Date de l'evenement : $formattedEventDate <br>";
+                                    echo "Jour avant l'evenement : " . $interval->days . " jour(s)\n";
+                                } elseif ($eventDate < $today) {// on va determiner l'evenement est dans le passée
+                                    echo "Date de l'evenement : $formattedEventDate <br>";
+                                    echo "L'evenement etait :" . $interval->days . " jour(s) avant.\n";
+                                } else {// ou si c'est maintenant
+                                    echo "Date de l'evenement : $formattedEventDate <br>";
+                                    echo "L'evenement est aujourd'hui!\n";
+                                }
+                            } catch (Exception $e) {// on fait un petit try catch juste pour chopper les erreur
+                                echo "Error: Mauvais format. Utiliser YYYY-MM-DD ." . $e->getMessage() . "\n";
+                            }
+                            // oui oeut etre qu'il y avait un solution plus simple mais sur le moment je ne l'ai pas trouvé
+                            ?>
                         </div>
                     </div>
-                    <?php $count++; endforeach; ?>
+                    <?php $count++;
+                    endforeach; ?>
                     <?php if ($count > 0 && $count < 3): ?>
                 </div>
             </article>
@@ -177,15 +214,18 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
             </div>
         <?php endif; ?>
     </section>
+    <!-- Section des eve ou l'on est inscrit -->
     <section class="content my-4" id="eveInscrit">
         <section class="container my-3">
             <article class="row my-3">
                 <div class="justify-content-center card-group">
                     <?php
-                    if (!empty($allEveInscrit)):
+                    if (empty($allEveInscrit)):
                     $count = 0;
-                    $img = ["https://wallpaper.dog/large/20516113.png", "https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg", "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
-                    foreach ($allEveInscrit as $eveInscrit):?>
+                    $img = ["https://static.vecteezy.com/system/resources/previews/047/393/529/original/a-colorful-landscape-with-mountains-and-river-free-vector.jpg", "https://www.creativefabrica.com/wp-content/uploads/2024/10/17/Beautiful-Waterfall-Scene-Wallpaper-Graphics-108076283-1.jpg", "https://static.vecteezy.com/system/resources/previews/002/966/809/large_2x/sunset-waterfall-landscape-illustration-free-vector.jpg"];
+                    foreach ($allEveInscrit
+
+                    as $eveInscrit): ?>
                     <?php if ($count == 3) : ?>
                 </div>
             </article>
@@ -193,10 +233,14 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
         <section class="container my-3">
             <article class="row my-3">
                 <div class="justify-content-center card-group">
-                    <?php $count = 0;?>
+                    <?php $count = 0; ?>
                     <?php endif; ?>
                     <div class="card shadow-sm"> <!---style="width: 320px; height: 430px; flex: 0 0 auto;"-->
-                        <img src="<?= htmlspecialchars($img[$count]) ?>"
+                        <img src="<?php try {
+                            echo htmlspecialchars($img[random_int(0, 2)]);
+                        } catch (\Random\RandomException $e) {
+                            echo $e->getMessage();
+                        } ?>"
                              class="card-img-top"
                              alt="Image événement"
                              style="height: 230px; object-fit: cover;">
@@ -211,23 +255,52 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
                             </a>
                         </div>
                         <div class="card-footer text-muted small">
-                            Dernière mise à jour : <?= date("d/m/Y H:i") ?>
+                            <?php
+                            // tous sa c'est pour afficher la date au format que je veux et me donner l'intervalle entre maintenant et la date
+                            $dateEve = $eveInscrit->date_heure_evenement;
+
+                            try {
+                                // instanciation des class datetime
+                                $today = new DateTime(); // la date de maintenant
+                                $eventDate = new DateTime($dateEve);
+
+                                $formattedEventDate = $eventDate->format("d/m/Y");// on va mettre la date au format que l'on veut
+
+                                // je viens de decouvrir donc je saurais pas trop expliquer mais grace a nitea classe datetime
+                                $interval = $today->diff($eventDate);//on a une methode qui permet d'avoir la difference entre 2 date
+
+
+                                if ($eventDate > $today) {// on va determiner l'evenement est dans le futur
+                                    echo "Date de l'evenement : $formattedEventDate <br>";
+                                    echo "Jour avant l'evenement : " . $interval->days . " jour(s)\n";
+                                } elseif ($eventDate < $today) {// on va determiner l'evenement est dans le passée
+                                    echo "Date de l'evenement : $formattedEventDate <br>";
+                                    echo "L'evenement etait :" . $interval->days . " jour(s) avant.\n";
+                                } else {// ou si c'est maintenant
+                                    echo "Date de l'evenement : $formattedEventDate <br>";
+                                    echo "L'evenement est aujourd'hui!\n";
+                                }
+                            } catch (Exception $e) {// on fait un petit try catch juste pour chopper les erreur
+                                echo "Error: Mauvais format. Utiliser YYYY-MM-DD ." . $e->getMessage() . "\n";
+                            }
+                            // oui oeut etre qu'il y avait un solution plus simple mais sur le moment je ne l'ai pas trouvé
+                            ?>
                         </div>
                     </div>
-                    <?php $count++; endforeach; ?>
+                    <?php $count++;
+                    endforeach; ?>
                     <?php if ($count > 0 && $count < 3): ?>
                 </div>
             </article>
         </section>
+        <?php endif; else : ?>
+            <div class="alert alert-dark alert-dismissible fade show">
+                <h5> Il semblerait que vous vous etes inscrit a aucun evenements</h5>
+                <br>
+                <p>N'ayez pas peur, on ne mange pas souvent les gens </p>
+            </div>
         <?php endif; ?>
-                    <?php else : ?>
-                    <div class="alert alert-dark alert-dismissible fade show">
-                        <h5> Il semblerait que vous vous etes inscrit a aucun evenements</h5>
-                        <br>
-                        <p>N'ayez pas peur, on ne mange pas souvent les gens </p>
-                    </div>
-            <?php endif; ?>
-        </section>
+    </section>
     <section class="container">
         <nav aria-label="Page navigation example">
             <ul class="pagination">
