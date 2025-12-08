@@ -99,10 +99,10 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
         if (isset($_SESSION['utilisateur'])) :?>
             <a class="btn btn-outline-light" href="crudEvenement/evenementReadMyEvent.php" role="button"><i
                         class="bi bi-calendar4-event"></i> Mes evenements</a>
-        <?php if ($_SESSION["utilisateur"]["role"] === "Professeur") : ?>
-            <a class="btn btn-outline-light" href="crudEvenement/evenementValidate.php" role="button"><i
-                        class="bi bi-calendar4-event"></i> Voir les evenement a valider</a>
-        <?php endif;
+            <?php if ($_SESSION["utilisateur"]["role"] === "Professeur") : ?>
+                <a class="btn btn-outline-light" href="crudEvenement/evenementValidate.php" role="button"><i
+                            class="bi bi-calendar4-event"></i> Voir les evenement a valider</a>
+            <?php endif;
         endif; ?>
     </section>
     <section>
@@ -141,122 +141,129 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
                 unset($_SESSION['toastr']);
             }
             ?>
-                <section class="container my-3">
-                    <article class="row my-3">
-                        <div class="justify-content-center card-group">
-                            <?php
-                            if (!empty($allEvenement)):
-                            $count = 0;
-                            $img = ["https://wallpaper.dog/large/20516113.png", "https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg", "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
-                            foreach ($allEvenement as $evenement):?>
-                            <?php if ($count == 3) : ?>
-                        </div>
-                    </article>
+            <section class="container my-3">
+                <article class="row my-3">
+                    <div class="justify-content-center card-group">
+                        <?php
+                        if (!empty($allEvenement)):
+                        $count = 0;
+                        $img = ["https://wallpaper.dog/large/20516113.png", "https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg", "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
+                        foreach ($allEvenement
+
+                        as $evenement): ?>
+                        <?php if ($count == 3) : ?>
+                    </div>
+                </article>
+            </section>
+        <section class="container my-3">
+        <article class="row my-3">
+        <div class="justify-content-center card-group">
+        <?php $count = 0;
+        endif; ?>
+        <div class="card shadow-sm"> <!---style="width: 320px; height: 430px; flex: 0 0 auto;"-->
+            <img src="<?php try {
+                echo htmlspecialchars($img[random_int(0, 2)]);
+            } catch (\Random\RandomException $e) {
+                echo $e->getMessage();
+            } ?>"
+                 class="card-img-top"
+                 alt="Image événement"
+                 style="height: 230px; object-fit: cover;">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h5>
+                <p class="card-text flex-grow-1 text-muted">
+                    <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
+                </p>
+                <a href="crudEvenement/evenementRead.php?id=<?= htmlspecialchars($evenement->id_evenement) ?>"
+                   class="btn btn-primary mt-auto">
+                    En savoir plus
+                </a>
+            </div>
+            <div class="card-footer text-muted small">
+                <?php
+                // tous sa c'est pour afficher la date au format que je veux et me donner l'intervalle entre maintenant et la date
+                $dateEve = $evenement->date_heure_evenement;
+
+                try {
+                    // instanciation des class datetime
+                    $today = new DateTime(); // la date de maintenant
+                    $eventDate = new DateTime($dateEve);
+
+                    $formattedEventDate = $eventDate->format("d/m/Y");// on va mettre la date au format que l'on veut
+
+                    // je viens de decouvrir donc je saurais pas trop expliquer mais grace a nitea classe datetime
+                    $interval = $today->diff($eventDate);//on a une methode qui permet d'avoir la difference entre 2 date
+
+
+                    if ($eventDate > $today) {// on va determiner l'evenement est dans le futur
+                        echo "Date de l'evenement : $formattedEventDate <br>";
+                        echo "Jour avant l'evenement : " . $interval->days . " jour(s)\n";
+                    } elseif ($eventDate < $today) {// on va determiner l'evenement est dans le passée
+                        echo "Date de l'evenement : $formattedEventDate <br>";
+                        echo "L'evenement etait :" . $interval->days . " jour(s) avant.\n";
+                    } else {// ou si c'est maintenant
+                        echo "Date de l'evenement : $formattedEventDate <br>";
+                        echo "L'evenement est aujourd'hui!\n";
+                    }
+                } catch (Exception $e) {// on fait un petit try catch juste pour chopper les erreur
+                    echo "Error: Mauvais format. Utiliser YYYY-MM-DD ." . $e->getMessage() . "\n";
+                }
+                // oui oeut etre qu'il y avait un solution plus simple mais sur le moment je ne l'ai pas trouvé
+                ?>
+
+
+            </div>
+        </div>
+
+        <?php $count++;
+        endforeach; ?>
+            <?php if ($count > 0 && $count < 3): ?>
+                </div>
+                </article>
                 </section>
-                <section class="container my-3">
-                    <article class="row my-3">
-                        <div class="justify-content-center card-group">
-                            <?php $count = 0;
-                            endif; ?>
-                            <div class="card shadow-sm"> <!---style="width: 320px; height: 430px; flex: 0 0 auto;"-->
-                                <img src="<?= htmlspecialchars($img[$count]) ?>"
-                                     class="card-img-top"
-                                     alt="Image événement"
-                                     style="height: 230px; object-fit: cover;">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h5>
-                                    <p class="card-text flex-grow-1 text-muted">
-                                        <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
-                                    </p>
-                                    <a href="crudEvenement/evenementRead.php?id=<?= htmlspecialchars($evenement->id_evenement) ?>"
-                                       class="btn btn-primary mt-auto">
-                                        En savoir plus
-                                    </a>
-                                </div>
-                                <div class="card-footer text-muted small">
-                                    <?php
-                                    // tous sa c'est pour afficher la date au format que je veux et me donner l'intervalle entre maintenant et la date
-                                    $dateEve=$evenement->date_heure_evenement;
-
-                                    try {
-                                        // instanciation des class datetime
-                                        $today = new DateTime(); // la date de maintenant
-                                        $eventDate = new DateTime($dateEve);
-
-                                        $formattedEventDate = $eventDate->format("d/m/Y");// on va mettre la date au format que l'on veut
-
-                                        // je viens de decouvrir donc je saurais pas trop expliquer mais grace a nitea classe datetime
-                                        $interval = $today->diff($eventDate);//on a une methode qui permet d'avoir la difference entre 2 date
-
-
-                                        if ($eventDate > $today) {// on va determiner l'evenement est dans le futur
-                                            echo "Date de l'evenement : $formattedEventDate <br>";
-                                            echo "Jour avant l'evenement : " . $interval->days . " jour(s)\n";
-                                        } elseif ($eventDate < $today) {// on va determiner l'evenement est dans le passée
-                                            echo "Date de l'evenement : $formattedEventDate <br>";
-                                            echo "L'evenement etait :" . $interval->days . " jour(s) avant.\n";
-                                        } else {// ou si c'est maintenant
-                                            echo "Date de l'evenement : $formattedEventDate <br>";
-                                            echo "L'evenement est aujourd'hui!\n";
-                                        }
-                                    } catch (Exception $e) {// on fait un petit try catch juste pour chopper les erreur
-                                        echo "Error: Mauvais format. Utiliser YYYY-MM-DD .". $e->getMessage()."\n";
-                                    }
-                                        // oui oeut etre qu'il y avait un solution plus simple mais sur le moment je ne l'ai pas trouvé
-                                    ?>
-
-
-                                </div>
-                            </div>
-
-                            <?php $count++; endforeach; ?>
-                            <?php if ($count > 0 && $count < 3): ?>
-                        </div>
-                    </article>
-                </section>
+            <?php endif; ?>
+            <?php else : ?>
+            <div class="alert alert-dark alert-dismissible fade show">
+                <h5> Il semblerait qu'il n'y a pas
+                    d'evenements</h5>
+                <br>
+                <p>Soyez le/la premier/e a lancer le pas et
+                    crée votre evenement</p>";
                 <?php endif; ?>
-                <?php else : ?>
-                <div class="alert alert-dark alert-dismissible fade show">
-                    <h5> Il semblerait qu'il n'y a pas
-                        d'evenements</h5>
-                    <br>
-                    <p>Soyez le/la premier/e a lancer le pas et
-                        crée votre evenement</p>";
-        <?php endif; ?>
 
 
-        <section class="container">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="evenements.php?page=<?php if ($page > 1) {
-                        echo $page - 1;
-                    } else {
-                        echo $page;
-                    } ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <?php for ($pages = 1; $pages <= $nbTotalEve + 1; $pages++):
-                    if ($pages == $page) : ?>
-                        <li class="page-item active">
-                            <a class="page-link" href="evenements.php?page=<?= $pages ?>"
-                               aria-current="page"><?= $pages ?></a>
-                        </li>
-                    <?php else : ?>
-                        <li class="page-item">
-                            <a class="page-link" href="evenements.php?page=<?= $pages ?>"><?= $pages ?></a>
-                        </li>
-                    <?php endif;
-                endfor; ?>
-                <li class="page-item">
-                    <a class="page-link" href="evenements.php?page=<?= $page + 1 ?>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </section>
+                <section class="container">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <a class="page-link" href="evenements.php?page=<?php if ($page > 1) {
+                                    echo $page - 1;
+                                } else {
+                                    echo $page;
+                                } ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <?php for ($pages = 1; $pages <= $nbTotalEve + 1; $pages++):
+                                if ($pages == $page) : ?>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="evenements.php?page=<?= $pages ?>"
+                                           aria-current="page"><?= $pages ?></a>
+                                    </li>
+                                <?php else : ?>
+                                    <li class="page-item">
+                                        <a class="page-link" href="evenements.php?page=<?= $pages ?>"><?= $pages ?></a>
+                                    </li>
+                                <?php endif;
+                            endfor; ?>
+                            <li class="page-item">
+                                <a class="page-link" href="evenements.php?page=<?= $page + 1 ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
