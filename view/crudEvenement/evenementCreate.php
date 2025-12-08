@@ -136,18 +136,18 @@ $role = $_SESSION['utilisateur']["role"];
             }
             ?>
 
-            <input type="hidden" name="id_user" value="<?= htmlspecialchars($idUser) ?>">
+            <input type="hidden" name="idUser" value="<?= htmlspecialchars($idUser) ?>">
             <input type="hidden" name="role" value="<?= htmlspecialchars($role) ?>">
 
             <div class="mb-3">
-                <label for="titre_eve">Titre de l’évènement</label>
-                <input class="form-control" type="text" id="titre_eve" name="titre_eve"
+                <label for="titreEve">Titre de l’évènement</label>
+                <input class="form-control" type="text" id="titreEve" name="titreEve"
                        placeholder="Entrez le titre de l’évènement" required>
             </div>
 
             <div class="mb-3">
-                <label for="type_eve">Type de l’évènement</label>
-                <input class="form-control" type="text" id="type_eve" name="type_eve"
+                <label for="typeEve">Type de l’évènement</label>
+                <input class="form-control" type="text" id="typeEve" name="typeEve"
                        placeholder="Ex : Conférence, Atelier..." required>
             </div>
 
@@ -164,28 +164,31 @@ $role = $_SESSION['utilisateur']["role"];
                     ?>
                 </select>
             </div>
-
             <div class="mb-3">
-                <label for="desc_eve">Description</label>
-                <textarea class="form-control" id="desc_eve" name="desc_eve"
+                <label for="dateHeureEvenement" class="form-label">Date et heure de l'evenement</label>
+                <input type="datetime-local" class="form-control" id="dateHeureEvenement" name="dateHeureEvenement">
+            </div>
+            <div class="mb-3">
+                <label for="descEve">Description</label>
+                <textarea class="form-control" id="descEve" name="descEve"
                           placeholder="Entrez la description de l’évènement" required></textarea>
             </div>
 
             <div class="mb-3">
-                <label for="lieu_eve">Lieu</label>
-                <input class="form-control" type="text" id="lieu_eve" name="lieu_eve"
+                <label for="lieuEve">Lieu</label>
+                <input class="form-control" type="text" id="lieuEve" name="lieuEve"
                        placeholder="Ex : Salle 203 ou Campus principal" required>
             </div>
 
             <div class="mb-3">
-                <label for="element_eve">Éléments nécessaires</label>
-                <textarea class="form-control" id="element_eve" name="element_eve"
+                <label for="elementEve">Éléments nécessaires</label>
+                <textarea class="form-control" id="elementEve" name="elementEve"
                           placeholder="Liste du matériel ou documents nécessaires"></textarea>
             </div>
 
             <div class="mb-3">
-                <label for="nb_plc">Nombre de places disponibles</label>
-                <input class="form-control" type="number" id="nb_plc" name="nb_plc"
+                <label for="nbPlc">Nombre de places disponibles</label>
+                <input class="form-control" type="number" id="nbPlc" name="nbPlc"
                        placeholder="Entrez le nombre de places disponibles" required>
             </div>
 
@@ -204,7 +207,7 @@ $role = $_SESSION['utilisateur']["role"];
     }
 
     // Get the textarea
-    const ta = document.getElementById('desc_eve');
+    const ta = document.getElementById('descEve');
 
     // Adjust height on input
     ta.addEventListener('input', () => autoResize(ta));

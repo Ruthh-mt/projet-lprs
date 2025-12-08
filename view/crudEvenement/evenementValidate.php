@@ -118,7 +118,39 @@ if (session_status() === PHP_SESSION_NONE) {
                                 </a>
                             </div>
                             <div class="card-footer text-muted small">
-                                Dernière mise à jour : <?= date("d/m/Y H:i") ?>
+                                <?php
+                                // Set your event date here (format: YYYY-MM-DD)
+                                $dateEve=$evenement->date_heure_evenement;
+
+                                try {
+                                    // Create DateTime objects
+                                    $today = new DateTime(); // Current date
+                                    $eventDate = new DateTime($dateEve);
+
+                                    // Format the event date as dd/mm/yyyy
+                                    $formattedEventDate = $eventDate->format("d/m/Y");
+
+                                    // Calculate the difference
+                                    $interval = $today->diff($eventDate);
+
+                                    // Determine if the event is in the future or past
+                                    if ($eventDate > $today) {
+                                        echo "Date de l'evenement : {$formattedEventDate}\n";
+                                        echo "Jour avant l'evenement : " . $interval->days . " jour(s)\n";
+                                    } elseif ($eventDate < $today) {
+                                        echo "Date de l'evenement : {$formattedEventDate}\n";
+                                        echo "L'evenement etait :" . $interval->days . " jour(s) avant.\n";
+                                    } else {
+                                        echo "Date de l'evenement : {$formattedEventDate}\n";
+                                        echo "L'evenement est aujourd'hui!\n";
+                                    }
+                                } catch (Exception $e) {
+                                    // Handle invalid date format
+                                    echo "Error: Mauvais format. Utiliser YYYY-MM-DD.\n";
+                                }
+
+                                ?>
+
                             </div>
                         </div>
                     <?php endforeach; ?>

@@ -132,18 +132,18 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
 
         <form class="mt-4" action="../../src/treatment/traitementUpdateEvenement.php" method="post">
 
-            <input type="hidden" name="ref_eve" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
+            <input type="hidden" name="refEve" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
             <input type="hidden" name="refUser" value="<?= htmlspecialchars($_SESSION['utilisateur']['id_user']) ?>">
 
             <div class="mb-3">
-                <label for="titre_eve">Titre de l’évènement</label>
-                <input class="form-control" type="text" id="titre_eve" name="titre_eve"
+                <label for="titreEve">Titre de l’évènement</label>
+                <input class="form-control" type="text" id="titreEve" name="titreEve"
                        value="<?= htmlspecialchars($evenement->titre_eve) ?>" required>
             </div>
 
             <div class="mb-3">
-                <label for="type_eve">Type</label>
-                <input class="form-control" type="text" id="type_eve" name="type_eve"
+                <label for="typeEve">Type</label>
+                <input class="form-control" type="text" id="typeEve" name="typeEve"
                        value="<?= htmlspecialchars($evenement->type_eve) ?>" required>
             </div>
             <div class="mb-3">
@@ -164,26 +164,30 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
                 </select>
             </div>
             <div class="mb-3">
-                <label for="lieu_eve">Lieu</label>
-                <input class="form-control" type="text" id="lieu_eve" name="lieu_eve"
+                <label for="dateHeureEvenement" class="form-label">Date et heure de l'evenement</label>
+                <input type="datetime-local" class="form-control" id="dateHeureEvenement" name=" dateHeureEvenement" value="<?= htmlspecialchars($evenement->date_heure_evenement)?>">
+            </div>
+            <div class="mb-3">
+                <label for="lieuEve">Lieu</label>
+                <input class="form-control" type="text" id="lieuEve" name="lieuEve"
                        value="<?= htmlspecialchars($evenement->lieu_eve) ?>" required>
             </div>
 
             <div class="mb-3">
-                <label for="desc_eve">Description</label>
-                <textarea class="form-control" id="desc_eve" name="desc_eve"
+                <label for="descEve">Description</label>
+                <textarea class="form-control" id="descEve" name="descEve"
                           rows="5"><?= htmlspecialchars($evenement->desc_eve) ?></textarea>
             </div>
 
             <div class="mb-3">
-                <label for="element_eve">Éléments nécessaires</label>
-                <input class="form-control" type="text" id="element_eve" name="element_eve"
+                <label for="elementEve">Éléments nécessaires</label>
+                <input class="form-control" type="text" id="elementEve" name="elementEve"
                        value="<?= htmlspecialchars($evenement->element_eve) ?>">
             </div>
 
             <div class="mb-3">
-                <label for="nb_place">Nombre de places disponibles</label>
-                <input class="form-control" type="number" id="nb_place" name="nb_place"
+                <label for="nbPlace">Nombre de places disponibles</label>
+                <input class="form-control" type="number" id="nbPlace" name="nbPlace"
                        value="<?= htmlspecialchars($evenement->nb_place) ?>" required>
             </div>
 
@@ -193,7 +197,8 @@ $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" =
                         <i class="bi bi-arrow-left"></i>
                     </a>
 
-                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#confirmModal">
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>

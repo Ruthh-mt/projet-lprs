@@ -156,6 +156,10 @@ $superviseurs = $evenementUserRepository->getSuperviseur($evenement->id_evenemen
                        value="<?= htmlspecialchars($evenement->status) ?>">
             </div>
             <div class="mb-3">
+                <label for="dateHeureEvenement" class="form-label">Date et heure de l'evenement</label>
+                <input type="datetime-local" readonly class="form-control" id="dateHeureEvenement" value="<?= htmlspecialchars($evenement->date_heure_evenement)?>">
+            </div>
+            <div class="mb-3">
                 <label for="lieu_eve">Lieu</label>
                 <input type="text" readonly class="form-control" id="lieu_eve"
                        value="<?= htmlspecialchars($evenement->lieu_eve) ?>">

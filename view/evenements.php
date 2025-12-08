@@ -174,7 +174,38 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
                                     </a>
                                 </div>
                                 <div class="card-footer text-muted small">
-                                    Dernière mise à jour : <?= date("d/m/Y H:i") ?>
+                                    <?php
+                                    // tous sa c'est pour afficher la date au format que je veux et me donner l'intervalle entre maintenant et la date
+                                    $dateEve=$evenement->date_heure_evenement;
+
+                                    try {
+                                        // instanciation des class datetime
+                                        $today = new DateTime(); // la date de maintenant
+                                        $eventDate = new DateTime($dateEve);
+
+                                        $formattedEventDate = $eventDate->format("d/m/Y");// on va mettre la date au format que l'on veut
+
+                                        // je viens de decouvrir donc je saurais pas trop expliquer mais grace a nitea classe datetime
+                                        $interval = $today->diff($eventDate);//on a une methode qui permet d'avoir la difference entre 2 date
+
+
+                                        if ($eventDate > $today) {// on va determiner l'evenement est dans le futur
+                                            echo "Date de l'evenement : $formattedEventDate <br>";
+                                            echo "Jour avant l'evenement : " . $interval->days . " jour(s)\n";
+                                        } elseif ($eventDate < $today) {// on va determiner l'evenement est dans le passée
+                                            echo "Date de l'evenement : $formattedEventDate <br>";
+                                            echo "L'evenement etait :" . $interval->days . " jour(s) avant.\n";
+                                        } else {// ou si c'est maintenant
+                                            echo "Date de l'evenement : $formattedEventDate <br>";
+                                            echo "L'evenement est aujourd'hui!\n";
+                                        }
+                                    } catch (Exception $e) {// on fait un petit try catch juste pour chopper les erreur
+                                        echo "Error: Mauvais format. Utiliser YYYY-MM-DD .". $e->getMessage()."\n";
+                                    }
+                                        // oui oeut etre qu'il y avait un solution plus simple mais sur le moment je ne l'ai pas trouvé
+                                    ?>
+
+
                                 </div>
                             </div>
 

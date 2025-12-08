@@ -9,6 +9,7 @@
         private $nbPlace;
         private $estValide;
         private $status;
+        private $dateHeureEvenement;
 
 
         public function __construct(array $donnees){
@@ -166,6 +167,22 @@
         public function setStatus($status): void
         {
             $this->status = $status;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getDateHeureEvenement()
+        {
+            return $this->dateHeureEvenement;
+        }
+
+        /**
+         * @param mixed $dateHeureEvenement
+         */
+        public function setDateHeureEvenement($dateHeureEvenement): void
+        {
+            $this->dateHeureEvenement = $dateHeureEvenement;
         }
 
 

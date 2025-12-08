@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `evenement` (
     `nb_place` int NOT NULL,
     `desc_eve` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `titre_eve` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `date_heure_evenement`  datetime NOT NULL,
     `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'En attente',
     `est_valide` int NOT NULL DEFAULT '0',
     PRIMARY KEY (`id_evenement`)

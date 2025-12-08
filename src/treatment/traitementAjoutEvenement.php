@@ -20,21 +20,25 @@ function redirectWith(string $type, string $message, string $target): void
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirectWith('error', "Méthode invalide.", '../../view/crudEvenement/evenementCreate.php');
 }
-$refUser = $_POST["id_user"];
+$refUser = $_POST["idUser"];
 $role = $_POST["role"];
-$titreEve = $_POST["titre_eve"];
-$typeEve = $_POST["type_eve"];
-$descEve = $_POST["desc_eve"];
-$lieuEve = $_POST["lieu_eve"];
-$elementEve = $_POST["element_eve"];
-$nbPlace = $_POST["nb_plc"];
+$titreEve = $_POST["titreEve"];
+$typeEve = $_POST["typeEve"];
+$descEve = $_POST["descEve"];
+$lieuEve = $_POST["lieuEve"];
+$elementEve = $_POST["elementEve"];
+$nbPlace = $_POST["nbPlc"];
 $status = $_POST["status"];
+$dateHeureEvenement = $_POST["dateHeureEvenement"];
+
 
 if ($titreEve === '' || $typeEve === '' || $descEve === '' || $lieuEve === ''
-    || $elementEve === '' || $nbPlace === '' || $refUser === '' || $role === '' || $status === '') {
+    || $elementEve === '' || $nbPlace === '' || $refUser === '' || $role === '' || $status === ''|| $dateHeureEvenement==='') {
     redirectWith('error', "Veuillez remplir tout les champs.", '../../view/crudEvenement/evenementCreate.php');
 }
 try {
+
+
     if ($role == "Étudiant") {
 
         $evenement = new ModeleEvenement(array(
@@ -44,6 +48,7 @@ try {
             "lieuEvenement" => $lieuEve,
             "elementEvenement" => $elementEve,
             "nbPlace" => $nbPlace,
+            "dateHeureEvenement" =>$dateHeureEvenement,
             "status" => $status,
             "estValide" => 0
         ));
@@ -55,6 +60,7 @@ try {
             "lieuEvenement" => $lieuEve,
             "elementEvenement" => $elementEve,
             "nbPlace" => $nbPlace,
+            "dateHeureEvenement" => $dateHeureEvenement,
             "status" => $status,
             "estValide" => 1
         ));
@@ -75,7 +81,7 @@ try {
         redirectWith('success', "L'evenement a bien été ajouté", '../../view/evenements.php');
     }
     session_write_close();
+
 } catch (PDOException $e) {
     redirectWith('error', "Erreur de la creation d'evenement : " . $e->getMessage(), '../../view/crudEvenement/evenementCreate.php');
 }
-
