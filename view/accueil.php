@@ -122,10 +122,14 @@ $eveAcceuil=$eveRepo->showEvenementAcceuil();
 <section class="container border rounded border-dark my-3">
     <h3 class="text-center py-3 text-center text-uppercase">Derniers évènements créés</h3>
     <article class="article row" style="text-align: justify;">
-        <?php $img =["https://tse1.mm.bing.net/th/id/OIP.xSzocAtzqNOE2PZeS5_nRAHaHa?w=626&h=626&rs=1&pid=ImgDetMain&o=7&rm=3",]?>
-        <?php foreach ($eveAcceuil as $index=>$eve):?>
+        <?php $img =["https://img.freepik.com/premium-vector/moon-night-landscape-vector-illustration-pine-tree-night-lake_538866-357.jpg","https://tse1.mm.bing.net/th/id/OIP.MO4C99oM9oCl533Y4mq17gHaEK?pid=ImgDet&w=184&h=103&c=7&dpr=1,3&o=7&rm=3","https://www.creativefabrica.com/wp-content/uploads/2024/10/18/Moonlight-Scenery-Illustration-Wallpaper-Graphics-108135561-1.jpg" ]?>
+        <?php foreach ($eveAcceuil as $eve):?>
         <div class="col card m-3" style="width: 18rem;">
-            <img src="<?=$img[0]?>" class="card-img-top" alt="...">
+            <img src="<?php try {
+                echo htmlspecialchars($img[random_int(0, 2)]);
+            } catch (\Random\RandomException $e) {
+                echo $e->getMessage();
+            } ?>" class="card-img-top" alt="..." >
             <div class="card-body">
                 <h5 class="card-title"><?=htmlspecialchars($eve->titre_eve)?></h5>
                 <p class="card-text d-inline-block text-truncate" style="max-width: 150px;"><?=htmlspecialchars($eve->desc_eve)?></p>

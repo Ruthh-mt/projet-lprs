@@ -99,11 +99,15 @@ if (session_status() === PHP_SESSION_NONE) {
                 <div class="d-flex flex-wrap justify-content-start gap-4">';
                 <?php $evenementRepository = new EvenementRepository();
                 $allEvenement = $evenementRepository->getAllEvenementNonValide(new ModeleEvenement(["status" => "en attente", "estValide" => 0]));
-
+                $img=["https://static.vecteezy.com/system/resources/previews/000/203/128/original/vector-abstract-landscape-illustration.jpg","https://static.vecteezy.com/system/resources/previews/000/206/117/non_2x/vector-landscape-illustration.jpg","https://static.vecteezy.com/system/resources/previews/000/517/616/large_2x/vector-landscape-illustration.png"];
                 if (!empty($allEvenement)) :
                     foreach ($allEvenement as $evenement) :?>
                         <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
-                            <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
+                            <img src="<?php try {
+                                echo htmlspecialchars($img[random_int(0, 2)]);
+                            } catch (\Random\RandomException $e) {
+                                echo $e->getMessage();
+                            } ?>"
                                  class="card-img-top"
                                  alt="Image événement"
                                  style="height: 180px; object-fit: cover;">

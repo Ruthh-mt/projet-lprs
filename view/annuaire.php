@@ -122,7 +122,11 @@ $nbTotalUser = $utilisateurRepository->countAllUtilisateurs() / $nbUtilisateurPa
             <?php $count = 0;
             endif; ?>
             <div class="card shadow-sm">
-                <img src="<?= htmlspecialchars($img[$count]) ?>"
+                <img src="<?php try {
+                    echo htmlspecialchars($img[random_int(0, 2)]);
+                } catch (\Random\RandomException $e) {
+                    echo $e->getMessage();
+                } ?>"
                      class="card-img-top" alt="..." style="height: 230px; object-fit: cover;">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title fw-bold"><?= htmlspecialchars($user->prenom . " " . strtoupper($user->nom)) ?></h5>
