@@ -157,14 +157,12 @@ if (session_status() === PHP_SESSION_NONE) {
                 <?php endif ?>
 
 
-                <?php if($_SESSION['utilisateur']['role'] === 'Etudiant' || $_SESSION['utilisateur']['role'] === 'Alumni'): ?>
                 <form action="../view/postuler.php?id=<?= $offre['id_offre'] ?>" method="post" style="display:inline;">
                     <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                     <button type="submit" class="btn btn-sm btn-outline-success" title="Postuler à cette offre">
                         <i class="bi bi-send-fill"></i> Postuler
                     </button>
                 </form>
-                <?php endif; ?>
             </td>
             </tr>
         <?php endforeach; ?>
