@@ -35,7 +35,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 try {
     $pdo = (new Config())->connexion();
 
-    $sql = "SELECT id_user, nom, prenom, email, mdp, role, avatar
+    $sql = "SELECT id_user, nom, prenom, email, mdp, role, avatar,est_valide
         FROM utilisateur 
         WHERE email = :email 
         LIMIT 1";
