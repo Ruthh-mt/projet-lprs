@@ -17,7 +17,6 @@ $evenementUserRepository = new EvenementUserRepository();
 $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" => $id]));
 $eveUser = new ModeleEvenementUser(["refEvenement" => $evenement->id_evenement, "estSuperviseur" => 0]);
 $allUser = $evenementUserRepository->getAllInscritsByEvenement($eveUser);
-var_dump($allUser);
 ?>
 <!doctype html>
 <html lang="fr">
@@ -134,10 +133,12 @@ var_dump($allUser);
                         </div>
                     <?php endforeach;
                 else :?>
-                    <h5> Il semblerait qu'il n'y est pas de participant a cet evenement</h5>
-                    <br>
-                    <p>Allez faire votre promotion de votre evenement </p>";
-
+                    <div class="alert alert-dark alert-dismissible fade show">
+                        <h5 > Il semblerait qu'il n'y ai pas de participant a cet evenement
+                            <br>
+                            Allez faire votre promotion de votre evenement
+                        </h5>
+                    </div>
                 <?php endif;
             endif; ?>
         </section>
