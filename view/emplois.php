@@ -1,23 +1,26 @@
 <?php
  $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
-session_start(); 
-require_once ('../src/bdd/config.php');
-require_once ('../src/repository/OffreRepository.php');
-require_once ('../src/repository/PartenaireRepository.php');
-require_once ('../src/repository/AlumniRepository.php');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+    require_once ('../src/bdd/config.php');
+    require_once ('../src/repository/OffreRepository.php');
+    require_once ('../src/repository/PartenaireRepository.php');
+    require_once ('../src/repository/AlumniRepository.php');
+    $offreRep = new OffreRepository();
+    $lesOffres = $offreRep->getAllOffre();
+    $partenaireRep = new PartenaireRepository();
+    $partenaire_a_une_fiche = $partenaireRep->getFicheByPartenaire($_SESSION['utilisateur']['id_user']);
+    $alumniRep = new AlumniRepository();
+    $id_user = $_SESSION['utilisateur']['id_user'];
 
-$pdo  = (new Config())->connexion();
-$sql =$pdo->prepare("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
-$sql -> execute();
+    $pdo  = (new Config())->connexion();
+    $sql =$pdo->prepare("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
+    $sql -> execute();
 
-$offreRep = new OffreRepository();
-$lesOffres = $offreRep->getAllOffre();
-$partenaireRep = new PartenaireRepository();
-$partenaire_a_une_fiche = $partenaireRep->getFicheByPartenaire($_SESSION['utilisateur']['id_user']);
-$alumniRep = new AlumniRepository();
-$alumni_a_une_fiche = $alumniRep ->getFicheByAlumni($_SESSION['utilisateur']['id_user']);
-$id_user = $_SESSION['utilisateur']['id_user'];
+
 ?>
+
 
 <!doctype html>
 <head>
@@ -32,9 +35,7 @@ $id_user = $_SESSION['utilisateur']['id_user'];
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
     <link rel="stylesheet" href="">
-
     <link rel="stylesheet" href="">
-
 
 
     <!-- jQuery -->
@@ -102,23 +103,20 @@ $id_user = $_SESSION['utilisateur']['id_user'];
         <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
             <h2 class="m-0">Offres d'emploi</h2>
 
-                <?php if($partenaire_a_une_fiche && !empty($partenaire_a_une_fiche['ref_fiche_entreprise']) && $_SESSION['utilisateur']['role'] === 'Partenaire'
-                ||$alumni_a_une_fiche && !empty($alumni_a_une_fiche['ref_fiche_entreprise']) && $_SESSION['utilisateur']['role'] === 'Alumni' ): ?>
-                        <!-- Si le partenaire/Alumni a une fiche entreprise -->
+                        <!-- Si le partenaire a une fiche entreprise -->
                         <div>
                             <!-- Bouton : voir mes offres -->
                             <a href="profil.php" class="btn btn-dark">Voir mes offres</a>
                             <a href="crudOffre/offreCreate.php" class="btn btn-dark">Créer une offre</a>
-                            <!-- Si le partenaire/Alumni n’a pas encore de fiche -->
-                        <?php if(!$partenaire_a_une_fiche || !$alumni_a_une_fiche): ?>
-                            <a href="crudEntreprise/creerFiche.php" class="btn btn-dark">Créer une fiche</a>
-                        <?php endif ?>
+                            <!-- Si le partenaire n’a pas encore de fiche -->
 
-                        <?php elseif ($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
+                            <a href="crudEntreprise/creerFiche.php" class="btn btn-dark">Créer une fiche</a>
+
+
                     <a href="profil.php" class="btn btn-success btn-sm">
                         <i class="bi bi-plus-circle"></i> Mes candidatures
                     </a>
-                <?php endif; ?>
+
 
         </div>
     </div>
@@ -142,9 +140,7 @@ $id_user = $_SESSION['utilisateur']['id_user'];
 
 
             <td class="row-actions">
-                <?php if($_SESSION['utilisateur']['role'] === 'Partenaire'  && $partenaire_a_une_fiche['ref_fiche_entreprise'] == $offre['ref_fiche']
-                    || $_SESSION['utilisateur']['role'] === 'Alumni'  && $alumni_a_une_fiche['ref_fiche_entreprise'] == $offre['ref_fiche'])
-                    :?>
+                <?php if($_SESSION['utilisateur']['role'] === 'Partenaire'  && $partenaire_a_une_fiche['ref_fiche_entreprise'] == $offre['ref_fiche']) :?>
 
                     <a href="crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>"
                    class="btn btn-sm btn-outline" title="Modifier">
@@ -161,7 +157,7 @@ $id_user = $_SESSION['utilisateur']['id_user'];
                 <?php endif ?>
 
 
-                <?php if($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
+                <?php if($_SESSION['utilisateur']['role'] === 'Etudiant' || $_SESSION['utilisateur']['role'] === 'Alumni'): ?>
                 <form action="../view/postuler.php?id=<?= $offre['id_offre'] ?>" method="post" style="display:inline;">
                     <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                     <button type="submit" class="btn btn-sm btn-outline-success" title="Postuler à cette offre">
@@ -183,7 +179,8 @@ $id_user = $_SESSION['utilisateur']['id_user'];
     $(document).ready(function () {
         $('#offre-table').DataTable({
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
+                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json" ,
+                "emptyTable":"Aucune offre disponible pour l'instant\n Ajouter une",
             },
             "pageLength": 10,  // nombre de lignes par page
             "ordering": true,  // tri des colonnes activé
