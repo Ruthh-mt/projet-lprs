@@ -61,9 +61,9 @@ class EvenementRepository
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    public function updateEvenement(ModeleEvenement $evenement)
+    public function updateEvenement( $evenement)
     {
-        $sql = "UPDATE evenement SET titre_eve=:titre, type_eve=:type,status=:status,date_heure_evenement=:dateHeureEvenemen, desc_eve=:desc, lieu_eve=:lieu, element_eve=:element,
+        $sql = "UPDATE evenement SET titre_eve=:titre, type_eve=:type,status=:status,date_heure_evenement=:dateHeureEvenement, desc_eve=:desc, lieu_eve=:lieu, element_eve=:element,
          nb_place=:nbplace WHERE id_evenement=:id ";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute([

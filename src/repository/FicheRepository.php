@@ -54,7 +54,7 @@ class FicheRepository
         return $stmt->execute([
             'nom'     => $fiche->getNomEntreprise(),
             'adresse' => $fiche->getAdresseEntreprise(),
-            'web'     => $fiche->getAdresseWeb()
+            'web'     => $fiche->getAdresseWeb(),
             'adresseWeb'     => $fiche->getAdresseWeb()
         ]);
     }

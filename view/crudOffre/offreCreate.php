@@ -11,21 +11,15 @@ $ficheRepo = new FicheEntrepriseRepository();
 $id_user = $_SESSION['utilisateur']['id_user'];
 $role = $_SESSION['utilisateur']['role'];
 $ref_fiche = null;
-
+$fiche = "";
 if ($role === 'Partenaire') {
     $partenaire_repo = new PartenaireRepository();
     $fiche = $partenaire_repo->getFicheByPartenaire($id_user);
     $ref_fiche = $fiche['id_fiche_entreprise'];
+    if($fiche == null){
+        $fiche = "";
+    }
 }
-
-if ($role === 'Alumni') {
-    $alumni_repo = new AlumniRepository();
-    $fiche = $alumni_repo->getFicheByAlumni($id_user);
-    $ref_fiche = $fiche['id_fiche_entreprise'];
-}
-
-
-
 ?>
 <!doctype html>
 <html lang="fr">
@@ -89,7 +83,9 @@ if ($role === 'Alumni') {
         </div>
     </div>
 </header>
+
 <section class="container banner bg-dark text-white text-center py-1 rounded border my-3">
+
     <h1>Création d’une offre d’emploi</h1>
 </section>
 <div class="container mb-5">
@@ -148,15 +144,7 @@ if ($role === 'Alumni') {
                 <input class="form-control" type="number" id="salaire" name="salaire"
                        placeholder="Entrez le salaire" step="0.01">
             </div>
-            <div class="mb-3">
-                <label class="form-label">Entreprise</label>
 
-                <input type="text" class="form-control"
-                       value="<?= htmlspecialchars($fiche['nom_entreprise']); ?>"
-                       disabled>
-                <input type="hidden" name="ref_fiche"
-                       value="<?= htmlspecialchars($ref_fiche); ?>">
-            </div>
             <div class="d-flex gap-2">
                 <button class="btn btn-primary" type="submit">Valider</button>
                 <button class="btn btn-secondary" type="reset">Annuler</button>
