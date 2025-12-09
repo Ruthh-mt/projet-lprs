@@ -41,10 +41,17 @@ class utilisateurRepository
 
     public function inscription(ModeleUtilisateur $data)
     {
-        $sql = "INSERT INTO utilisateur (nom, prenom, email, mdp, role, ref_validateur)
-                VALUES (:nom, :prenom, :email, :mdp, :role, :ref_validateur)";
+        $sql = "INSERT INTO utilisateur (nom, prenom, email, mdp, role, ref_validateur, est_valide)
+            VALUES (:nom, :prenom, :email, :mdp, :role, :ref_validateur, :est_valide)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
+            'nom'           => $data->getNom(),
+            'prenom'        => $data->getPrenom(),
+            'email'         => $data->getEmail(),
+            'mdp'           => $data->getMdp(),
+            'role'          => $data->getRole(),
+            'ref_validateur'=> $data->getRefValidateur() ?? null,
+            'est_valide'    => 0, // compte toujours non validé à la création
             'nom' => $data->getNom(),
             'prenom' => $data->getPrenom(),
             'email' => $data->getEmail(),
@@ -59,6 +66,7 @@ class utilisateurRepository
         $allowed = [
             'nom', 'prenom', 'email', 'mdp', 'role', 'ref_validateur',
             'telephone', 'date_naissance', 'ville_residence', 'avatar',
+            'est_valide',
         ];
         $set = [];
         $params = ['id_user' => $id_user];
@@ -123,12 +131,11 @@ class utilisateurRepository
         $stmt->execute();
         return $stmt->fetchColumn();
     }
-    public function searchUser($searchWord){
-        $sql = "SELECT * FROM utilisateur WHERE nom LIKE :searchWord OR prenom LIKE :searchWord";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([
-           "searchWord" => "%$searchWord%"
-        ]);
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    public function findNonValides(): array
+    {
+        $sql = "SELECT * FROM utilisateur WHERE est_valide = 0";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
+
 }
