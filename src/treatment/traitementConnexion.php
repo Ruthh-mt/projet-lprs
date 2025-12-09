@@ -35,10 +35,10 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 try {
     $pdo = (new Config())->connexion();
 
-    $sql = "SELECT id_user, nom, prenom, email, mdp, role, avatar
-            FROM utilisateur 
-            WHERE email = :email 
-            LIMIT 1";
+    $sql = "SELECT id_user, nom, prenom, email, mdp, role, avatar, est_valide
+        FROM utilisateur 
+        WHERE email = :email 
+        LIMIT 1";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['email' => $email]);
@@ -46,6 +46,14 @@ try {
 
     if (!$user) {
         redirectWith('error', "Identifiants ou mot de passe incorrects.", '../../view/connexion.php');
+    }
+    // Vérifier que le compte est validé
+    if ((int)($user['est_valide'] ?? 0) !== 1) {
+        redirectWith(
+            'error',
+            "Votre compte n'a pas encore été validé par un gestionnaire.",
+            '../../view/connexion.php'
+        );
     }
     if (!password_verify($motDePasse, $user['mdp'])) {
         redirectWith('error', "Identifiants ou mot de passe incorrects.", '../../view/connexion.php');

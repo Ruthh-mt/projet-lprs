@@ -90,7 +90,7 @@ $nbTotalUser = $utilisateurRepository->countAllUtilisateurs() / $nbUtilisateurPa
         </div>
     </div>
 </header>
-<section class="container banner bg-dark text-white text-center py-1 rounded">
+<section class="container banner bg-dark text-white text-center py-1 mb-3 rounded">
     <h1>Annuaire</h1>
 </section>
 <section class="container">

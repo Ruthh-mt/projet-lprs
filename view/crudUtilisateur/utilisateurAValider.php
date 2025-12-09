@@ -2,6 +2,10 @@
 $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    require_once '../../src/repository/UtilisateurRepository.php';
+    $repo = new UtilisateurRepository();
+    $utilisateurs = $repo->findNonValides();
+
 }
 ?>
 <!doctype html>
@@ -82,3 +86,39 @@ if (session_status() === PHP_SESSION_NONE) {
         <a href="../crudUtilisateur/utilisateurAValider.php" class="btn btn-outline-warning active">A valider</a>
     </div>
 </nav>
+<section class="container">
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Rôle</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($utilisateurs as $u): ?>
+        <tr>
+            <td><?= (int)$u['id_user'] ?></td>
+            <td><?= htmlspecialchars($u['prenom']) ?></td>
+            <td><?= htmlspecialchars($u['nom']) ?></td>
+            <td><?= htmlspecialchars($u['email']) ?></td>
+            <td><?= htmlspecialchars($u['role']) ?></td>
+            <td>
+                <form method="post" action="../../src/treatment/traitementValidationUtilisateur.php" class="d-inline">
+                    <input type="hidden" name="id_user" value="<?= (int)$u['id_user'] ?>">
+                    <button type="submit" class="btn btn-success btn-sm">
+                        Valider
+                    </button>
+                </form>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

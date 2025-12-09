@@ -195,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 break;
         }
 
-        $_SESSION['success'] = "Inscription réussie !";
+        $_SESSION['success'] = "Inscription réussie. Votre compte doit maintenant être validé par un gestionnaire avant de pouvoir vous connecter.";
         header("Location: ../../view/connexion.php");
         exit();
 

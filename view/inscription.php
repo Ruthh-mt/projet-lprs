@@ -15,16 +15,16 @@ if (session_status() === PHP_SESSION_NONE) {
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
 </head>
-<body>
+<body class="bg-success-subtle">
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img src="https://giffiles.alphacoders.com/208/208817.gif" class="rounded-circle mx-3" style="max-width: 48px;">
+            <img src="https://media.tenor.com/YzarFuImKCIAAAAj/blob-derpy.gif" class="mx-3" style="max-width: 48px;">
             <div class="fs-4 text-light text-uppercase">LPRS</div>
         </a>
     </div>
     <ul class="nav col mb-2 justify-content-center mb-md-0">
-        <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light active dropdown me-2">Accueil</a></li>
+        <li class="nav-item"><a href="accueil.php" class="btn btn-outline-light dropdown me-2">Accueil</a></li>
         <li class="nav-item"><a href="evenements.php" class="btn btn-outline-light me-2">Évènements</a></li>
         <li class="nav-item"><a href="annuaire.php" class="btn btn-outline-light me-2">Annuaire</a></li>
         <li class="nav-item"><a href="listeEleves.php" class="btn btn-outline-light me-2">Liste des élèves</a></li>
@@ -66,11 +66,13 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </header>
-<div class="row">
+<section class="container banner bg-dark text-light text-center py-1 mb-3 rounded">
+    <h1>Inscription</h1>
+</section>
+<section class="row">
     <div class="col">
     </div>
     <div class="col">
-        <h4 class="text-center">INSCRIPTION</h4>
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <?= $_SESSION['error'];
@@ -250,7 +252,7 @@ if (session_status() === PHP_SESSION_NONE) {
             });
         });
     </script>
-</div>
+</section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

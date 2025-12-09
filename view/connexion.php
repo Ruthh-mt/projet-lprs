@@ -15,11 +15,11 @@ if (session_status() === PHP_SESSION_NONE) {
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
 </head>
-<body>
+<body class="bg-primary-subtle">
 <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom bg-dark">
     <div class="col-2 ms-3 mb-2 mb-md-0 text-light">
         <a href="accueil.php" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <img src="https://giffiles.alphacoders.com/208/208817.gif" class="rounded-circle mx-3" style="max-width: 48px;">
+            <img src="https://media.tenor.com/YzarFuImKCIAAAAj/blob-derpy.gif" class="mx-3" style="max-width: 48px;">
             <div class="fs-4 text-light text-uppercase">LPRS</div>
         </a>
     </div>
@@ -66,10 +66,12 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </header>
-<main class="container my-5">
+<section class="container banner bg-dark text-light text-center py-1 mb-3 rounded">
+    <h1>Connexion</h1>
+</section>
+<section class="container my-5">
      <div class="row justify-content-center">
           <div class="col-md-6">
-               <h2 class="text-center mb-4">Connexion à votre compte</h2>
               <?php if (isset($_SESSION['success'])): ?>
                   <div class="container alert alert-success alert-dismissible fade show" role="alert">
                       <?= $_SESSION['success']; unset($_SESSION['success']); ?>
@@ -89,15 +91,15 @@ if (session_status() === PHP_SESSION_NONE) {
                          <input type="password" name="mot_de_passe" class="form-control" id="floatingPassword" placeholder="Mot de passe" required autocomplete="current-password">
                          <label for="floatingPassword">Mot de passe</label>
                     </div>
-                    <div class="d-grid gap-2">
-                         <button type="submit" class="btn btn-outline-success"><i class="bi bi-box-arrow-in-right"></i> Se connecter</button>
-                         <a href="inscription.php" class="btn btn-outline-primary"><i class="bi bi-person-plus"></i> S'inscrire</a>
-                        <a href="../src/treatment/traitementVerificationEmail.php" class="btn btn-outline-secondary"><i class="bi bi-key"></i> Mot de passe oublié </a>
+                    <div class="row">
+                         <button type="submit" class="btn btn-outline-success btn-lg mb-3"><i class="bi bi-box-arrow-in-right"></i> Se connecter</button>
+                         <a href="inscription.php" class="col btn btn-sm btn-outline-primary me-2"><i class="bi bi-person-plus"></i> S'inscrire</a>
+                        <a href="../src/treatment/traitementVerificationEmail.php" class="col btn btn-sm btn-outline-secondary ms-2"><i class="bi bi-key"></i> Mot de passe oublié </a>
                     </div>
                </form>
           </div>
      </div>
-</main>
+</section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

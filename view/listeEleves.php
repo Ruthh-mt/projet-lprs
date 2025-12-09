@@ -66,13 +66,13 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </header>
+<section class="container banner bg-dark text-white text-center py-1 mb-3 rounded">
+    <h1>Liste des étudiants</h1>
+</section>
 <div class="containe banner py-1 mb-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-dark text-white text-center">
-                    <h4 class="mb-0 fs-1">Liste des étudiants</h4>
-                </div>
                 <div class="card-body">
                     <?php
                     require_once __DIR__ . '/../src/repository/UtilisateurRepository.php';
