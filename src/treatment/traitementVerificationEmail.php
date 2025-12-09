@@ -35,7 +35,13 @@ $ligne = $sqlEmail -> fetch();
 
 if($ligne){
     echo "Cet email existe\n";
-    $urlBase= "http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']);
+    $basePath = dirname($_SERVER['PHP_SELF']);
+    $basePath = dirname($basePath);
+    $urlBase= "http://".$_SERVER['HTTP_HOST'].dirname($basePath);
+    var_dump($urlBase);
+    var_dump($_SERVER['HTTP_HOST']);
+    var_dump($urlBase);
+
     $token = bin2hex(random_bytes(32));
     date_default_timezone_set('Europe/Paris');
     $expire_a = date("Y-m-d H:i:s", strtotime('+1 hour'));
@@ -45,9 +51,10 @@ if($ligne){
     $compte="";
     //Un email contenant un lien unique est envoyé à l’utilisateur.
     if($sqlToken){
-        $lien=$urlBase ."../../../view/reinitialiserMdp.php/?token=".$token;
-        //$lien="http://localhost//projet-lprs/view/reinitialiserMdp.php?token=".$token;
+        $lien=$urlBase ."/view/reinitialiserMdp.php/?token=".$token;
+
         $compte = $ligne['email'];
+        var_dump($lien);
         try {
             $mail = new PHPMailer();
             $mail->isSMTP();
@@ -70,7 +77,7 @@ if($ligne){
                 Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.";
             if($mail->send()){
                 echo 'to:'.$mail->getToAddresses()[0][0];
-                header("location: ../../view/messageConfirmation.php");
+               header("location: ../../view/messageConfirmation.php");
             }else{
                 echo"le message n'a pas pu etre envoyer(".$mail->ErrorInfo.")";
             }
