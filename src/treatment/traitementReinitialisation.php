@@ -15,8 +15,9 @@ if(isset($_POST['token'])&&isset($mdpnew)&&isset($mdpConfirm)){
         $repo = new utilisateurRepository();
         $verif = $repo->verifierToken($token);
         if ($verif) {
-            $email = $verif["email"];
+            $email = $verif->email;
             $repo->changerMdp($mdp, $email);
+            $repo->deleteToken($token);
             echo "<h3>Mot de passe modifié</h3>";
             echo "<p>Fermez cette page</p>";
 
