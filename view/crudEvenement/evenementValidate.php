@@ -56,7 +56,7 @@ if (session_status() === PHP_SESSION_NONE) {
 </header>
 <section class=" bg-dark text-white text-center py-1 rounded">
     <h1>Évènements en attente de validation</h1>
-    <a class="btn btn-outline-light" href="../evenements.php" role="button">Retour au evenements</a>'
+    <a class="btn btn-outline-light" href="../evenements.php" role="button">Retour au evenements</a>
 </section>
 <main>
     <?php if (!empty($_SESSION["toastr"])):
@@ -84,89 +84,107 @@ if (session_status() === PHP_SESSION_NONE) {
             toastr.<?=$type?>("<?=$message?>")
 
 
-        </script>';
+        </script>
 
 
         <?php unset($_SESSION['toastr']);
     endif; ?>
     <section class="container">
-        <section class="container my-4">
             <?php if (!isset($_SESSION['utilisateur'])): ?>
                 <h5 class="alert alert-danger alert-dismissible fade show"> Vous êtes pas connecté. Veuillez vous
-                    connecter</h5>'
-
+                    connecter</h5>
             <?php else : ?>
-                <div class="d-flex flex-wrap justify-content-start gap-4">';
+            <section class="container my-3">
+                <article class="row my-3">
+                    <div class="justify-content-center card-group">
                 <?php $evenementRepository = new EvenementRepository();
                 $allEvenement = $evenementRepository->getAllEvenementNonValide(new ModeleEvenement(["status" => "en attente", "estValide" => 0]));
-                $img=["https://static.vecteezy.com/system/resources/previews/000/203/128/original/vector-abstract-landscape-illustration.jpg","https://static.vecteezy.com/system/resources/previews/000/206/117/non_2x/vector-landscape-illustration.jpg","https://static.vecteezy.com/system/resources/previews/000/517/616/large_2x/vector-landscape-illustration.png"];
+                $img = ["https://static.vecteezy.com/system/resources/previews/000/203/128/original/vector-abstract-landscape-illustration.jpg", "https://static.vecteezy.com/system/resources/previews/000/206/117/non_2x/vector-landscape-illustration.jpg", "https://static.vecteezy.com/system/resources/previews/000/517/616/large_2x/vector-landscape-illustration.png"];
                 if (!empty($allEvenement)) :
-                    foreach ($allEvenement as $evenement) :?>
-                        <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
-                            <img src="<?php try {
-                                echo htmlspecialchars($img[random_int(0, 2)]);
-                            } catch (\Random\RandomException $e) {
-                                echo $e->getMessage();
-                            } ?>"
-                                 class="card-img-top"
-                                 alt="Image événement"
-                                 style="height: 180px; object-fit: cover;">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h5>
-                                <p class="card-text flex-grow-1 text-muted">
-                                    <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
-                                </p>
-                                <a href="evenementRead.php?id=<?= $evenement->id_evenement ?>"
-                                   class="btn btn-primary mt-auto">
-                                    En savoir plus
-                                </a>
-                            </div>
-                            <div class="card-footer text-muted small">
-                                <?php
-                                // Set your event date here (format: YYYY-MM-DD)
-                                $dateEve=$evenement->date_heure_evenement;
+                $count = 0;
+                foreach ($allEvenement
 
-                                try {
-                                    // Create DateTime objects
-                                    $today = new DateTime(); // Current date
-                                    $eventDate = new DateTime($dateEve);
-
-                                    // Format the event date as dd/mm/yyyy
-                                    $formattedEventDate = $eventDate->format("d/m/Y");
-
-                                    // Calculate the difference
-                                    $interval = $today->diff($eventDate);
-
-                                    // Determine if the event is in the future or past
-                                    if ($eventDate > $today) {
-                                        echo "Date de l'evenement : {$formattedEventDate}\n";
-                                        echo "Jour avant l'evenement : " . $interval->days . " jour(s)\n";
-                                    } elseif ($eventDate < $today) {
-                                        echo "Date de l'evenement : {$formattedEventDate}\n";
-                                        echo "L'evenement etait :" . $interval->days . " jour(s) avant.\n";
-                                    } else {
-                                        echo "Date de l'evenement : {$formattedEventDate}\n";
-                                        echo "L'evenement est aujourd'hui!\n";
-                                    }
-                                } catch (Exception $e) {
-                                    // Handle invalid date format
-                                    echo "Error: Mauvais format. Utiliser YYYY-MM-DD.\n";
-                                }
-
-                                ?>
-
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else : ?>
-                    <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait qu'il n'y a pas d'evenements
-                        a valider</h5>
-                    </div>
-                <?php endif;
-            endif; ?>
-
-
+                as $evenement) :
+                if ($count == 3) : ?>
+            </div>
+            </article>
         </section>
+            <section class="container my-3">
+                <article class="row my-3">
+                    <div class="justify-content-center card-group">
+                    <?php $count = 0;
+                    endif; ?>
+                    <div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
+                        <img src="<?php try {
+                            echo htmlspecialchars($img[random_int(0, 2)]);
+                        } catch (\Random\RandomException $e) {
+                            echo $e->getMessage();
+                        } ?>"
+                             class="card-img-top"
+                             alt="Image événement"
+                             style="height: 180px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h5>
+                            <p class="card-text flex-grow-1 text-muted">
+                                <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
+                            </p>
+                            <a href="evenementRead.php?id=<?= $evenement->id_evenement ?>"
+                               class="btn btn-primary mt-auto">
+                                En savoir plus
+                            </a>
+                        </div>
+                        <div class="card-footer text-muted small">
+                            <?php
+                            // Set your event date here (format: YYYY-MM-DD)
+                            $dateEve = $evenement->date_heure_evenement;
+
+                            try {
+                                // Create DateTime objects
+                                $today = new DateTime(); // Current date
+                                $eventDate = new DateTime($dateEve);
+
+                                // Format the event date as dd/mm/yyyy
+                                $formattedEventDate = $eventDate->format("d/m/Y");
+
+                                // Calculate the difference
+                                $interval = $today->diff($eventDate);
+
+                                // Determine if the event is in the future or past
+                                if ($eventDate > $today) {
+                                    echo "Date de l'evenement : {$formattedEventDate}\n";
+                                    echo "Jour avant l'evenement : " . $interval->days . " jour(s)\n";
+                                } elseif ($eventDate < $today) {
+                                    echo "Date de l'evenement : {$formattedEventDate}\n";
+                                    echo "L'evenement etait :" . $interval->days . " jour(s) avant.\n";
+                                } else {
+                                    echo "Date de l'evenement : {$formattedEventDate}\n";
+                                    echo "L'evenement est aujourd'hui!\n";
+                                }
+                            } catch (Exception $e) {
+                                // Handle invalid date format
+                                echo "Error: Mauvais format. Utiliser YYYY-MM-DD.\n";
+                            }
+
+                            ?>
+                        </div>
+                    </div>
+                    <?php $count++;
+                    endforeach; ?>
+                    <?php if ($count > 0 && $count < 3): ?>
+                    </div>
+                    </article>
+                    </section>
+        <?php endif; ?>
+        <?php else : ?>
+            <div class="alert alert-dark alert-dismissible fade show">
+                <h5> Il semblerait qu'il n'y a pas d'evenements
+                    a valider</h5>
+            </div>
+        <?php endif;
+        endif; ?>
+
+
+    </section>
 
     </section>
     <nav aria-label="Page navigation example">
