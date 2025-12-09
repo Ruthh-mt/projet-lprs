@@ -147,6 +147,7 @@ if (!$fiche) {
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
             <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
         </div>
+        <a href="../crudUtilisateur/utilisateurAValider.php" class="btn btn-outline-warning">A valider</a>
     </div>
 </nav>
 
