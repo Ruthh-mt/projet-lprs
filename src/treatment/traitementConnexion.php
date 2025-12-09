@@ -47,8 +47,9 @@ try {
     if (!$user) {
         redirectWith('error', "Identifiants ou mot de passe incorrects.", '../../view/connexion.php');
     }
+
     // Vérifier que le compte est validé
-    if ((int)($user['est_valide'] ?? 0) !== 1) {
+    if ((int)($user['est_valide'] ?? 0) !== 1 && $user['role' != 'Gestionnaire']) {
         redirectWith(
             'error',
             "Votre compte n'a pas encore été validé par un gestionnaire.",

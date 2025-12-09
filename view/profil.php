@@ -198,7 +198,7 @@ if ($role === 'Etudiant' && $idUser) {
                                 <p class="card-text flex-grow-1 text-muted">
                                     ' . htmlspecialchars(substr($offre['description'], 0, 100)) . '...
                                 </p>
-                                <a href="id=' . $offre['id_offre'] . '"
+                                <a href="crudOffre/offreRead.php?id=' . $offre['id_offre'] . '"
                                    class="btn btn-primary mt-auto">
                                     En savoir plus
                                 </a>
