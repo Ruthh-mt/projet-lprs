@@ -3,6 +3,9 @@ $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once('../src/repository/FicheEntrepriseRepository.php');
+$entreprisesRepository = new FicheEntrepriseRepository();
+$entreprises = $entreprisesRepository->getAllFicheEntreprises();
 ?>
 <!doctype html>
 <html lang="fr">
@@ -135,7 +138,9 @@ if (session_status() === PHP_SESSION_NONE) {
                 <option value="Alumni">Alumni / Ancien élève</option>
                 <option value="Partenaire">Partenaire / Entreprise</option>
             </select>
-            <div id="extraFields"></div>
+            <div id="extraFields">
+
+            </div>
             <div class="d-grid gap-2 my-2 ">
                 <button class="btn btn-outline-success" type="submit"><i class="bi bi-person-plus"></i> S'inscrire</button>
                 <a class="btn btn-outline-primary" href="connexion.php" role="button"><i class="bi bi-box-arrow-in-right"></i> Se connecter</a>
