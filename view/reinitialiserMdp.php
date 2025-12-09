@@ -12,7 +12,7 @@ $token = $_GET["token"];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plus 2</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
     <style>
         body {
             background-color: #f4f4f4;
@@ -44,7 +44,7 @@ $token = $_GET["token"];
         <button type="submit" class="btn btn-primary w-100">Confirmer</button>
         <br><br>
     </form>
-    <a href="../view/connexion.php">
+    <a href="connexion.php">
         <button type="submit" class="btn btn-primary w-100">Acceuil</button>
     </a><br><br>
 

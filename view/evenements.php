@@ -227,8 +227,9 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
                 <h5> Il semblerait qu'il n'y a pas
                     d'evenements</h5>
                 <br>
-                <p>Soyez le/la premier/e a lancer le pas et
-                    crée votre evenement</p>";
+                <p>Soyez le/la premier/e à lancer le pas et
+                    crée votre evenement</p>
+            </div>
                 <?php endif; ?>
 
 
