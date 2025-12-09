@@ -90,6 +90,7 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
 <main>
     <section class="container banner bg-dark text-white text-center py-1 rounded">
         <h1>Mes Évènements</h1>
+        <a class="btn btn-outline-light" href="../evenements.php" role="button"><i class="bi bi-arrow-left-circle"></i> Retour au evenements</a>
         <button class="btn btn-outline-light" id="showEveCreated">
             <i class="bi bi-calendar4-event"></i> Voir mes evenements Crées
         </button>
@@ -223,9 +224,7 @@ $allEveInscrit = $eveUserRepo->getAllEvenementUserInscrit($eveUser);
                     if (empty($allEveInscrit)):
                     $count = 0;
                     $img = ["https://static.vecteezy.com/system/resources/previews/047/393/529/original/a-colorful-landscape-with-mountains-and-river-free-vector.jpg", "https://www.creativefabrica.com/wp-content/uploads/2024/10/17/Beautiful-Waterfall-Scene-Wallpaper-Graphics-108076283-1.jpg", "https://static.vecteezy.com/system/resources/previews/002/966/809/large_2x/sunset-waterfall-landscape-illustration-free-vector.jpg"];
-                    foreach ($allEveInscrit
-
-                    as $eveInscrit): ?>
+                    foreach ($allEveInscrit as $eveInscrit): ?>
                     <?php if ($count == 3) : ?>
                 </div>
             </article>
