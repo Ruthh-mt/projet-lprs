@@ -93,8 +93,10 @@ $postRepository = new postRepository();
 </header>
 <section class="container banner bg-dark text-white text-center py-1 rounded">
     <h1>Forum</h1>
+    <?php if(isset($_SESSION["utilisateur"])) : ?>
     <a class="btn btn-outline-light" href="crudPost/postReadMyPost.php" role="button"><i class="bi bi-chat-dots"></i>
         Mes Post</a>
+    <?php endif; ?>
     <div class="btn-group" role="group" aria-label="Basic outlined example">
         <button type="button" class="btn btn-outline-light" id="showGeneral">General</button>
         <?php if(isset($_SESSION['utilisateur'])) {
@@ -103,7 +105,9 @@ $postRepository = new postRepository();
         <?php elseif ($_SESSION["utilisateur"]['role'] === "Alumni" || $_SESSION["utilisateur"]['role'] === "Partenaire"): ?>
             <button type="button" class="btn btn-outline-light" id="showEntrumnis">Entreprise / Alumni</button>
         <?php elseif ($_SESSION["utilisateur"]['role'] === 'Gestionnaire'): ?>
-            <button type="button" class="btn btn-outline-light" id="showAdmin">Admin</button>
+                <button type="button" class="btn btn-outline-light" id="showProfediant">Professeur / Etudiant</button>
+                <button type="button" class="btn btn-outline-light" id="showEntrumnis">Entreprise / Alumni</button>
+                <button type="button" class="btn btn-outline-light" id="showAdmin">Admin</button>
         <?php endif; }?>
     </div>
 </section>
@@ -197,7 +201,7 @@ $postRepository = new postRepository();
             $post= new ModelePost(["canal"=>"entrumnis"]);
             $allPostEntrumnis = $postRepository->getAllPostByCanal($post,$debut, $nbPostParPage);
             $nbTotalPost = $postRepository->countAllEvenementByCanal($post) / $nbPostParPage;
-            if (empty($allpost)) :?>
+            if (empty($allPostEntrumnis)) :?>
                 <h5 class="alert alert-dark alert-dismissible fade show"> Il semblerait que la communication soit surcoter,
                     Soyer le premier à communiquer </h5>
             <?php else : ?>
