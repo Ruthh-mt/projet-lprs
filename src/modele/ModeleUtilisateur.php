@@ -8,6 +8,7 @@ class ModeleUtilisateur
     private $mdp;
     private $role;
     private $refValidateur;
+    private $estValide;
     private $avatar;
     private $promotion;
     private $matiere;
@@ -233,5 +234,13 @@ class ModeleUtilisateur
     public function setFormation($formation): void
     {
         $this->formation = $formation;
+    }
+    public function getEstValide()
+    {
+        return $this->estValide;
+    }
+    public function setEstValide($estValide): void
+    {
+        $this->estValide = $estValide;
     }
 }

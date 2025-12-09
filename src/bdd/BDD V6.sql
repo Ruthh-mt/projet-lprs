@@ -166,6 +166,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
     `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `mdp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `est_valide` int NOT NULL DEFAULT '0',
     `ref_validateur` int DEFAULT NULL,
     `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     PRIMARY KEY (`id_user`),

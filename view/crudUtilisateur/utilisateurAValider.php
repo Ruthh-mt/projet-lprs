@@ -3,27 +3,6 @@ $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-require_once '../../src/modele/ModeleGestionnaire.php';
-require_once '../../src/bdd/config.php';
-require_once '../../src/repository/GestionnaireRepository.php';
-
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header('Location: gestionnaireRead.php');
-    exit();
-}
-
-$id = (int)$_GET['id'];
-$repo = new GestionnaireRepository();
-$gestionnaire = $repo->findById($id);
-
-// Vérifier si le gestionnaire existe
-if (!$gestionnaire) {
-    header('Location: gestionnaireRead.php');
-    exit();
-}
-
-$page = 'Gestionnaire';
 ?>
 <!doctype html>
 <html lang="fr">
@@ -93,55 +72,13 @@ $page = 'Gestionnaire';
             <a href="../crudEntreprise/entrepriseRead.php" class="btn btn-outline-info">Entreprise</a>
             <a href="../crudEvenement/evenementListe.php" class="btn btn-outline-info">Évènement</a>
             <a href="../crudFormation/formationRead.php" class="btn btn-outline-info">Formation</a>
-            <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info active">Gestionnaire</a>
+            <a href="../crudGestionnaire/gestionnaireRead.php" class="btn btn-outline-info">Gestionnaire</a>
             <a href="../crudOffre/offreListe.php" class="btn btn-outline-info">Offre</a>
             <a href="../crudPartenaire/partenaireRead.php" class="btn btn-outline-info">Partenaire</a>
             <a href="../crudPost/postListe.php" class="btn btn-outline-info">Post</a>
             <a href="../crudReponse/reponseRead.php" class="btn btn-outline-info">Réponses</a>
             <a href="../crudUtilisateur/utilisateurRead.php" class="btn btn-outline-info">Utilisateur</a>
         </div>
-        <a href="../crudUtilisateur/utilisateurAValider.php" class="btn btn-outline-warning">A valider</a>
+        <a href="../crudUtilisateur/utilisateurAValider.php" class="btn btn-outline-warning active">A valider</a>
     </div>
 </nav>
-<section class="container banner bg-info text-white text-center py-1 rounded border">
-    <h1>Gestion <?=$page?></h1>
-</section>
-<section class="container my-5">
-    <div class="card mx-auto" style="max-width: 50%;">
-        <div class="card-header bg-danger text-white">
-            <h5 class="card-title mb-0">Confirmation de suppression</h5>
-        </div>
-        <div class="card-body bg-danger-subtle mx-3 my-3 rounded border border-danger">
-            <p class="card-text text-center fw-bold">
-                Êtes-vous sûr de vouloir rétrograder ce gestionnaire au rôle d'étudiant ?<br>
-                Cette action est irréversible !
-            </p>
-            <p class="text-muted">
-                <i class="bi bi-person-square me-2"></i><?= htmlspecialchars($gestionnaire->getPrenom() . ' ' . $gestionnaire->getNom()) ?><br>
-                <i class="bi bi-envelope me-2"></i><?= htmlspecialchars($gestionnaire->getEmail()) ?><br>
-                <i class="bi bi-briefcase me-2"></i><?= htmlspecialchars($gestionnaire->getPoste()) ?>
-            </p>
-            <div class="justify-content-center">
-                <form action="../../src/treatment/treatmentDeleteGestionnaire.php" method="post" class="">
-                    <input type="hidden" name="id" value="<?= $gestionnaire->getId() ?>">
-                    <small class="text-center"></small>
-                    <div class="d-flex justify-content-between mt-4">
-                        <a href="gestionnaireRead.php" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-left"></i>
-                        </a>
-                        <button type="submit" class="btn btn-outline-danger")>
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
