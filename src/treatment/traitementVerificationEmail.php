@@ -51,7 +51,7 @@ if($ligne){
     $compte="";
     //Un email contenant un lien unique est envoyé à l’utilisateur.
     if($sqlToken){
-        $lien=$urlBase ."/view/reinitialiserMdp.php/?token=".$token;
+        $lien=$urlBase ."/view/reinitialiserMdp.php?token=".$token;
 
         $compte = $ligne['email'];
         var_dump($lien);
