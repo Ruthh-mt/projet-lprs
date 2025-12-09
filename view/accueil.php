@@ -122,7 +122,8 @@ $eveAcceuil=$eveRepo->showEvenementAcceuil();
 <section class="container border rounded border-dark my-3">
     <h3 class="text-center py-3 text-center text-uppercase">Derniers évènements créés</h3>
     <article class="article row" style="text-align: justify;">
-        <?php $img =["https://img.freepik.com/premium-vector/moon-night-landscape-vector-illustration-pine-tree-night-lake_538866-357.jpg","https://tse1.mm.bing.net/th/id/OIP.MO4C99oM9oCl533Y4mq17gHaEK?pid=ImgDet&w=184&h=103&c=7&dpr=1,3&o=7&rm=3","https://www.creativefabrica.com/wp-content/uploads/2024/10/18/Moonlight-Scenery-Illustration-Wallpaper-Graphics-108135561-1.jpg" ]?>
+        <?php if(!empty($eveAcceuil)):
+        $img =["https://img.freepik.com/premium-vector/moon-night-landscape-vector-illustration-pine-tree-night-lake_538866-357.jpg","https://tse1.mm.bing.net/th/id/OIP.MO4C99oM9oCl533Y4mq17gHaEK?pid=ImgDet&w=184&h=103&c=7&dpr=1,3&o=7&rm=3","https://www.creativefabrica.com/wp-content/uploads/2024/10/18/Moonlight-Scenery-Illustration-Wallpaper-Graphics-108135561-1.jpg" ]?>
         <?php foreach ($eveAcceuil as $eve):?>
         <div class="col card m-3" style="width: 18rem;">
             <img src="<?php try {
@@ -136,7 +137,13 @@ $eveAcceuil=$eveRepo->showEvenementAcceuil();
                 <a href="crudEvenement/evenementRead.php?id=<?=htmlspecialchars($eve->id_evenement)?>" class="btn btn-primary">Voir l'évènement</a>
             </div>
         </div>
-        <?php endforeach;?>
+        <?php endforeach;
+        else: ?>
+        <div class="alert alert-dark alert-dismissible fade show">
+            <h5> Il semblerait qu'il n'y a pas
+                d'evenements</h5>
+        </div>
+        <?php endif;?>
     </article>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
