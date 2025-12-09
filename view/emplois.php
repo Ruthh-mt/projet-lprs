@@ -1,5 +1,5 @@
 <?php
- $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
+
  session_start();
  if (isset($_SESSION['utilisateur']))  {
 
