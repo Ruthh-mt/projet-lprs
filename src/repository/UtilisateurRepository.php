@@ -51,7 +51,6 @@ class utilisateurRepository
             'mdp' => $data->getMdp(),
             'role' => $data->getRole(),
             'ref_validateur' => $data->getRefValidateur() ?? null,
-            'est_valide' => 0,
         ]);
     }
 

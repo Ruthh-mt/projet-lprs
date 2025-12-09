@@ -1,22 +1,26 @@
 <?php
  $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-    require_once ('../src/bdd/config.php');
-    require_once ('../src/repository/OffreRepository.php');
-    require_once ('../src/repository/PartenaireRepository.php');
-    require_once ('../src/repository/AlumniRepository.php');
-    $offreRep = new OffreRepository();
-    $lesOffres = $offreRep->getAllOffre();
-    $partenaireRep = new PartenaireRepository();
-    $partenaire_a_une_fiche = $partenaireRep->getFicheByPartenaire($_SESSION['utilisateur']['id_user']);
-    $alumniRep = new AlumniRepository();
-    $id_user = $_SESSION['utilisateur']['id_user'];
+ session_start();
+ if (isset($_SESSION['utilisateur']))  {
 
-    $pdo  = (new Config())->connexion();
-    $sql =$pdo->prepare("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
-    $sql -> execute();
+     require_once('../src/bdd/config.php');
+     require_once('../src/repository/OffreRepository.php');
+     require_once('../src/repository/PartenaireRepository.php');
+     require_once('../src/repository/AlumniRepository.php');
+     $offreRep = new OffreRepository();
+     $lesOffres = $offreRep->getAllOffre();
+     $partenaireRep = new PartenaireRepository();
+     $partenaire_a_une_fiche = $partenaireRep->getFicheByPartenaire($_SESSION['utilisateur']['id_user']);
+     $alumniRep = new AlumniRepository();
+     $id_user = $_SESSION['utilisateur']['id_user'];
+
+     $pdo = (new Config())->connexion();
+     $sql = $pdo->prepare("SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise");
+     $sql->execute();
+ }
+
+
+
 
 
 ?>
@@ -102,25 +106,30 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="card">
         <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
             <h2 class="m-0">Offres d'emploi</h2>
+           <?php if(!empty($_SESSION) && $_SESSION['utilisateur']['role'] === 'Partenaire'): ?>
 
-                        <!-- Si le partenaire a une fiche entreprise -->
+            <!-- Si le partenaire a une fiche entreprise -->
                         <div>
                             <!-- Bouton : voir mes offres -->
                             <a href="profil.php" class="btn btn-dark">Voir mes offres</a>
                             <a href="crudOffre/offreCreate.php" class="btn btn-dark">Créer une offre</a>
                             <!-- Si le partenaire n’a pas encore de fiche -->
 
-                            <a href="crudEntreprise/creerFiche.php" class="btn btn-dark">Créer une fiche</a>
-
+             <?php elseif(!empty($_SESSION) && $_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
 
                     <a href="profil.php" class="btn btn-success btn-sm">
                         <i class="bi bi-plus-circle"></i> Mes candidatures
                     </a>
+                    </div>
 
-
+            <?php else :?>
+                <button class="btn btn-dark" onclick="redirection()">Veuillez vous connecter</button>
+             <?php endif ?>
         </div>
     </div>
 </section>
+
+<?php  if(isset($_SESSION['utilisateur'])) :?>
 
 <div class="table-wrap">
     <table class="table" id="offre-table">
@@ -157,12 +166,16 @@ if (session_status() === PHP_SESSION_NONE) {
                 <?php endif ?>
 
 
+                <?php if($_SESSION['utilisateur']['role'] === 'Etudiant')   :?>
+
                 <form action="../view/postuler.php?id=<?= $offre['id_offre'] ?>" method="post" style="display:inline;">
                     <input type="hidden" name="id_offre" value="<?= htmlspecialchars($offre['id_offre']) ?>">
                     <button type="submit" class="btn btn-sm btn-outline-success" title="Postuler à cette offre">
                         <i class="bi bi-send-fill"></i> Postuler
                     </button>
                 </form>
+                <?php endif ?>
+
             </td>
             </tr>
         <?php endforeach; ?>
@@ -170,6 +183,7 @@ if (session_status() === PHP_SESSION_NONE) {
     </table>
 </div>
 </div>
+<?php endif ?>
 </section>
 
 <!-- Datatable JS id="offre-table" -->
@@ -186,6 +200,11 @@ if (session_status() === PHP_SESSION_NONE) {
             "responsive": true // design responsive
         });
     });
+</script>
+<script>
+        function redirection() {
+        window.location.href = 'connexion.php';
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
