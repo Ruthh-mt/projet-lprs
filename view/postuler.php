@@ -117,7 +117,7 @@ if (!$ref_offre) {
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-send"></i> Envoyer la candidature
                 </button>
-                <button type="button" class="btn btn-secondary" onclick="window.location.href='emplois.php'">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='enSavoirPlusOffre.php?id=<?= $ref_offre ?>'">
                     <i class="bi bi-arrow-left"></i> Retour
                 </button>
             </div>

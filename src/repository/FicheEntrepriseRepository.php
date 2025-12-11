@@ -21,6 +21,19 @@ class FicheEntrepriseRepository
         return $result ?: null;
     }
 
+    public function findFicheByOffre(int $id_offre): ?object
+    {
+        $pdo = $this->db->connexion();
+        $sql = "SELECT fe.* FROM fiche_entreprise fe 
+                JOIN offre o ON fe.id_fiche_entreprise = o.ref_fiche
+                WHERE o.id_offre = :id_offre";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id_offre' => $id_offre]);
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $result ?: null;
+    }
+
     public function createFiche(array $data): ?int
     {
         $pdo = $this->db->connexion();
@@ -73,22 +86,6 @@ class FicheEntrepriseRepository
          WHERE ref_user = :ref_user";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['ref_user' => $id]);
-        return $stmt->fetch(PDO::FETCH_OBJ);
-    }
-    public function findFicheByOffre(int $id){
-        $pdo = $this->db->connexion();
-
-        $sql = "
-        SELECT f.*, p.*
-        FROM offre o
-        INNER JOIN fiche_entreprise f ON f.id_fiche_entreprise = o.ref_fiche
-        INNER JOIN partenaire p ON p.ref_fiche_entreprise = f.id_fiche_entreprise
-        WHERE o.id_offre = :id_offre
-    ";
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['id_offre' => $id]);
-
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 

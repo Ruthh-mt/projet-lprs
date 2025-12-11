@@ -1,30 +1,20 @@
 <?php
-$prefix ='../public';
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 
 $prefix = '';
+$id_offre = $_GET['id'];
 
-if (isset($_SESSION['utilisateur'])) {
-    require_once('../src/bdd/config.php');
-    require_once('../src/repository/OffreRepository.php');
-    require_once('../src/repository/PartenaireRepository.php');
-    require_once('../src/repository/AlumniRepository.php');
-
-    $offreRep = new OffreRepository();
-    $lesOffres = $offreRep->getAllOffre();
-
-    $partenaireRep = new PartenaireRepository();
-    $partenaire_a_une_fiche = $partenaireRep->getFicheByPartenaire($_SESSION['utilisateur']['id_user']);
-
-    $alumniRep = new AlumniRepository();
-    $id_user = $_SESSION['utilisateur']['id_user'];
-} else {
-    $partenaire_a_une_fiche = null;
-}
+require_once('../src/bdd/config.php');
+require_once('../src/repository/OffreRepository.php');
+require_once('../src/repository/FicheEntrepriseRepository.php');
+$offreRep = new OffreRepository();
+$ficheRepo = new FicheEntrepriseRepository();
+$offre = $offreRep->getOffreById($id_offre);$ficheRepo = new FicheEntrepriseRepository();
+$fiche = $ficheRepo->findFicheByOffre($id_offre);
+$nom_entreprise = $fiche->nom_entreprise;
 ?>
 <!doctype html>
 <html lang="fr">
@@ -37,7 +27,10 @@ if (isset($_SESSION['utilisateur'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
-    <link rel="stylesheet" href="../src/assets/emplois.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 
@@ -98,7 +91,6 @@ if (isset($_SESSION['utilisateur'])) {
         </div>
     </div>
 </header>
-
 <section class="creation-offre">
     <div class="card">
         <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
@@ -123,67 +115,39 @@ if (isset($_SESSION['utilisateur'])) {
         </div>
     </div>
 </section>
+<div class="container mt-4" style="max-width: 900px; margin: auto; border: 1px solid #ccc; padding: 30px;">
 
-<?php if (isset($_SESSION['utilisateur'])): ?>
-
-    <div class="container mt-4">
-        <div class="row g-3">
-
-            <?php foreach ($lesOffres as $offre): ?>
-
-                <div class="col-md-4">
-                    <div class="offre-card">
-
-                        <!-- TITRE -->
-                        <div class="offre-title">
-                            <?= htmlspecialchars($offre->titre) ?>
-                        </div>
-
-                        <div class="offre-entreprise">
-                            <?= htmlspecialchars($offre->nom_entreprise) ?>
-                        </div>
-                        <!-- DESCRIPTION -->
-                        <div class="offre-desc">
-                            <?= htmlspecialchars(substr($offre->description ?? "Aucune description disponible", 0, 150)) ?>...
-                        </div>
-
-                        <!-- ACTIONS -->
-                        <div class="offre-actions d-flex gap-2">
-
-                            <?php if ($_SESSION['utilisateur']['role'] === 'Etudiant'
-                                    || $_SESSION['utilisateur']['role'] === 'Alumni'): ?>
-
-                                <a href="enSavoirPlusOffre.php?id=<?= $offre->id_offre ?>" class="btn btn-primary">
-                                    Voir l'offre
-                                </a>
-
-                            <?php elseif ($_SESSION['utilisateur']['role'] === 'Partenaire' && $partenaire_a_une_fiche->id_fiche_entreprise == $offre->ref_fiche) : ?>
-
-                                <a href="crudOffre/offreUpdate.php?id=<?= $offre->id_offre ?>" class="btn btn-secondary">
-                                    Modifier
-                                </a>
-
-                                <a href="crudOffre/offreDelete.php?id=<?= $offre->id_offre ?>"
-                                   class="btn btn-danger"
-                                   onclick="return confirm('Voulez-vous vraiment supprimer cette offre ?')">
-                                    Supprimer
-                                </a>
-
-                            <?php endif; ?>
-
-                        </div>
-
-                    </div>
-                </div>
-
-            <?php endforeach; ?>
-
-        </div>
+    <div>
+    <h2> Nous recherchons un/une<?= $offre->titre ?> pour <?= $nom_entreprise ?> </h2>
     </div>
+    <br>
+    <br>
+    <div>
+        <h2>Description du poste</h2>
+    <p> <?= $offre->description?></p>
+    </div>
+    <br>
+    <br>
+    <div>
+        <h2>Mission </h2>
+        <p> <?= $offre->mission?></p>
+    </div>
+    <br>
+    <br>
+    <div>
+        <h2>Contrat </h2>
+        <p> <?= $offre->type?></p>
+        <p> Salaire : <?= $offre->salaire?> euros brut</p>
+    </div>
+    <br>
+    <br>
+    <a href="postuler.php?id=<?= $offre->id_offre ?>" class="btn btn-primary">
+       Postuler
+    </a>
+    <a href="emplois.php"  class="btn btn-secondary">
+        Retour
+    </a>
 
-<?php endif; ?>
-
-</body>
 
 
-</html>
+</div>
