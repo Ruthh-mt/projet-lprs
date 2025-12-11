@@ -51,11 +51,10 @@ class OffreRepository
         ]);
     }
     public function getOffreById($id){
-        $sql = "SELECT * FROM offre WHERE id_offre = :id_offre";
+        $sql = "SELECT * FROM offre  WHERE id_offre = :id_offre";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute(['id_offre' => $id]);
-        $offre = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $offre;
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
     public function getAllOffre()
@@ -67,7 +66,7 @@ class OffreRepository
         return $offres;
     }
 
-    public function getOffresParenaire(int $id)
+    public function getAllOffresPartenaire(int $id)
     {
         $sql = "
         SELECT 
@@ -93,32 +92,7 @@ class OffreRepository
 
         return $req;
     }
-    public function getOffresAlumni(int $id)
-    {
-        $sql = "
-        SELECT 
-            o.id_offre,
-            o.titre,
-            o.description,
-            o.mission,
-            o.salaire,
-            o.type,
-            o.etat,
-            f.nom_entreprise,
-            f.adresse_entreprise,
-            f.adresse_web
-        FROM alumni a
-        INNER JOIN fiche_entreprise f ON a.ref_fiche_entreprise = f.id_fiche_entreprise
-        INNER JOIN offre o ON o.ref_fiche = f.id_fiche_entreprise
-        WHERE a.ref_user = :id_user
-    ";
-        $stmt = $this->db->connexion()->prepare($sql);
-        $stmt->execute(['id_user' => $id]);
 
-        $req = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $req;
-    }
 
 
 }

@@ -5,10 +5,13 @@ require_once("../../src/bdd/config.php");
 require_once "../modele/ModeleOffre.php";
 require_once "../../src/repository/OffreRepository.php";
 require_once("../../src/repository/PartenaireRepository.php");
+require_once("../../src/repository/FicheEntrepriseRepository.php");
+
 require_once("../../src/repository/AlumniRepository.php");
 
 $offreRepository = new OffreRepository();
 $partenaireRepository = new PartenaireRepository();
+$ficheRepository = new FicheEntrepriseRepository();
 $id_user = $_SESSION['utilisateur']['id_user'];
 $role = $_SESSION['utilisateur']['role'];
 
@@ -23,8 +26,7 @@ if (
     empty($_POST['desc_contrat']) ||
     empty($_POST['mission']) ||
     empty($_POST['type_contrat']) ||
-    empty($_POST['salaire']) ||
-    empty($_POST['entreprise'])
+    empty($_POST['salaire'])
 ) {
     echo "<script>alert('Tous les champs sont obligatoires.'); window.history.back();</script>";
     exit;
@@ -38,9 +40,12 @@ $mission = trim($_POST['mission']);
 $type = trim($_POST['type_contrat']);
 $salaire = $_POST['salaire'];
 $etat = "En attente";
-$ref_fiche = $_POST['entreprise'];
-if($partenaireRepository -> getFicheByPartenaire($id_user) == null){
-    $partenaireRepository->affecterFichePartenaire($id_user,$ref_fiche);
+
+if($ficheRepository->findFicheByUser($id_user) == null){
+$ref_fiche = $_POST['entreprise'];}
+else {
+    $fiche = $ficheRepository->findFicheByUser($id_user);
+    $ref_fiche = $fiche->id_fiche_entreprise;
 }
 $offre = new ModeleOffre([
     'titreOffre' => $titre,

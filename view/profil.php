@@ -41,7 +41,7 @@ if ($role === 'Etudiant' && $idUser || $role === 'Alumni' && $idUser) {
 
 } elseif ($role === 'Partenaire' && $idUser) {
 
-    $offresPartenaire = $offreRep->getOffresParenaire($idUser);
+    $offresPartenaire = $offreRep->getAllOffresPartenaire($idUser);
     $total = count($offresPartenaire);
 
     if ($total > 0) {
@@ -51,7 +51,7 @@ if ($role === 'Etudiant' && $idUser || $role === 'Alumni' && $idUser) {
         $itemsPage = array_slice($offresPartenaire, $start, $perPage);
         $a_un_items  = true;
     }
-    
+
 }
 ?>
 <!doctype html>

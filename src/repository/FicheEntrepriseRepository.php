@@ -39,13 +39,13 @@ class FicheEntrepriseRepository
         }
         return null;
     }
-    public function getAllFicheEntreprises(): array{
+    public function getAllFicheEntreprises(){
         $pdo = $this->db->connexion();
         $sql = "SELECT * FROM fiche_entreprise";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
     public function getFicheEntrepriseById(int $id_fiche_entreprise): ?array
     {
@@ -73,17 +73,33 @@ class FicheEntrepriseRepository
          WHERE ref_user = :ref_user";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['ref_user' => $id]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ?: null;
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
+    public function findFicheByOffre(int $id){
+        $pdo = $this->db->connexion();
+
+        $sql = "
+        SELECT f.*, p.*
+        FROM offre o
+        INNER JOIN fiche_entreprise f ON f.id_fiche_entreprise = o.ref_fiche
+        INNER JOIN partenaire p ON p.ref_fiche_entreprise = f.id_fiche_entreprise
+        WHERE o.id_offre = :id_offre
+    ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id_offre' => $id]);
+
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
 
     public function getFicheById(int $id): ?array {
         $pdo = $this->db->connexion();
         $sql = "SELECT * FROM fiche_entreprise WHERE id_fiche_entreprise = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ?: null;
+        return $stmt->fetch(PDO::FETCH_OBJ);
+
     }
 
     public function updateFiche(int $id, array $data): bool {
@@ -102,4 +118,5 @@ class FicheEntrepriseRepository
             'id' => $id
         ]);
     }
+
 }
