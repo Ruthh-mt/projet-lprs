@@ -26,7 +26,7 @@ $itemsPage  = [];
 $a_un_items   = false;
 
 // Récupération et découpage selon le rôle
-if ($role === 'Etudiant' && $idUser) {
+if ($role === 'Etudiant' && $idUser || $role === 'Alumni' && $idUser) {
 
     $candidaturesEtudiant = $postulerRepository->findCandidatures($idUser);
     $total = count($candidaturesEtudiant);
@@ -51,19 +51,7 @@ if ($role === 'Etudiant' && $idUser) {
         $itemsPage = array_slice($offresPartenaire, $start, $perPage);
         $a_un_items  = true;
     }
-
-} elseif ($role === 'Alumni' && $idUser) {
-
-    $offresAlumni = $offreRep->getOffresAlumni($idUser);
-    $total = count($offresAlumni);
-
-    if ($total > 0) {
-        $totalPages = max(1, (int)ceil($total / $perPage));
-        if ($page > $totalPages) $page = $totalPages;
-        $start     = ($page - 1) * $perPage;
-        $itemsPage = array_slice($offresAlumni, $start, $perPage);
-        $a_un_items = true;
-    }
+    
 }
 ?>
 <!doctype html>
@@ -148,7 +136,7 @@ if ($role === 'Etudiant' && $idUser) {
             if (!isset($_SESSION['utilisateur'])) {
                 echo '<h5 class="alert alert-danger alert-dismissible fade show"> Vous n\'êtes pas connecté. Veuillez vous connecter.</h5>';
             }
-            elseif ($role === 'Etudiant') {
+            elseif ($role === 'Etudiant' || $role === 'Alumni') {
 
                 echo '<div class="d-flex flex-wrap justify-content-start gap-4">';
 
@@ -208,40 +196,7 @@ if ($role === 'Etudiant' && $idUser) {
                             </div>
                         </div>';
                     }
-                } else {
-                    echo "<h5> Il semblerait qu'il n'y a pas d'offres</h5>
-                          <br>
-                          <p>Soyez le/la premier/e à poster une offre </p>";
-                }
-                echo '</div>';
 
-            }
-            elseif ($role === 'Alumni') {
-
-                echo '<div class="d-flex flex-wrap justify-content-start gap-4">';
-
-                if ($a_un_items) {
-                    foreach ($itemsPage as $offre) {
-                        echo '<div class="card shadow-sm" style="width: 320px; height: 430px; flex: 0 0 auto;">
-                            <img src="https://wallpapers.com/images/hd/4k-vector-snowy-landscape-p7u7m7qyxich2h31.jpg"
-                                 class="card-img-top"
-                                 alt="Image événement"
-                                 style="height: 180px; object-fit: cover;">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title fw-bold">' . htmlspecialchars($offre['titre']) . '</h5>
-                                <p class="card-text flex-grow-1 text-muted">
-                                    ' . htmlspecialchars(substr($offre['description'], 0, 100)) . '...
-                                </p>
-                                <a href="id=' . $offre['id_offre'] . '"
-                                   class="btn btn-primary mt-auto">
-                                    En savoir plus
-                                </a>
-                            </div>
-                            <div class="card-footer text-muted small">
-                                Dernière mise à jour : ' . date("d/m/Y H:i") . '
-                            </div>
-                        </div>';
-                    }
                 } else {
                     echo "<h5> Il semblerait qu'il n'y a pas d'offres</h5>
                           <br>

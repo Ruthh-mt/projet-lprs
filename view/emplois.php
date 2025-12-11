@@ -116,8 +116,9 @@ if (isset($_SESSION['utilisateur'])) {
                     <a href="profil.php" class="btn btn-dark">Voir mes offres</a>
                     <a href="crudOffre/offreCreate.php" class="btn btn-dark">Créer une offre</a>
 
-                <?php elseif (!empty($_SESSION) && $_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
-                    <a href="profil.php" class="btn btn-success btn-sm">
+                <?php elseif (!empty($_SESSION) && $_SESSION['utilisateur']['role'] === 'Etudiant'
+                    || $_SESSION['utilisateur']['role'] === 'Alumni') : ?>
+                    <a href="profil.php" class="btn btn-dark">
                         <i class="bi bi-plus-circle"></i> Mes candidatures
                     </a>
 
@@ -182,7 +183,7 @@ if (isset($_SESSION['utilisateur'])) {
 
                         <?php endif; ?>
 
-                        <?php if ($_SESSION['utilisateur']['role'] === 'Etudiant'): ?>
+                        <?php if ($_SESSION['utilisateur']['role'] === 'Etudiant' || $_SESSION['utilisateur']['role'] === 'Alumni'): ?>
                             <form action="../view/postuler.php?id=<?= (int)$offre['id_offre'] ?>"
                                   method="post" class="d-inline">
                                 <input type="hidden" name="id_offre" value="<?= (int)$offre['id_offre'] ?>">
