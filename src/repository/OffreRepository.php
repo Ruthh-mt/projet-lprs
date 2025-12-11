@@ -59,11 +59,10 @@ class OffreRepository
 
     public function getAllOffre()
     {
-        $sql = "SELECT * FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise";
+        $sql = "SELECT o.* , f.* FROM offre o inner join fiche_entreprise f on o.ref_fiche = f.id_fiche_entreprise";
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute();
-        $offres = $stmt->fetchAll();
-        return $offres;
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function getAllOffresPartenaire(int $id)

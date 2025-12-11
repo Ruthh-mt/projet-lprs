@@ -77,7 +77,7 @@ class partenaireRepository
 
          return $result ?: null;
      }
-    public function getFicheByPartenaire(int $ref_user): ?array
+    public function getFicheByPartenaire(int $ref_user)
     {
         $sql = "
         SELECT 
@@ -96,9 +96,8 @@ class partenaireRepository
 
         $stmt = $this->db->connexion()->prepare($sql);
         $stmt->execute(['ref_user' => $ref_user]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $result ?: null;
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
     public function affecterFichePartenaire(int $idUser, int $idFiche): bool
     {

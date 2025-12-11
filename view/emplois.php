@@ -1,5 +1,10 @@
 <?php
-session_start();
+$prefix ='../public';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 
 $prefix = ''; // évite "Undefined variable $prefix" si tu l'utilises pour l'avatar
 
@@ -18,7 +23,6 @@ if (isset($_SESSION['utilisateur'])) {
     $alumniRep = new AlumniRepository();
     $id_user = $_SESSION['utilisateur']['id_user'];
 } else {
-    $lesOffres = [];
     $partenaire_a_une_fiche = null;
 }
 ?>
@@ -36,11 +40,8 @@ if (isset($_SESSION['utilisateur'])) {
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- jQuery + DataTables -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <style>
         .table-wrap { padding: 0 20px 30px; }
@@ -132,95 +133,102 @@ if (isset($_SESSION['utilisateur'])) {
 </section>
 
 <?php if (isset($_SESSION['utilisateur'])): ?>
-    <div class="table-wrap">
-        <table class="table" id="offre-table">
-            <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Description</th>
-                <th>Mission</th>
-                <th>Salaire</th>
-                <th>Entreprise</th>
-                <th>Type d'offre</th>
-                <th>Etat</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
 
-            <tbody>
+    <div class="container mt-4">
+        <div class="row g-3">
+
             <?php foreach ($lesOffres as $offre): ?>
-                <tr>
-                    <td><strong><?= htmlspecialchars($offre['titre']) ?></strong></td>
-                    <td><?= htmlspecialchars($offre['description']) ?></td>
-                    <td><?= htmlspecialchars($offre['mission']) ?></td>
-                    <td><?= htmlspecialchars($offre['salaire']) ?></td>
-                    <td><?= htmlspecialchars($offre['nom_entreprise']) ?></td>
-                    <td><?= htmlspecialchars($offre['type']) ?></td>
-                    <td><?= htmlspecialchars($offre['etat']) ?></td>
 
+                <div class="col-md-4">
+                    <div class="offre-card">
 
-                    <td class="row-actions">
+                        <!-- TITRE -->
+                        <div class="offre-title">
+                            <?= htmlspecialchars($offre->titre) ?>
+                        </div>
 
-                        <?php if (
-                                $_SESSION['utilisateur']['role'] === 'Partenaire'
-                        ): ?>
+                        <div class="offre-entreprise">
+                            <?= htmlspecialchars($offre->nom_entreprise) ?>
+                        </div>
+                        <!-- DESCRIPTION -->
+                        <div class="offre-desc">
+                            <?= htmlspecialchars(substr($offre->description ?? "Aucune description disponible", 0, 150)) ?>...
+                        </div>
 
-                            <a href="crudOffre/offreUpdate.php?id=<?= $offre['id_offre'] ?>"
-                               class="btn btn-sm btn-outline-primary me-1" title="Modifier">
-                                <i class="bi bi-pencil"></i>
-                            </a>
+                        <!-- ACTIONS -->
+                        <div class="offre-actions d-flex gap-2">
 
-                            <form action="../src/treatment/traitementDeleteOffre.php"
-                                  method="post" class="d-inline">
-                                <input type="hidden" name="id_offre" value="<?= (int)$offre['id_offre'] ?>">
-                                <input type="hidden" name="delete_offre" value="1">
-                                <button type="submit" class="btn btn-sm btn-outline-danger"
-                                        title="Supprimer"
-                                        onclick="return confirm('Supprimer cette offre ?')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
+                            <?php if ($_SESSION['utilisateur']['role'] === 'Etudiant'
+                                    || $_SESSION['utilisateur']['role'] === 'Alumni'): ?>
 
-                        <?php endif; ?>
+                                <a href="postuler.php?id=<?= $offre->id_offre ?>" class="btn btn-primary">
+                                    Postuler
+                                </a>
 
-                        <?php if ($_SESSION['utilisateur']['role'] === 'Etudiant' || $_SESSION['utilisateur']['role'] === 'Alumni'): ?>
-                            <form action="../view/postuler.php?id=<?= (int)$offre['id_offre'] ?>"
-                                  method="post" class="d-inline">
-                                <input type="hidden" name="id_offre" value="<?= (int)$offre['id_offre'] ?>">
-                                <button type="submit" class="btn btn-sm btn-outline-success" title="Postuler à cette offre">
-                                    <i class="bi bi-send-fill"></i> Postuler
-                                </button>
-                            </form>
-                        <?php endif; ?>
+                            <?php elseif ($_SESSION['utilisateur']['role'] === 'Partenaire' && $partenaire_a_une_fiche->id_fiche_entreprise == $offre->ref_fiche) : ?>
 
-                    </td>
-                </tr>
+                                <a href="crudOffre/offreUpdate.php?id=<?= $offre->id_offre ?>" class="btn btn-secondary">
+                                    Modifier
+                                </a>
+
+                                <a href="crudOffre/offreDelete.php?id=<?= $offre->id_offre ?>"
+                                   class="btn btn-danger"
+                                   onclick="return confirm('Voulez-vous vraiment supprimer cette offre ?')">
+                                    Supprimer
+                                </a>
+
+                            <?php endif; ?>
+
+                        </div>
+
+                    </div>
+                </div>
+
             <?php endforeach; ?>
-            </tbody>
-        </table>
+
+        </div>
     </div>
+
 <?php endif; ?>
 
-
-<script>
-    $(document).ready(function () {
-        $('#offre-table').DataTable({
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json",
-                emptyTable: "Aucune offre disponible pour l'instant"
-            },
-            pageLength: 10,
-            ordering: true,
-            searching: true,
-            responsive: true
-        });
-    });
-
-    function redirection() {
-        window.location.href = 'connexion.php';
-    }
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+<style>
+    .offre-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 18px;
+        background: #fff;
+        height: 220px; /* hauteur fixe/modifiable */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* boutons en bas */
+    }
+
+    .offre-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .offre-entreprise{
+        font-size: .9rem;
+        font-weight: 500;
+        margin-bottom: 10px;
+        color: #444;
+    }
+
+    .offre-desc {
+        font-size: .9rem;
+        flex-grow: 1; /* prend l'espace restant */
+        color: #555;
+        margin-bottom: 12px;
+        width: 100%;
+    }
+
+    .offre-actions .btn {
+        border-radius: 8px;
+        padding: 6px 14px;
+    }
+</style>
+
 </html>
