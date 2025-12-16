@@ -140,17 +140,6 @@ class utilisateurRepository
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
-    public function verifierToken($token){// peut etre faire une classe mdp reset
-        $sql = "SELECT utilisateur.email FROM mdp_reset inner join utilisateur on utilisateur.id_user=mdp_reset.ref_user WHERE  token=:token";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(['token' => $token]);
-        return $stmt->fetch(PDO::FETCH_OBJ);
-    }
-    public function deleteToken($token){// peut etre faire une classe mdp reset
-        $sql = "delete FROM mdp_reset WHERE  token=:token";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(['token' => $token]);
-        return $stmt->fetch(PDO::FETCH_OBJ);
-    }
+
 
 }

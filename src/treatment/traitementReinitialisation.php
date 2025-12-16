@@ -1,5 +1,7 @@
 <?php
 require_once "../bdd/config.php";
+require_once "../modele/ModeleMdpReset.php";
+require_once "../repository/MdpResetRepository.php";
 require_once "../modele/ModeleUtilisateur.php";
 require_once "../repository/UtilisateurRepository.php";
 
@@ -8,15 +10,16 @@ $mdpConfirm=htmlspecialchars($_POST['confirmation']);
 if(isset($_POST['token'])&&isset($mdpnew)&&isset($mdpConfirm)){
 
     $config = new Config();
-    $pdo = $config->connexion();
+    $repoUser=new UtilisateurRepository();
     if($mdpnew==$mdpConfirm) {
         $mdp = password_hash($mdpnew, PASSWORD_DEFAULT);
         $token = $_POST['token'];
-        $repo = new utilisateurRepository();
-        $verif = $repo->verifierToken($token);
+        $mdpReset=new ModeleMdpReset(["token"=>$token]);
+        $repo = new MdpResetRepository();
+        $verif = $repo->verifierToken($mdpReset);
         if ($verif) {
             $email = $verif->email;
-            $repo->changerMdp($mdp, $email);
+            $repoUser->changerMdp($mdp, $email);
             $repo->deleteToken($token);
             echo "<h3>Mot de passe modifié</h3>";
             echo "<p>Fermez cette page</p>";
