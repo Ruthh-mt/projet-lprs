@@ -7,6 +7,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+CREATE DATABASE IF NOT EXISTS `lprs` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `lprs`;
 
 DROP TABLE IF EXISTS `alumni`;
 CREATE TABLE IF NOT EXISTS `alumni` (
@@ -38,11 +40,11 @@ CREATE TABLE IF NOT EXISTS `evenement` (
     `nb_place` int NOT NULL,
     `desc_eve` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `titre_eve` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    `date_heure_evenement`  datetime NOT NULL,
+    `date_heure_evenement` datetime NOT NULL,
     `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'En attente',
     `est_valide` int NOT NULL DEFAULT '0',
     PRIMARY KEY (`id_evenement`)
-    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `fiche_entreprise`;
 CREATE TABLE IF NOT EXISTS `fiche_entreprise` (
@@ -166,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
     `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `mdp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-    `est_valide` int NOT NULL DEFAULT '0',
+    `est_valide` int NOT NULL,
     `ref_validateur` int DEFAULT NULL,
     `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
     PRIMARY KEY (`id_user`),
