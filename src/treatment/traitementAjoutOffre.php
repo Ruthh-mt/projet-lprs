@@ -5,38 +5,21 @@ require_once("../../src/bdd/config.php");
 require_once "../modele/ModeleOffre.php";
 require_once "../../src/repository/OffreRepository.php";
 require_once("../../src/repository/PartenaireRepository.php");
+require_once("../../src/repository/FicheEntrepriseRepository.php");
+
 require_once("../../src/repository/AlumniRepository.php");
 
 $offreRepository = new OffreRepository();
-
+$partenaireRepository = new PartenaireRepository();
+$ficheRepository = new FicheEntrepriseRepository();
 $id_user = $_SESSION['utilisateur']['id_user'];
 $role = $_SESSION['utilisateur']['role'];
 
 $ref_fiche = null;
 
-if ($role === 'Partenaire') {
 
-    $partenaire_rep = new PartenaireRepository();
-    $fiche = $partenaire_rep->getFicheByPartenaire($id_user);
 
-    if ($fiche) {
-        $ref_fiche = $fiche['id_fiche_entreprise'];
-    }
 
-} elseif ($role === 'Alumni') {
-
-    $alumni_rep = new AlumniRepository();
-    $fiche = $alumni_rep->getFicheByAlumni($id_user);
-
-    if ($fiche) {
-        $ref_fiche = $fiche['id_fiche_entreprise'];
-    }
-}
-
-if (!$ref_fiche) {
-    echo "<script>alert(\"Impossible d'associer l'offre : aucune fiche entreprise trouvée.\"); window.history.back();</script>";
-    exit;
-}
 
 if (
     empty($_POST['titre_poste']) ||
@@ -58,6 +41,12 @@ $type = trim($_POST['type_contrat']);
 $salaire = $_POST['salaire'];
 $etat = "En attente";
 
+if($ficheRepository->findFicheByUser($id_user) == null){
+$ref_fiche = $_POST['entreprise'];}
+else {
+    $fiche = $ficheRepository->findFicheByUser($id_user);
+    $ref_fiche = $fiche->id_fiche_entreprise;
+}
 $offre = new ModeleOffre([
     'titreOffre' => $titre,
     'description' => $description,
@@ -69,6 +58,7 @@ $offre = new ModeleOffre([
 ]);
 
 $ok = $offreRepository->createOffre($offre);
+
 
 if ($ok) {
     echo "<script>alert('Offre créée avec succès !'); window.location.href='../../view/emplois.php';</script>";

@@ -87,15 +87,8 @@ class PostulerRepository
 
             $ok = $stmt->execute($params);
 
-            // Vérifier si des lignes ont été affectées
-            if ($ok && $stmt->rowCount() > 0) {
+            if ($ok) {
                 return true;
-            } else {
-                $this->lastError = "Aucune ligne mise à jour. Vérifiez que la candidature existe.";
-                if ($stmt->errorInfo()[0] !== '00000') {
-                    $this->lastError .= " Erreur SQL: " . implode(" | ", $stmt->errorInfo());
-                }
-                return false;
             }
 
         } catch (PDOException $e) {

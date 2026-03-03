@@ -8,17 +8,21 @@ require_once("../../src/repository/AlumniRepository.php");
 
 require_once("../../src/repository/OffreRepository.php");
 $ficheRepo = new FicheEntrepriseRepository();
+$partenaire_repo = new PartenaireRepository();
 $id_user = $_SESSION['utilisateur']['id_user'];
 $role = $_SESSION['utilisateur']['role'];
+
+$fiche = null;
 $ref_fiche = null;
-$fiche = "";
-if ($role === 'Partenaire') {
-    $partenaire_repo = new PartenaireRepository();
+if($role == "Partenaire"){
     $fiche = $partenaire_repo->getFicheByPartenaire($id_user);
     $ref_fiche = $fiche['id_fiche_entreprise'];
-    if($fiche == null){
-        $fiche = "";
+    if($ref_fiche == null){
+     $fiche = "";
+     $ref_fiche = "";
     }
+    $partenaire_repo = new PartenaireRepository();
+$lesEntreprises = $ficheRepo->getAllFicheEntreprises();
 }
 ?>
 <!doctype html>
@@ -144,6 +148,20 @@ if ($role === 'Partenaire') {
                 <input class="form-control" type="number" id="salaire" name="salaire"
                        placeholder="Entrez le salaire" step="0.01">
             </div>
+
+
+            <?php if($fiche == null) :?>
+            <div class="mb-3">
+                <label for="entreprise" class="form-label">Entreprise</label>
+                <select class="form-select" name="entreprise" id="entreprise">
+                    <?php foreach ($lesEntreprises as $entreprise): ?>
+                        <option value="<?php echo $entreprise['id_fiche_entreprise'] ?>">
+                            <?php echo htmlspecialchars($entreprise['nom_entreprise'], ENT_QUOTES, 'UTF-8') ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+<?php endif; ?>
 
             <div class="d-flex gap-2">
                 <button class="btn btn-primary" type="submit">Valider</button>
