@@ -1,14 +1,19 @@
 <?php
+
+require_once(__DIR__ . '/../security/PasswordHolder.php');
 class Config
 {
+     private $passwordHolder;
      private $nomBDD = 'lprs';
      private $serveur = 'localhost';
-     private $user = 'root';
-     private $password = '';
+     private $user = 'Ruth';
+     private $password ;
      private $bdd;
 
      public function __construct()
      {
+         $this->passwordHolder = new PasswordHolder();
+         $this->password=$this->passwordHolder->getBddPassword();
           try {
                $this->bdd = new PDO(
                     "mysql:host=" . $this->serveur . ";dbname=" . $this->nomBDD . ";charset=utf8",
