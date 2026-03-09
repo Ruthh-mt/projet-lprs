@@ -1,121 +1,60 @@
 <?php
-require_once "../bdd/config.php";
+require_once "../bdd/Config.php";
 require_once "../modele/ModeleMdpReset.php";
 require_once "../repository/MdpResetRepository.php";
 require_once "../modele/ModeleUtilisateur.php";
 require_once "../repository/UtilisateurRepository.php";
 
-$mdpnew=htmlspecialchars($_POST['mdp']);
-$mdpConfirm=htmlspecialchars($_POST['confirmation']);
-if(isset($_POST['token'])&&isset($mdpnew)&&isset($mdpConfirm)){
+function redirectWith(string $type, string $message, string $target): void
+{
+    $_SESSION['toastr'] = [
+            "type" => $type,
+            "message" => $message,
+    ];
+    session_write_close();
+    header("Location: $target", $_SESSION["toastr"]["type"]);
+    exit();
+}
 
+
+$mdpnew="";
+$mdpConfirm="";
+$token = "";
+if(isset($_POST["token"]) && isset($_POST["mdp"]) && isset($_POST["confirmation"])){
+    $mdpnew=htmlspecialchars($_POST['mdp']);
+    $mdpConfirm=htmlspecialchars($_POST['confirmation']);
+    $token = $_POST['token'];
     $config = new Config();
     $repoUser=new UtilisateurRepository();
     if($mdpnew==$mdpConfirm) {
         $mdp = password_hash($mdpnew, PASSWORD_DEFAULT);
-        $token = $_POST['token'];
         $mdpReset=new ModeleMdpReset(["token"=>$token]);
         $repo = new MdpResetRepository();
-        $verif = $repo->verifierToken($mdpReset);
-        if ($verif) {
-            $email = $verif->email;
-            $repoUser->changerMdp($mdp, $email);
-            $repo->deleteToken($token);
-            echo "<h3>Mot de passe modifié</h3>";
-            echo "<p>Fermez cette page</p>";
-
+        try {
+            $verif = $repo->verifierToken($mdpReset);
+            if ($verif) {
+                $email = $verif->email;
+                $success = $repoUser->changerMdp($mdp, $email);
+                if ($success) {
+                    $repo->deleteToken($mdpReset);
+                    redirectWith("success", "Le mot de passe a bien été modifié", "../../view/connexion.php");
+                } else {
+                    redirectWith("error", "Le mot de passe n'a pas été modifié. Veuillez réessayer", '../../view/reinitialiserMdp.php?token=' . $token);
+                }
+            }else{
+                redirectWith("error","Le token est invalide ou a expiré","../../view/connexion.php");
+            }
+        }catch(PDOException $e){
+            redirectWith("error", $e->getMessage(),"../../view/reinitialiserMdp.php?token=' . $token");
 
         }
+
     }else{
-        echo"La confirmation du  mot de passe est differente du mot de passe";
+        redirectWith("error","Le mot de passe et la confirmation du mot de passe sont different",' ../../view/reinitialiserMdp.php?token=' . $token);
     }
 
 }else {
-    $token=$_POST['token'];
     echo"veuillez remplir tous les champs";
-    header("Location:../../view/reinitialiserMdp.php/?token='.$token");
+    redirectWith("error","Veuillez remplir tous les champs",'../../view/reinitialiserMdp.php?token=' . $token);
 }
-?>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4; /* Fond blanc */
-        margin: 20px;
-        padding: 0;
-        color: #333;
-        text-align: center;
-    }
 
-    .logo {
-        font-size: 1.8em;
-        font-weight: bold;
-    }
-
-    nav a {
-        margin: 0 15px;
-        text-decoration: none;
-        color: #333;
-        font-size: 1.2em;
-        transition: 0.3s;
-    }
-
-    .banner {
-        background: url('https://source.unsplash.com/1600x600/?cinema,movie') no-repeat center;
-        background-size: cover;
-        color: black;
-        padding: 80px 20px;
-    }
-
-    .banner h1 {
-        font-size: 2.5em;
-        margin-bottom: 10px;
-    }
-
-    .banner p {
-        font-size: 1.2em;
-    }
-
-    /* Section des films */
-    h2 {
-        margin-top: 40px;
-        font-size: 2em;
-    }
-
-    .film-grid {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-    }
-
-    .film-card {
-        background: #f9f9f9;
-        border-radius: 8px;
-        padding: 15px;
-        width: 250px;
-        text-align: center;
-        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s;
-    }
-
-    .film-card:hover {
-        transform: scale(1.05);
-    }
-
-    .film-card img {
-        width: 100%;
-        border-radius: 8px;
-    }
-
-    .film-card h3 {
-        margin-top: 10px;
-        font-size: 1.2em;
-    }
-    footer {
-        background: #f1f1f1;
-        padding: 15px;
-        margin-top: 40px;
-        font-size: 0.9em;
-    }
-</style>
