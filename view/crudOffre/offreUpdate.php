@@ -1,11 +1,18 @@
 <?php
+session_start();
 require_once("../../src/bdd/config.php");
-$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
-$pdo  = (new Config())->connexion();
+require_once("../../src/repository/OffreRepository.php");
 
-$sql =$pdo->prepare("SELECT * FROM offre o  where id_offre=? ");
-$sql -> execute([$_GET["id"]]);
-$offre = $sql -> fetch(PDO::FETCH_ASSOC);
+$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
+$id = $_GET['id'] ?? null;
+if (!$id) {
+    echo "<script>alert('Aucune offre sélectionné'); window.location.href='../evenements.php';</script>";
+    exit;
+}
+$offreRepo = new OffreRepository();
+$offre = $offreRepo->getOffreById($id);
+
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -56,10 +63,6 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
 </header>
 
 
-<section class="container banner bg-danger text-warning text-center py-1 rounded border">
-    <h1>Cette page est censé être pour le gestionnaire</h1>
-</section>
-
 
 <!-- SECTION FORMULAIRE -->
 <div class="container mb-5">
@@ -67,7 +70,7 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
 
         <!-- Bandeau titre -->
         <div class="offre-header d-flex justify-content-between align-items-center">
-            <h2 class="fw-bold">Modifier une offre d’emploi</h2>
+            <h2 class="fw-bold">Modifier l'offre (Reference numero: <?= $_GET['id']?>)</h2>
             <button type="button" class="btn btn-outline-light" onclick="window.location.href='../emplois.php'">
                 <i class="bi bi-arrow-left-circle"></i> Retour
             </button>
@@ -94,25 +97,25 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
 
             <div class="mb-3">
                 <label for="titre" class="form-label">Titre du poste</label>
-                <input class="form-control" type ="text" name="titre" value="<?= $offre['titre']?>">
+                <input class="form-control" type ="text" name="titre" value="<?= $offre->titre ?>">
             </div>
 
 
             <div class="mb-3">
                 <label for="description" class="form-label">Description du contrat</label>
-                <textarea class="form-control"  name="description" ><?= $offre['description']?></textarea>
+                <textarea class="form-control"  name="description" ><?= htmlspecialchars($offre->description) ?></textarea>
 
             </div>
 
             <div class="mb-3">
                 <label for="mission" class="form-label">Mission</label>
-                <textarea class="form-control"  name="mission" ><?= $offre['mission']?></textarea>
+                <textarea class="form-control"  name="mission" ><?= $offre->mission ?></textarea>
 
             </div>
             <div class="mb-3">
                 <label for="type_contrat" class="form-label">Type de contrat</label>
                 <select class="form-select" name="type_contrat">
-                    <option value="<?= $offre['type']?>" selected><?= $offre['type']?></option>
+                    <option value="<?= $offre->type?>" selected><?= $offre->type ?></option>
                     <option value="cdi">CDI</option>
                     <option value="cdd">CDD</option>
                     <option value="alternance">Alternance</option>
@@ -123,17 +126,37 @@ $offre = $sql -> fetch(PDO::FETCH_ASSOC);
 
             <div class="mb-3">
                 <label for="salaire" class="form-label">Salaire</label>
-                <input class="form-control" type="number" id="salaire" name="salaire" value="<?= $offre['salaire']?>">
+                <input class="form-control" type="number" id="salaire" name="salaire" value="<?= $offre->salaire?>">
             </div>
 
             <div class="mb-3">
-                <label for="ref_fiche" class="form-label">Reference fiche</label>
-                <input class="form-control" type="text" id="ref_fiche" name="ref_fiche" value="<?= $offre['ref_fiche'] ?>">
+                <label for="ref_fiche" class="form-label">Entreprise</label>
+                <input class="form-control" value ="<?= $offre->ref_fiche?>" name="ref_fiche" >
             </div>
 
+            <div class="mb-3">
+                <label for="etat" class="form-label">Type offre</label>
+                <select class="form-select" name="type_contrat">
+                    <option value="<?= $offre->etat?>" selected><?= $offre->etat ?></option>
+                    <option value="CDD">CDD</option>
+                    <option value="CDI">CDI</option>
+                    <option value="Alternance">Alternance</option>
+                    <option value="Stage">Stage</option>
+                    <option value="Interim">Interim</option>
+
+
+                </select>
+            </div>
             <div class="mb-3">
                 <label for="etat" class="form-label">Etat</label>
-                <input class="form-control" type="text" id="etat" name="etat" value="<?= $offre['etat'] ?>">
+                <select class="form-select" name="etat">
+                    <option value="<?= $offre->etat?>" selected><?= $offre->etat ?></option>
+                    <option value="Publiée">Publiée</option>
+                    <option value="Archivée">Archivée</option>
+                    <option value="Brouillon">Brouillon</option>
+                    <option value="En attente">En attente</option>
+
+                </select>
             </div>
 
             <div class="d-flex gap-2">
