@@ -118,7 +118,7 @@ $nom_entreprise = $fiche->nom_entreprise;
 <div class="container mt-4" style="max-width: 900px; margin: auto; border: 1px solid #ccc; padding: 30px;">
 
     <div>
-    <h2> Nous recherchons un/une<?= $offre->titre ?> pour <?= $nom_entreprise ?> </h2>
+    <h2> Nous recherchons un/une <?= $offre->titre ?> pour <?= $nom_entreprise ?> </h2>
     </div>
     <br>
     <br>
