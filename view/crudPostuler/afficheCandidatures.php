@@ -11,21 +11,14 @@ $id_offre = $_GET['id'];
 $postulerRepository = new PostulerRepository();
 $candidaturesPostule = $postulerRepository->findOffreAndUser($_SESSION['utilisateur']['id_user'], $id_offre);
 
-/* chemin serveur */
-$cvDossier = __DIR__ . "/../../src/treatment/telechargement/candidatures/";
-
-//regarde tous les fichiers qui commencent par "cv_"
-$modeleFichier = $cvDossier . "cv_*";
-
+/* CONFIG DOSSIER */
+$cvDossier = "../../src/treatment/telechargement/candidatures/";
+$nomUser = strtolower($_SESSION['utilisateur']['nom']);
+$prenom_user = strtolower($_SESSION['utilisateur']['prenom']);
+$modeleFichier = $cvDossier . "cv_" . $nomUser . "_" . $prenom_user . ".*";
 $fichier = glob($modeleFichier);
-
-// Si au moins un CV trouvé, on prend le premier
-$cvChemin = (!empty($fichier) && file_exists($fichier[0])) ? $fichier[0] : null;
-
-// URL pour le navigateur
-$cvUrl = $cvChemin
-        ? "/projet-lprs/src/treatment/telechargement/candidatures/" . basename($cvChemin)
-        : null;
+$cvChemin = !empty($files) ? $fichier[0] : null;
+$cvUrl = $cvChemin ? "/projet-lprs/src/treatment/telechargement/candidatures/" . basename($cvChemin) : null;
 
 /* SUPPR CV */
 if (isset($_POST['delete_cv'])) {
@@ -60,8 +53,8 @@ if (isset($_POST['update_candidature']) && isset($_FILES['cv']) && $_FILES['cv']
     header("Location: ".$_SERVER['REQUEST_URI']);
     exit;
 }
-?>
 
+?>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -74,7 +67,19 @@ if (isset($_POST['update_candidature']) && isset($_FILES['cv']) && $_FILES['cv']
           crossorigin="anonymous">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="">
+
+    <link rel="stylesheet" href="">
+
+
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
 
 </head>
@@ -133,7 +138,6 @@ if (isset($_POST['update_candidature']) && isset($_FILES['cv']) && $_FILES['cv']
 
 <section class="bg-info text-white text-center py-2 mb-4">
     <h1>Gestion Étudiant</h1>
-    <a href="../profil.php" class="btn btn-outline-light">Retour</a>
 </section>
 
 <div class="container mt-4">
@@ -144,7 +148,7 @@ if (isset($_POST['update_candidature']) && isset($_FILES['cv']) && $_FILES['cv']
 
             <h2 class="fw-bold mb-3"><?= htmlspecialchars($candidaturesPostule['titre']) ?></h2>
 
-            <form action="../../src/treatment/traitementUpdatePostuler.php" method="post" enctype="multipart/form-data">
+            <form action="/projet-lprs/src/treatment/traitementUpdatePostuler.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="ref_offre" value="<?= htmlspecialchars($id_offre) ?>">
                 
                 <div class="mb-3">
@@ -158,7 +162,7 @@ if (isset($_POST['update_candidature']) && isset($_FILES['cv']) && $_FILES['cv']
                 <input type="file" name="cv" id="cv" class="d-none" accept=".pdf,.doc,.docx">
 
                 <div class="d-flex gap-3 mt-4">
-                    <button type="submit" name="delete_candidature" class="btn btn-outline-danger" onclick="return confirm('Supprimer le CV ?');">
+                    <button type="submit" name="delete_candidature" class="btn btn-outline-danger">
                         Supprimer la candidature
                     </button>
 
