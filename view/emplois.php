@@ -24,6 +24,7 @@ if (isset($_SESSION['utilisateur'])) {
     $partenaire_a_une_fiche = null;
 }
 ?>
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -101,9 +102,20 @@ if (isset($_SESSION['utilisateur'])) {
 
 <section class="creation-offre">
     <div class="card">
+        <?php if(!isset($_SESSION['utilisateur'])) :?>
+        <section class="container banner bg-dark text-white text-center py-1 rounded">
+            <h1>Offres d'emploi</h1>
+        </section>
+            <div class="alert alert-dark alert-dismissible fade show">
+                <h5> Il semblerait qu'il n'y a pas
+                    d'evenements</h5>
+                <br>
+                <p>Soyez le/la premier/e à lancer le pas et
+                    crée votre evenement</p>
+            </div>
+        <?php else : ?>
         <div class="card-head d-flex justify-content-between align-items-center px-3 py-3 border-bottom">
             <h2 class="m-0">Offres d'emploi</h2>
-
             <div class="d-flex gap-2">
                 <?php if (!empty($_SESSION) && $_SESSION['utilisateur']['role'] === 'Partenaire'): ?>
                     <a href="profil.php" class="btn btn-dark">Voir mes offres</a>
@@ -181,6 +193,7 @@ if (isset($_SESSION['utilisateur'])) {
         </div>
     </div>
 
+<?php endif; ?>
 <?php endif; ?>
 
 </body>
