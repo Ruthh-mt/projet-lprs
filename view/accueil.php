@@ -123,11 +123,11 @@ $eveAcceuil=$eveRepo->showEvenementAcceuil();
     <h3 class="text-center py-3 text-center text-uppercase">Derniers évènements créés</h3>
     <article class="article row" style="text-align: justify;">
         <?php if(!empty($eveAcceuil)):
-        $img =["https://img.freepik.com/premium-vector/moon-night-landscape-vector-illustration-pine-tree-night-lake_538866-357.jpg","https://tse1.mm.bing.net/th/id/OIP.MO4C99oM9oCl533Y4mq17gHaEK?pid=ImgDet&w=184&h=103&c=7&dpr=1,3&o=7&rm=3","https://www.creativefabrica.com/wp-content/uploads/2024/10/18/Moonlight-Scenery-Illustration-Wallpaper-Graphics-108135561-1.jpg" ]?>
+        $img =["https://img.freepik.com/premium-vector/moon-night-landscape-vector-illustration-pine-tree-night-lake_538866-357.jpg","https://tse1.mm.bing.net/th/id/OIP.MO4C99oM9oCl533Y4mq17gHaEK?pid=ImgDet&w=184&h=103&c=7&dpr=1,3&o=7&rm=3"]?>
         <?php foreach ($eveAcceuil as $eve):?>
         <div class="col card m-3" style="width: 18rem;">
             <img src="<?php try {
-                echo htmlspecialchars($img[random_int(0, 2)]);
+                echo htmlspecialchars($img[random_int(0, 1)]);
             } catch (\Random\RandomException $e) {
                 echo $e->getMessage();
             } ?>" class="card-img-top" alt="..." >
