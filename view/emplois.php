@@ -1,10 +1,14 @@
 <?php
-$prefix ='../public';
+$referer = $_SERVER['HTTP_REFERER'] ?? null;
 
+if ($referer) {
+    $prefix = explode('/view/', $referer)[0] . '/public';
+} else {
+    $prefix = '/public';
+}
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-$prefix = '';
 
 if (isset($_SESSION['utilisateur'])) {
     require_once('../src/bdd/config.php');

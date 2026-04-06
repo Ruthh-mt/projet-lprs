@@ -2,6 +2,13 @@
 $prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
 require_once("../src/bdd/config.php");
 session_start();
+$referer = $_SERVER['HTTP_REFERER'] ?? null;
+
+if ($referer) {
+    $prefix = explode('/view/', $referer)[0] . '/public';
+} else {
+    $prefix = '/public';
+}
 
 $pdo = (new Config())->connexion();
 
