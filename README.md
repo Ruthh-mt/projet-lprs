@@ -22,8 +22,6 @@
 - [Structure du projet](#-structure-du-projet)
 - [Base de données](#-base-de-données)
 - [Sécurité](#-sécurité)
-- [Déploiement](#-déploiement)
-- [Tests](#-tests)
 - [Contribuer](#-contribuer)
 - [Auteurs](#-auteurs)
 - [Licence](#-licence)
