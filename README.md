@@ -14,7 +14,7 @@
 
 - [Aperçu](#-aperçu)
 - [Utilisateurs cibles](#-utilisateur-cibles)
-- [Roles & Fonctionnalités](#-roles&fonctionnalites)
+- [Roles & Fonctionnalités](#-roles--fonctionnalités)
 - [Stack technique](#-stack-technique)
 - [Prérequis](#-prérequis)
 - [Installation](#-installation)
