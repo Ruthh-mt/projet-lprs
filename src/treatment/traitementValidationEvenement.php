@@ -37,7 +37,7 @@ try {
     $evenementrepo->validateEvenement($evenement);
     $evenementUserRepository = new EvenementUserRepository();
     $evenementUserRepository->addSuperviseur($evenementUser);
-    redirectWith('success', "L'evenement a bien été validé, N'oubliez c'est pour la vie", '../../view/crudEvenement/evenementRead?id=' . $refEvenement . '.php');
+    redirectWith('success', "L'evenement a bien été validé, N'oubliez c'est pour la vie", '../../view/crudEvenement/evenementRead.php?id=' . $refEvenement );
 
     session_write_close();
 } catch (PDOException $e) {
