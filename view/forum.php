@@ -1,8 +1,17 @@
 <?php
-$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0] . '/public';
+//$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0] . '/public';
 require_once '../src/modele/ModelePost.php';
 require_once '../src/repository/PostRepository.php';
 require_once "../src/bdd/config.php";
+
+$referer = $_SERVER['HTTP_REFERER'] ?? null;
+
+if ($referer) {
+    $prefix = explode('/view/', $referer)[0] . '/public';
+} else {
+    $prefix = '/public';
+}
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

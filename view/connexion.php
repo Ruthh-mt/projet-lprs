@@ -1,5 +1,11 @@
 <?php
-$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0].'/public';
+$referer = $_SERVER['HTTP_REFERER'] ?? null;
+
+if ($referer) {
+    $prefix = explode('/view/', $referer)[0] . '/public';
+} else {
+    $prefix = '/public';
+}
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -94,7 +100,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="row">
                          <button type="submit" class="btn btn-outline-success btn-lg mb-3"><i class="bi bi-box-arrow-in-right"></i> Se connecter</button>
                          <a href="inscription.php" class="col btn btn-sm btn-outline-primary me-2"><i class="bi bi-person-plus"></i> S'inscrire</a>
-                        <a href="../src/treatment/traitementVerificationEmail.php" class="col btn btn-sm btn-outline-secondary ms-2"><i class="bi bi-key"></i> Mot de passe oublié </a>
+                        <a href="envoiEmailForm.php" class="col btn btn-sm btn-outline-secondary ms-2"><i class="bi bi-key"></i> Mot de passe oublié </a>
                     </div>
                </form>
           </div>

@@ -1,8 +1,16 @@
 <?php
-$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0] . '/public';
+//$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0] . '/public';
 require_once '../src/modele/ModeleEvenement.php';
 require_once '../src/repository/EvenementRepository.php';
 require_once "../src/bdd/config.php";
+$referer = $_SERVER['HTTP_REFERER'] ?? null;
+
+if ($referer) {
+    $prefix = explode('/view/', $referer)[0] . '/public';
+} else {
+    $prefix = '/public';
+}
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -147,7 +155,7 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
                         <?php
                         if (!empty($allEvenement)):
                         $count = 0;
-                        $img = ["https://wallpaper.dog/large/20516113.png", "https://wallpaperswide.com/download/flat_design_illustration-wallpaper-3000x2000.jpg", "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
+                        $img = ["https://wallpaper.dog/large/20516113.png", "https://static.vecteezy.com/system/resources/previews/057/984/527/non_2x/vibrant-sunset-landscape-majestic-mountains-lake-and-forest-at-golden-hour-vector.jpg", "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/3f811964-bed4-4072-b204-1c37e575fefb/width=1200/3f811964-bed4-4072-b204-1c37e575fefb.jpeg"];
                         foreach ($allEvenement
 
                         as $evenement): ?>

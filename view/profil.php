@@ -1,13 +1,19 @@
 <?php
 session_start();
 
-$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0] . '/public';
+//$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0] . '/public';
 
 require_once "../src/repository/PostulerRepository.php";
 require_once "../src/repository/PartenaireRepository.php";
 require_once "../src/repository/OffreRepository.php";
 require_once "../src/repository/AlumniRepository.php";
+$referer = $_SERVER['HTTP_REFERER'] ?? null;
 
+if ($referer) {
+    $prefix = explode('/view/', $referer)[0] . '/public';
+} else {
+    $prefix = '/public';
+}
 // Repositories
 $postulerRepository = new PostulerRepository();
 $partenaireRep      = new PartenaireRepository();
