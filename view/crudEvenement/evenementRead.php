@@ -1,8 +1,10 @@
 <?php
 require_once "../../src/modele/ModeleEvenement.php";
 require_once "../../src/modele/ModeleEvenementUser.php";
+require_once "../../src/modele/ModeleAvis.php";
 require_once "../../src/repository/EvenementRepository.php";
 require_once "../../src/repository/EvenementUserRepository.php";
+require_once "../../src/repository/AvisRepository.php";
 require_once "../../src/bdd/config.php";
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -19,6 +21,14 @@ $evenementUserRepository = new EvenementUserRepository();
 $evenement = $evenementRepo->getAnEvenement(new ModeleEvenement(["idEvenement" => $id]));
 $nbInscrits = $evenementUserRepository->countAllInscritsByEvenement($id);
 $superviseurs = $evenementUserRepository->getSuperviseur($evenement->id_evenement);
+
+$avisRepo = new AvisRepository();
+$avisListe = $avisRepo->getAllAvisByEvenement($id);
+$moyenneNote = $avisRepo->getAverageNote($id);
+$dejaAvis = false;
+if (isset($_SESSION['utilisateur'])) {
+    $dejaAvis = $avisRepo->hasUserAlreadyReviewed($_SESSION['utilisateur']['id_user'], $id);
+}
 ?>
 <!doctype html>
 <html lang="fr">
@@ -190,7 +200,9 @@ $superviseurs = $evenementUserRepository->getSuperviseur($evenement->id_evenemen
 
             <div class="text-center mt-4">
 
-                <?php if (!isset($_SESSION['utilisateur'])): ?>
+                <?php if ($evenement->status === 'terminé'): ?>
+                    <span class="btn btn-outline-secondary disabled"><i class="bi bi-flag-fill"></i> Evenement termine</span>
+                <?php elseif (!isset($_SESSION['utilisateur'])): ?>
                 <button class="btn btn-secondary" type="button"
                         data-bs-toggle="modal" data-bs-target="#connectezVousModal"
                 > <i class="bi bi-person-vcard"></i> Participer
@@ -223,10 +235,20 @@ $superviseurs = $evenementUserRepository->getSuperviseur($evenement->id_evenemen
             </div>
         </form>
         <?php if (isset($_SESSION['utilisateur']) && in_array($_SESSION['utilisateur']['id_user'], $superviseurs, true)): ?>
-            <div class="text-center mt-3">
+            <div class="text-center mt-3 d-flex justify-content-center gap-2 flex-wrap">
                 <a href="evenementUpdate.php?id=<?= $evenement->id_evenement ?>" class="btn btn-warning">
-                    <i class="bi bi-pencil-square"></i> Modifier l’évènement
+                    <i class="bi bi-pencil-square"></i> Modifier l'évènement
                 </a>
+                <?php if ($evenement->status !== 'terminé'): ?>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                            data-bs-target="#confirmTerminerModal">
+                        <i class="bi bi-flag-fill"></i> Marquer comme terminé
+                    </button>
+                <?php else: ?>
+                    <span class="btn btn-secondary disabled">
+                <i class="bi bi-flag-fill"></i> Évènement terminé
+            </span>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
     </div>
@@ -285,6 +307,29 @@ $superviseurs = $evenementUserRepository->getSuperviseur($evenement->id_evenemen
         </div>
     </div>
 </div>
+<!-- MODALE DE CONFIRMATION POUR TERMINER L'EVENEMENT -->
+<div class="modal fade" id="confirmTerminerModal" tabindex="-1" aria-labelledby="confirmTerminerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-white">
+                <h5 class="modal-title" id="confirmTerminerModalLabel">Confirmer la fin de l'evenement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Etes-vous sur de vouloir marquer cet evenement comme termine ? Les participants pourront alors laisser des avis.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <form method="post" action="../../src/treatment/traitementTerminerEvenement.php">
+                    <input type="hidden" name="idEvenement" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
+                    <button type="submit" class="btn btn-dark">
+                        <i class="bi bi-flag-fill"></i> Confirmer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- MODALE POUR QUE L'UTILISATEUR SE CONNECTE -->
 <div class="modal fade" id="connectezVousModal" tabindex="-1" aria-labelledby="connectezVousModalLabel"
      aria-hidden="true">
@@ -308,6 +353,113 @@ $superviseurs = $evenementUserRepository->getSuperviseur($evenement->id_evenemen
         </div>
     </div>
 </div>
+
+<!-- SECTION AVIS -->
+<?php if ($evenement->status === 'terminé'): ?>
+<?php
+    $estSuperviseur = isset($_SESSION['utilisateur']) && in_array($_SESSION['utilisateur']['id_user'], $superviseurs, true);
+?>
+<div class="container mb-5">
+    <div class="section-offre">
+        <div class="offre-header d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold"><i class="bi bi-chat-left-text"></i> Avis des participants</h2>
+                <?php if ($moyenneNote): ?>
+                    <p class="mb-0 mt-2">
+                        Note moyenne :
+                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                            <i class="bi bi-star<?= $i <= round($moyenneNote) ? '-fill text-warning' : '' ?>"></i>
+                        <?php endfor; ?>
+                        (<?= number_format($moyenneNote, 1) ?>/5 - <?= count($avisListe) ?> avis)
+                    </p>
+                <?php else: ?>
+                    <p class="mb-0 mt-2">Aucun avis pour le moment.</p>
+                <?php endif; ?>
+            </div>
+            <?php
+            if (isset($_SESSION['utilisateur']) && !$estSuperviseur):
+                $userId = $_SESSION['utilisateur']['id_user'];
+                $estParticipant = !$evenementUserRepository->verifDejaInscritEvenement(
+                    new ModeleEvenementUser(["refUser" => $userId, "refEvenement" => $evenement->id_evenement])
+                );
+                if ($estParticipant && !$dejaAvis): ?>
+                    <a href="evenementAvisCreate.php?id=<?= htmlspecialchars($evenement->id_evenement) ?>" class="btn btn-light">
+                        <i class="bi bi-pencil-square"></i> Donner mon avis
+                    </a>
+                <?php elseif ($dejaAvis): ?>
+                    <a href="evenementAvisUpdate.php?id=<?= htmlspecialchars($evenement->id_evenement) ?>" class="btn btn-light">
+                        <i class="bi bi-pencil"></i> Modifier mon avis
+                    </a>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
+
+        <?php if ($estSuperviseur): ?>
+        <!-- Liste des avis visible uniquement par le createur -->
+        <div class="mt-4">
+            <?php if (!empty($avisListe)): ?>
+                <?php foreach ($avisListe as $avis): ?>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <strong><?= htmlspecialchars($avis->prenom . ' ' . $avis->nom) ?></strong>
+                                    <span class="ms-2">
+                                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                                            <i class="bi bi-star<?= $i <= $avis->note ? '-fill text-warning' : '' ?>"></i>
+                                        <?php endfor; ?>
+                                    </span>
+                                </div>
+                                <small class="text-muted">
+                                    <?= (new DateTime($avis->date_avis))->format('d/m/Y H:i') ?>
+                                </small>
+                            </div>
+                            <?php if (!empty($avis->commentaire)): ?>
+                                <p class="card-text mb-0"><?= nl2br(htmlspecialchars($avis->commentaire)) ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="alert alert-secondary">
+                    Aucun avis n'a encore ete laisse pour cet evenement.
+                </div>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+<?php
+// Modale de suppression d'avis (pour l'utilisateur connecte)
+if (isset($_SESSION['utilisateur']) && $dejaAvis):
+    $monAvis = $avisRepo->getAvisByUserAndEvenement($_SESSION['utilisateur']['id_user'], $id);
+    if ($monAvis): ?>
+<div class="modal fade" id="confirmDeleteAvisModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Supprimer mon avis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Etes-vous sur de vouloir supprimer votre avis ? Cette action est irreversible.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <form method="post" action="../../src/treatment/traitementDeleteAvis.php">
+                    <input type="hidden" name="idAvis" value="<?= htmlspecialchars($monAvis->id_avis) ?>">
+                    <input type="hidden" name="refEvenement" value="<?= htmlspecialchars($evenement->id_evenement) ?>">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Supprimer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; endif; ?>
+<?php endif; ?>
 
 <script>
     function autoResize(textarea) {

@@ -1,7 +1,9 @@
 <?php
 //$prefix = explode('/view/', $_SERVER['HTTP_REFERER'])[0] . '/public';
 require_once '../src/modele/ModeleEvenement.php';
+require_once '../src/modele/ModeleAvis.php';
 require_once '../src/repository/EvenementRepository.php';
+require_once '../src/repository/AvisRepository.php';
 require_once "../src/bdd/config.php";
 $referer = $_SERVER['HTTP_REFERER'] ?? null;
 
@@ -24,6 +26,8 @@ $debut = ($page - 1) * $nbEvenementParPage;
 $evenementRepository = new EvenementRepository();
 $allEvenement = $evenementRepository->getAllEvenement($debut, $nbEvenementParPage);
 $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
+$avisRepository = new AvisRepository();
+$moyennesAvis = $avisRepository->getAverageNoteForAllEvenements();
 
 ?>
 <!doctype html>
@@ -179,6 +183,18 @@ $nbTotalEve = $evenementRepository->countAllEvenement() / $nbEvenementParPage;
                  style="height: 230px; object-fit: cover;">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title fw-bold"><?= htmlspecialchars($evenement->titre_eve) ?></h5>
+                <?php if ($evenement->status === 'terminé' && isset($moyennesAvis[$evenement->id_evenement])): ?>
+                    <div class="mb-2">
+                        <?php
+                        $moy = $moyennesAvis[$evenement->id_evenement];
+                        for ($i = 1; $i <= 5; $i++): ?>
+                            <i class="bi bi-star<?= $i <= round($moy->moyenne) ? '-fill text-warning' : '' ?>"></i>
+                        <?php endfor; ?>
+                        <small class="text-muted">(<?= number_format($moy->moyenne, 1) ?>/5 - <?= $moy->nb_avis ?> avis)</small>
+                    </div>
+                <?php elseif ($evenement->status === 'terminé'): ?>
+                    <div class="mb-2"><small class="text-muted">Aucun avis</small></div>
+                <?php endif; ?>
                 <p class="card-text flex-grow-1 text-muted">
                     <?= htmlspecialchars(substr($evenement->desc_eve, 0, 100)) ?>...
                 </p>

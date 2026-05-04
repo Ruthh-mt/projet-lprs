@@ -104,7 +104,12 @@ class EvenementRepository
         $stmt = $this->db->connexion()->prepare($delete);
         $stmt->execute(['id' => $evenement->getIdEvenement()]);
     }
-
+    public function terminerEvenement(ModeleEvenement $evenement)
+    {
+        $sql = "UPDATE evenement SET status = 'terminé' WHERE id_evenement = :id";
+        $stmt = $this->db->connexion()->prepare($sql);
+        $stmt->execute(['id' => $evenement->getIdEvenement()]);
+    }
     public function showEvenementAcceuil(){
         $sql="SELECT * FROM evenement  order by date_heure_evenement DESC LIMIT 5"; //AJOUTER LE SYSTEME DE DATE A LA PLACE DE L4ID
         $stmt = $this->db->connexion()->prepare($sql);

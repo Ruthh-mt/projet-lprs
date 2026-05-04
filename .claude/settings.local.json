@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep:*)",
+      "Bash(find /c/wamp64/www/programmes/projet-lprs -type d -not -path */vendor/* -not -path */.git/*)",
+      "Bash(/c/wamp64/bin/mysql/mysql9.1.0/bin/mysql.exe -u root lprs -e \"ALTER TABLE avis_evenement MODIFY commentaire varchar\\(2048\\) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL;\")"
+    ]
+  }
+}
